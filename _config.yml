@@ -32,7 +32,9 @@ plugins:
 
 # --- Misc --- #
 # Fill in your Disqus shortname (NOT the userid) if you want to support Disqus comments
-disqus: "rumaniel"
+disqus:
+  shortname: rumaniel
+
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
