@@ -30,6 +30,10 @@ plugins:
   - jekyll-seo-tag
   - jekyll-gist
 
+# --- Misc --- #
+# Fill in your Disqus shortname (NOT the userid) if you want to support Disqus comments
+disqus: "rumaniel"
+
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
