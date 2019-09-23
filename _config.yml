@@ -19,8 +19,8 @@ description: >- # this means to ignore newlines until "baseurl:"
   Developers, developers, developers, developers. feat Steve Ballmer.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://rumaniel.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: rumaniel
-# github_username:  rumaniel
+# twitter_username: rumaniel
+github_username:  rumaniel
 
 # Build settings
 markdown: kramdown
@@ -29,11 +29,12 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
   - jekyll-gist
-
+aw
 # --- Misc --- #
 # Fill in your Disqus shortname (NOT the userid) if you want to support Disqus comments
 disqus:
   shortname: rumaniel
+
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
