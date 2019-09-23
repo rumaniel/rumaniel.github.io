@@ -29,7 +29,7 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
   - jekyll-gist
-aw
+
 # --- Misc --- #
 # Fill in your Disqus shortname (NOT the userid) if you want to support Disqus comments
 disqus:
