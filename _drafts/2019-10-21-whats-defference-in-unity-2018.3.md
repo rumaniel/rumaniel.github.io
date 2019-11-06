@@ -28,8 +28,8 @@ https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-version-history
 2018.3  C# 7.3
 
 
-c# 4
-Dynamic binding
+# c# 4
+## Dynamic binding
 The major feature was the introduction of the dynamic keyword. The dynamic keyword introduced into C# version 4.0 the ability to override the compiler on compile-time typing. By using the dynamic keyword, you can create constructs similar to dynamically typed languages like JavaScript. You can create a dynamic x = "a string" and then add six to it, leaving it up to the runtime to sort out what should happen next.
 
 Dynamic binding gives you the potential for errors but also great power within the language.
@@ -42,8 +42,8 @@ Generic covariant and contravariant
 Embedded interop types
 
 
-c# 5
-New keyword async await
+# c# 5
+## New keyword async await
 Async code can be used for both I/O-bound and CPU-bound code, but differently for each scenario.
 Async code uses Task<T> and Task, which are constructs used to model work being done in the background.
 The async keyword turns a method into an async method, which allows you to use the await keyword in its body.
@@ -53,20 +53,18 @@ await can only be used inside an async method.
 https://docs.microsoft.com/en-us/dotnet/standard/async-in-depth
 https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/index
 
-Caller info attributes
+## Caller info attributes
 The caller info attribute lets you easily retrieve information about the context in which you're running without resorting to a ton of boilerplate reflection code. It has many uses in diagnostics and logging tasks.
 
-c# 6
+# c# 6
 https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-6
-Read-only auto-properties
+## Read-only auto-properties
 Read-only auto-properties provide a more concise syntax to create immutable types. You declare the auto-property with only a get accessor:
 
-Copy
 public string FirstName { get; }
 public string LastName { get;  }
 The FirstName and LastName properties can be set only in the body of the constructor of the same class:
 
-Copy
 public Student(string firstName, string lastName)
 {
     if (IsNullOrWhiteSpace(lastName))
@@ -76,9 +74,6 @@ public Student(string firstName, string lastName)
 }
 Trying to set LastName in another method generates a CS0200 compilation error:
 
-C#
-
-Copy
 public class Student
 {
     public string LastName { get;  }
@@ -90,28 +85,24 @@ public class Student
     }
 }
 
-Auto-property initializers
+## Auto-property initializers
 Auto-property initializers let you declare the initial value for an auto-property as part of the property declaration.
 
 public ICollection<double> Grades { get; } = new List<double>();
 The Grades member is initialized where it's declared. That makes it easier to perform the initialization exactly once. The initialization is part of the property declaration, making it easier to equate the storage allocation with the public interface for Student objects
 
 
-Expression-bodied function members
+## Expression-bodied function members
 Many members that you write are single statements that could be single expressions. Write an expression-bodied member instead. It works for methods and read-only properties. For example, an override of ToString() is often a great candidate:
 
-C#
 
-Copy
 public override string ToString() => $"{LastName}, {FirstName}";
 You can also use this syntax for read-only properties:
 
-C#
 
-Copy
 public string FullName => $"{FirstName} {LastName}";
 
-using static
+## using static
 The using static enhancement enables you to import the static methods of a single class. You specify the class you're using:
 
 using static System.Math;
@@ -119,17 +110,23 @@ using static System.Math;
 Null-conditional operators
 The null conditional operator makes null checks much easier and fluid. Replace the member access . with ?.:
 
-Copy
 var first = person?.FirstName;
 
-String interpolation
+## String interpolation
 With C# 6, the new string interpolation feature enables you to embed expressions in a string. Simply preface the string with $and use expressions between { and } instead of ordinals:
 public string FullName => $"{FirstName} {LastName}";
 
-Index initializers
+## Index initializers
 private Dictionary<int, string> webErrors = new Dictionary<int, string>
 {
     [404] = "Page not Found",
     [302] = "Page moved, but left a forwarding address.",
     [500] = "The web server can't come out to play today."
 };
+
+
+## Extension Add methods in collection initializers
+Another feature that makes collection initialization easier is the ability to use an extension method for the Add method. This feature was added for parity with Visual Basic. The feature is most useful when you have a custom collection class that has a method with a different name to semantically add new items.
+
+
+# c# 7.0
