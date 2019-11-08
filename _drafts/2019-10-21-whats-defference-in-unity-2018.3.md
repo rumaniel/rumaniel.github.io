@@ -130,3 +130,165 @@ Another feature that makes collection initialization easier is the ability to us
 
 
 # c# 7.0
+## out variables
+You can declare out values inline as arguments to the method where they're used.
+
+The existing syntax that supports out parameters has been improved in this version. You can now declare out variables in the argument list of a method call, rather than writing a separate declaration statement:
+
+
+```c#
+if (int.TryParse(input, out var answer))
+    Console.WriteLine(answer);
+else
+    Console.WriteLine("Could not parse input");
+```
+
+## Tuples
+You can create lightweight, unnamed types that contain multiple public fields. Compilers and IDE tools understand the semantics of these types.
+
+Tuples were available before C# 7.0, but they were inefficient and had no language support.
+
+```c#
+(string Alpha, string Beta) namedLetters = ("a", "b");
+Console.WriteLine($"{namedLetters.Alpha}, {namedLetters.Beta}");
+
+var alphabetStart = (Alpha: "a", Beta: "b");
+Console.WriteLine($"{alphabetStart.Alpha}, {alphabetStart.Beta}");
+
+(int max, int min) = Range(numbers);
+Console.WriteLine(max);
+Console.WriteLine(min);
+
+public class Point
+{
+    public Point(double x, double y)
+        => (X, Y) = (x, y);
+
+    public double X { get; }
+    public double Y { get; }
+
+    public void Deconstruct(out double x, out double y) =>
+        (x, y) = (X, Y);
+}
+
+var p = new Point(3.14, 2.71);
+(double X, double Y) = p;
+```
+
+
+## Discards
+Discards are temporary, write-only variables used in assignments when you don't care about the value assigned. They're most useful when deconstructing tuples and user-defined types, as well as when calling methods with out parameters.
+
+
+* When deconstructing tuples or user-defined types.
+* When calling methods with out parameters.
+* In a pattern matching operation with the is and switch statements.
+* As a standalone identifier when you want to explicitly identify the value of an assignment as a discard.
+
+
+```c#
+using System;
+using System.Collections.Generic;
+
+public class Example
+{
+   public static void Main()
+   {
+       var (_, _, _, pop1, _, pop2) = QueryCityDataForYears("New York City", 1960, 2010);
+
+       Console.WriteLine($"Population change, 1960 to 2010: {pop2 - pop1:N0}");
+   }
+
+   private static (string, double, int, int, int, int) QueryCityDataForYears(string name, int year1, int year2)
+   {
+      int population1 = 0, population2 = 0;
+      double area = 0;
+
+      if (name == "New York City") {
+         area = 468.48;
+         if (year1 == 1960) {
+            population1 = 7781984;
+         }
+         if (year2 == 2010) {
+            population2 = 8175133;
+         }
+      return (name, area, year1, population1, year2, population2);
+      }
+
+      return ("", 0, 0, 0, 0, 0);
+   }
+}
+// The example displays the following output:
+//      Population change, 1960 to 2010: 393,149
+```
+
+## Pattern Matching
+You can create branching logic based on arbitrary types and values of the members of those types.
+
+When deconstructing tuples or user-defined types.
+When calling methods with out parameters.
+In a pattern matching operation with the is and switch statements.
+As a standalone identifier when you want to explicitly identify the value of an assignment as a discard.
+
+1. The is pattern expression extends the familiar is operator to query an object about its type and assign the result in one instruction. The following code checks if a variable is an int, and if so, adds it to the current sum:
+
+
+```c#
+if (input is int count)
+    sum += count;
+```
+
+2. The switch match expression has a familiar syntax, based on the switch statement already part of the C# language. The updated switch statement has several new constructs:
+
+* The governing type of a switch expression is no longer restricted to integral types, Enum types, string, or a nullable type corresponding to one of those types. Any type may be used.
+* You can test the type of the switch expression in each case label. As with the is expression, you may assign a new variable to that type.
+* You may add a when clause to further test conditions on that variable.
+* The order of case labels is now important. The first branch to match is executed; others are skipped.
+
+```c#
+public static int SumPositiveNumbers(IEnumerable<object> sequence)
+{
+    int sum = 0;
+    foreach (var i in sequence)
+    {
+        switch (i)
+        {
+            // is the familiar constant pattern.
+            case 0:
+                break;
+            // childSequence: is a type pattern.
+            case IEnumerable<int> childSequence:
+            {
+                foreach(var item in childSequence)
+                    sum += (item > 0) ? item : 0;
+                break;
+            }
+            // is a type pattern with an additional when condition.
+            case int n when n > 0:
+                sum += n;
+                break;
+            // is the null pattern.
+            case null:
+                throw new NullReferenceException("Null found in sequence");
+            default:
+                throw new InvalidOperationException("Unrecognized type");
+        }
+    }
+    return sum;
+}
+```
+
+## ref locals and returns
+Method local variables and return values can be references to other storage.
+
+
+## Local Functions
+You can nest functions inside other functions to limit their scope and visibility.
+## More expression-bodied members
+The list of members that can be authored using expressions has grown.
+## throw Expressions
+You can throw exceptions in code constructs that previously weren't allowed because throw was a statement.
+## Generalized async return types
+Methods declared with the async modifier can return other types in addition to Task and Task<T>.
+## Numeric literal syntax improvements
+New tokens improve readability for numeric constants.
