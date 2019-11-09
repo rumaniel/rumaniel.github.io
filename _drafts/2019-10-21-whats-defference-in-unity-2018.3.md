@@ -280,14 +280,84 @@ public static int SumPositiveNumbers(IEnumerable<object> sequence)
 
 ## ref locals and returns
 Method local variables and return values can be references to other storage.
+```c#
+public static ref int Find(int[,] matrix, Func<int, bool> predicate)
+{
+    for (int i = 0; i < matrix.GetLength(0); i++)
+        for (int j = 0; j < matrix.GetLength(1); j++)
+            if (predicate(matrix[i, j]))
+                return ref matrix[i, j];
+    throw new InvalidOperationException("Not found");
+}
 
+ref var item = ref MatrixSearch.Find(matrix, (val) => val == 42);
+Console.WriteLine(item);
+item = 24;
+Console.WriteLine(matrix[4, 2]);
+```
+The C# language has several rules that protect you from misusing the ref locals and returns:
+
+* You must add the ref keyword to the method signature and to all return statements in a method.
+    * That makes it clear the method returns by reference throughout the method.
+* A ref return may be assigned to a value variable, or a ref variable.
+    * The caller controls whether the return value is copied or not. Omitting the ref modifier when assigning the return value indicates that the caller wants a copy of the value, not a reference to the storage.
+* You can't assign a standard method return value to a ref local variable.
+    * That disallows statements like ref int i = sequence.Count();
+* You can't return a ref to a variable whose lifetime doesn't extend beyond the execution of the method.
+    * That means you can't return a reference to a local variable or a variable with a similar scope.
+* ref locals and returns can't be used with async methods.
+   * The compiler can't know if the referenced variable has been set to its final value when the async method returns.
 
 ## Local Functions
 You can nest functions inside other functions to limit their scope and visibility.
+```c#
+public static IEnumerable<char> AlphabetSubset3(char start, char end)
+{
+    if (start < 'a' || start > 'z')
+        throw new ArgumentOutOfRangeException(paramName: nameof(start), message: "start must be a letter");
+    if (end < 'a' || end > 'z')
+        throw new ArgumentOutOfRangeException(paramName: nameof(end), message: "end must be a letter");
+
+    if (end <= start)
+        throw new ArgumentException($"{nameof(end)} must be greater than {nameof(start)}");
+
+    return alphabetSubsetImplementation();
+
+    IEnumerable<char> alphabetSubsetImplementation()
+    {
+        for (var c = start; c < end; c++)
+            yield return c;
+    }
+}
+```
+https://docs.microsoft.com/en-us/dotnet/csharp/local-functions-vs-lambdas
+
 ## More expression-bodied members
 The list of members that can be authored using expressions has grown.
+you can implement constructors, finalizers, and get and set accessors on properties and indexers.
+
+```c#
+// Expression-bodied constructor
+public ExpressionMembersExample(string label) => this.Label = label;
+
+// Expression-bodied finalizer
+~ExpressionMembersExample() => Console.Error.WriteLine("Finalized!");
+
+private string label;
+
+// Expression-bodied get / set accessors.
+public string Label
+{
+    get => label;
+    set => this.label = value ?? "Default label";
+}
+```
+
+
 ## throw Expressions
 You can throw exceptions in code constructs that previously weren't allowed because throw was a statement.
+https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/throw#the-throw-expression
+
 ## Generalized async return types
 Methods declared with the async modifier can return other types in addition to Task and Task<T>.
 ## Numeric literal syntax improvements
