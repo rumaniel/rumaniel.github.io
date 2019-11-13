@@ -360,5 +360,129 @@ https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/throw
 
 ## Generalized async return types
 Methods declared with the async modifier can return other types in addition to Task and Task<T>.
+
+
 ## Numeric literal syntax improvements
 New tokens improve readability for numeric constants.
+
+```c#
+public const int Sixteen =   0b0001_0000;
+public const int ThirtyTwo = 0b0010_0000;
+public const int SixtyFour = 0b0100_0000;
+public const int OneHundredTwentyEight = 0b1000_0000;
+```
+The 0b at the beginning of the constant indicates that the number is written as a binary number. Binary numbers can get long, so it's often easier to see the bit patterns by introducing the _ as a digit separator, as shown above in the binary constant. The digit separator can appear anywhere in the constant. For base 10 numbers, it is common to use it as a thousands separator:
+
+```c#
+public const long BillionsAndBillions = 100_000_000_000;
+```
+
+The digit separator can be used with decimal, float, and double types as well:
+
+```c#
+public const double AvogadroConstant = 6.022_140_857_747_474e23;
+public const decimal GoldenRatio = 1.618_033_988_749_894_848_204_586_834_365_638_117_720_309_179M;
+```
+Taken together, you can declare numeric constants with much more readability.
+
+# c# 7.1
+## async Main method
+The entry point for an application can have the async modifier.
+An async main method enables you to use await in your Main method. Previously you would need to write:
+
+
+## default literal expressions
+You can use default literal expressions in default value expressions when the target type can be inferred.
+Default literal expressions are an enhancement to default value expressions. These expressions initialize a variable to the default value. Where you previously would write:
+
+```c#
+Func<string, bool> whereClause = default(Func<string, bool>);
+```
+You can now omit the type on the right-hand side of the initialization:
+```c#
+Func<string, bool> whereClause = default;
+```
+
+## Inferred tuple element names
+The names of tuple elements can be inferred from tuple initialization in many cases.
+```c#
+int count = 5;
+string label = "Colors used in the map";
+var pair = (count: count, label: label);
+```
+```c#
+int count = 5;
+string label = "Colors used in the map";
+var pair = (count, label); // element names are "count" and "label"
+```
+
+## Pattern matching on generic type parameters
+You can use pattern match expressions on variables whose type is a generic type parameter.
+
+# c# 7.2
+## Techniques for writing safe efficient code
+A combination of syntax improvements that enable working with value types using reference semantics.
+* The `in` modifier on parameters, to specify that an argument is passed by reference but not modified by the called method. Adding the `in` modifier to an argument is a source compatible change.
+* The `ref readonly` modifier on method returns, to indicate that a method returns its value by reference but doesn't allow writes to that object. Adding the `ref readonly` modifier is a source compatible change, if the return is assigned to a value. Adding the `readonly` modifier to an existing `ref` return statement is an incompatible change. It requires callers to update the declaration of `ref` local variables to include the `readonly` modifier.
+* The `readonly struct` declaration, to indicate that a struct is immutable and should be passed as an `in` parameter to its member methods. Adding the `readonly` modifier to an existing struct declaration is a binary compatible change.
+* The `ref struct` declaration, to indicate that a struct type accesses managed memory directly and must always be stack allocated. Adding the `ref` modifier to an existing `struct` declaration is an incompatible change. A `ref struct` cannot be a member of a class or used in other locations where it may be allocated on the heap.
+## Non-trailing named arguments
+Named arguments can be followed by positional arguments.
+Method calls may now use named arguments that precede positional arguments when those named arguments are in the correct positions.
+```c#
+// The method can be called in the normal way, by using positional arguments.
+PrintOrderDetails("Gift Shop", 31, "Red Mug");
+
+// Named arguments can be supplied for the parameters in any order.
+PrintOrderDetails(orderNum: 31, productName: "Red Mug", sellerName: "Gift Shop");
+PrintOrderDetails(productName: "Red Mug", sellerName: "Gift Shop", orderNum: 31);
+
+// Named arguments mixed with positional arguments are valid
+// as long as they are used in their correct position.
+PrintOrderDetails("Gift Shop", 31, productName: "Red Mug");
+PrintOrderDetails(sellerName: "Gift Shop", 31, productName: "Red Mug");    // C# 7.2 onwards
+PrintOrderDetails("Gift Shop", orderNum: 31, "Red Mug");                   // C# 7.2 onwards
+
+// However, mixed arguments are invalid if used out-of-order.
+// The following statements will cause a compiler error.
+PrintOrderDetails(productName: "Red Mug", 31, "Gift Shop");
+PrintOrderDetails(31, sellerName: "Gift Shop", "Red Mug");
+PrintOrderDetails(31, "Red Mug", sellerName: "Gift Shop");
+```
+
+## Leading underscores in numeric literals
+Numeric literals can now have leading underscores before any printed digits.
+```c#
+int binaryValue = 0b_0101_0101;
+```
+
+## private protected access modifier
+The `private protected` access modifier enables access for derived classes in the same assembly.
+Struct members cannot be `private protected` because the struct cannot be inherited.
+
+
+
+## Conditional ref expressions
+The result of a conditional expression (?:) can now be a reference.
+```c#
+ref var r = ref (arr != null ? ref arr[0] : ref otherArr[0]);
+```
+The variable r is a reference to the first value in either arr or otherArr.
+
+# c# 7.3
+The following new features support the theme of better performance for safe code:
+
+## Indexing `fixed` fields does not require pinning
+## You can reassign ref local variables.
+## You can use initializers on stackalloc arrays.
+## You can use fixed statements with any type that supports a pattern.
+## You can use additional generic constraints.
+
+The following enhancements were made to existing features:
+
+## You can test == and != with tuple types.
+## You can use expression variables in more locations.
+## You may attach attributes to the backing field of auto-implemented properties.
+## Method resolution when arguments differ by in has been improved.
+## Overload resolution now has fewer ambiguous cases.
+
