@@ -6,55 +6,145 @@ tags: [unity, c#, ]
 categories: [unity, c#]
 ---
 
-https://blogs.unity3d.com/kr/2018/12/13/introducing-unity-2018-3/
+유니티 2017.1 버전부터 로즐린 컴파일러가 실험적으로 도입되 .NET 4.x 와 동등하고, C# 6와 호환되는 스크립팅 런타임이 사용 가능합니다. 2018.1 부터는 .NET 3.5 런타임이 레거시가 되고, 2018.3 부터는 c# 7.3 버전이 사용 가능합니다.
 
-이제 Unity 프로젝트에서 기본으로 .NET 4.x Equivalent 스크립팅 런타임을 사용합니다.
-c# 3.0
-이전 버전의 스크립팅 런타임(.NET 3.5 Equivalent)은 제외될 예정이었으며 2019.x 버전에서 제거될 것입니다. LTS 2018에서는 두 스크립팅 런타임 버전 모두 계속해서 지원됩니다.
+* 2017.1 .NET 4.6, C# 6 Compatible version
+* 2018.1 .NET 4.x Equivalent runtime is no longer considered experimental,
+* 2018.3 Support C# 7.3
+* 2019.2 Removed .NET 3.5 Equivalent
 
-C# 7.2
-CSHARP_7_3_OR_NEWER
-
-With the release of Unity 2017.1, Unity introduced an experimental version of its scripting runtime upgraded to a .NET 4.6, C# 6 compatible
-
-
-With the release of Unity 2017.1, Unity introduced an experimental version of its scripting runtime upgraded to a .NET 4.6, C# 6 compatible version. In Unity 2018.1, the .NET 4.x equivalent runtime is no longer considered experimental, while the older .NET 3.5 equivalent runtime is now considered to be the legacy version. And with the release of Unity 2018.3, Unity is projecting to make the upgraded scripting runtime the default selection, and to update even further to C# 7
-
-
-https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-version-history
-
-2017.1 .NET 4.6, C# 6 compatible version
-2018.1 .NET 4.x equivalent runtime is no longer considered experimental,
-2018.3  C# 7.3
-
+그건 유니티에서 최신 C# 의 기능 사용이 제한적이었습니다. 그래서 이제 사용 가능한 쓸만한 C# 기능들을 정리하였습니다.
 
 # c# 4
 ## Dynamic binding
-The major feature was the introduction of the dynamic keyword. The dynamic keyword introduced into C# version 4.0 the ability to override the compiler on compile-time typing. By using the dynamic keyword, you can create constructs similar to dynamically typed languages like JavaScript. You can create a dynamic x = "a string" and then add six to it, leaving it up to the runtime to sort out what should happen next.
+`dynamic` 은 `object`와 대부분 상황에서 비슷하지만, 형이 런타임에서 결정됩니다.
 
-Dynamic binding gives you the potential for errors but also great power within the language.
+## Named/optional arguments
+Named arguments enable you to specify an argument for a particular parameter by associating the argument with the parameter's name rather than with the parameter's position in the parameter list.
 
-The dynamic type indicates that use of the variable and references to its members bypass compile-time type checking. Instead, these operations are resolved at run time
+```c#
+class NamedExample
+{
+    static void Main(string[] args)
+    {
+        // The method can be called in the normal way, by using positional arguments.
+        PrintOrderDetails("Gift Shop", 31, "Red Mug");
 
-Dynamic binding
-Named/optional arguments
-Generic covariant and contravariant
-Embedded interop types
+        // Named arguments can be supplied for the parameters in any order.
+        PrintOrderDetails(orderNum: 31, productName: "Red Mug", sellerName: "Gift Shop");
+        PrintOrderDetails(productName: "Red Mug", sellerName: "Gift Shop", orderNum: 31);
+
+        // However, mixed arguments are invalid if used out-of-order.
+        // The following statements will cause a compiler error.
+        // PrintOrderDetails(productName: "Red Mug", 31, "Gift Shop");
+        // PrintOrderDetails(31, sellerName: "Gift Shop", "Red Mug");
+        // PrintOrderDetails(31, "Red Mug", sellerName: "Gift Shop");
+    }
+
+    static void PrintOrderDetails(string sellerName, int orderNum, string productName)
+    {
+        if (string.IsNullOrWhiteSpace(sellerName))
+        {
+            throw new ArgumentException(message: "Seller name cannot be null or empty.", paramName: nameof(sellerName));
+        }
+
+        Console.WriteLine($"Seller: {sellerName}, Order #: {orderNum}, Product: {productName}");
+    }
+}
+```
+## Generic covariant and contravariant
+## Embedded interop types
 
 
 # c# 5
 ## New keyword async await
-Async code can be used for both I/O-bound and CPU-bound code, but differently for each scenario.
-Async code uses Task<T> and Task, which are constructs used to model work being done in the background.
-The async keyword turns a method into an async method, which allows you to use the await keyword in its body.
-When the await keyword is applied, it suspends the calling method and yields control back to its caller until the awaited task is complete.
-await can only be used inside an async method.
+Asynchronous programming allows time consuming operations to take place without causing your application to become unresponsive. This functionality also allows your code to wait for time consuming operations to finish before continuing with code that depends on the results of these operations. For example, you could wait for a file to load or a network operation to complete.
 
+In Unity, asynchronous programming is typically accomplished with coroutines. However, since C# 5, the preferred method of asynchronous programming in .NET development has been the Task-based Asynchronous Pattern (TAP) using the async and await keywords with System.Threading.Task. In summary, in an async function you can await a task's completion without blocking the rest of your application from updating:
+
+```C#
+// Unity coroutine
+using UnityEngine;
+public class UnityCoroutineExample : MonoBehaviour
+{
+    private void Start()
+    {
+        StartCoroutine(WaitOneSecond());
+        DoMoreStuff(); // This executes without waiting for WaitOneSecond
+    }
+    private IEnumerator WaitOneSecond()
+    {
+        yield return new WaitForSeconds(1.0f);
+        Debug.Log("Finished waiting.");
+    }
+}
+```#
+```c
+// .NET 4.x async-await
+using UnityEngine;
+using System.Threading.Tasks;
+public class AsyncAwaitExample : MonoBehaviour
+{
+    private async void Start()
+    {
+        Debug.Log("Wait.");
+        await WaitOneSecondAsync();
+        DoMoreStuff(); // Will not execute until WaitOneSecond has completed
+    }
+    private async Task WaitOneSecondAsync()
+    {
+        await Task.Delay(TimeSpan.FromSeconds(1));
+        Debug.Log("Finished waiting.");
+    }
+}
+```
+TAP is a complex subject, with Unity-specific nuances developers should consider. As a result, TAP isn't a universal replacement for coroutines in Unity; however, it is another tool to leverage. The scope of this feature is beyond this article, but some general best practices and tips are provided below.
+
+Getting started reference for TAP with Unity
+These tips can help you get started with TAP in Unity:
+
+* Asynchronous functions intended to be awaited should have the return type Task or Task<TResult>.
+* Asynchronous functions that return a task should have the suffix "Async" appended to their names. The "Async" suffix helps indicate that a function should always be awaited.
+* Only use the async void return type for functions that fire off async functions from traditional synchronous code. Such functions cannot themselves be awaited and shouldn't have the "Async" suffix in their names.
+* Unity uses the UnitySynchronizationContext to ensure async functions run on the main thread by default. The Unity API isn't accessible outside of the main thread.
+* It's possible to run tasks on background threads with methods like Task.Run and Task.ConfigureAwait(false). This technique is useful for offloading expensive operations from the main thread to enhance performance. However, using background threads can lead to problems that are difficult to debug, such as race conditions.
+* The Unity API isn't accessible outside the main thread.
+* Tasks that use threads aren't supported on Unity WebGL builds.
+Differences between coroutines and TAP
+There are some important differences between coroutines and TAP / async-await:
+
+* Coroutines cannot return values, but Task<TResult> can.
+* You cannot put a yield in a try-catch statement, making error handling difficult with coroutines. However, try-catch works with TAP.
+* Unity's coroutine feature isn't available in classes that don't derive from MonoBehaviour. TAP is great for asynchronous programming in such classes.
+* At this point, Unity doesn't suggest TAP as a wholesale replacement of coroutines. Profiling is the only way to know the specific results of one approach versus the other for any given project.
 https://docs.microsoft.com/en-us/dotnet/standard/async-in-depth
 https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/index
 
 ## Caller info attributes
 The caller info attribute lets you easily retrieve information about the context in which you're running without resorting to a ton of boilerplate reflection code. It has many uses in diagnostics and logging tasks.
+
+```c#
+private void Start ()
+{
+    ShowCallerInfo("Something happened.");
+}
+public void ShowCallerInfo(string message,
+        [System.Runtime.CompilerServices.CallerMemberName] string memberName = "",
+        [System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "",
+        [System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
+{
+    Debug.Log($"message: {message}");
+    Debug.Log($"member name: {memberName}");
+    Debug.Log($"source file path: {sourceFilePath}");
+    Debug.Log($"source line number: {sourceLineNumber}");
+}
+// Output:
+// Something happened
+// member name: Start
+// source file path: D:\Documents\unity-scripting-upgrade\Unity Project\Assets\CallerInfoTest.cs
+// source line number: 10
+```
+
 
 # c# 6
 https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-6
@@ -91,6 +181,13 @@ Auto-property initializers let you declare the initial value for an auto-propert
 public ICollection<double> Grades { get; } = new List<double>();
 The Grades member is initialized where it's declared. That makes it easier to perform the initialization exactly once. The initialization is part of the property declaration, making it easier to equate the storage allocation with the public interface for Student objects
 
+```c#
+// .NET 3.5
+public int Health { get; set; } // Health has to be initialized somewhere else, like Start()
+
+// .NET 4.x
+public int Health { get; set; } = 100;
+```
 
 ## Expression-bodied function members
 Many members that you write are single statements that could be single expressions. Write an expression-bodied member instead. It works for methods and read-only properties. For example, an override of ToString() is often a great candidate:
@@ -104,10 +201,34 @@ public string FullName => $"{FirstName} {LastName}";
 
 ## using static
 The using static enhancement enables you to import the static methods of a single class. You specify the class you're using:
+```c#
+// .NET 3.5
+using UnityEngine;
+public class Example : MonoBehaviour
+{
+    private void Start ()
+    {
+        Debug.Log(Mathf.RoundToInt(Mathf.PI));
+        // Output:
+        // 3
+    }
+}
 
-using static System.Math;
+// .NET 4.x
+using UnityEngine;
+using static UnityEngine.Mathf;
+public class UsingStaticExample: MonoBehaviour
+{
+    private void Start ()
+    {
+        Debug.Log(RoundToInt(PI));
+        // Output:
+        // 3
+    }
+}
+```
 
-Null-conditional operators
+## Null-conditional operators
 The null conditional operator makes null checks much easier and fluid. Replace the member access . with ?.:
 
 var first = person?.FirstName;
@@ -115,6 +236,14 @@ var first = person?.FirstName;
 ## String interpolation
 With C# 6, the new string interpolation feature enables you to embed expressions in a string. Simply preface the string with $and use expressions between { and } instead of ordinals:
 public string FullName => $"{FirstName} {LastName}";
+```c#
+// .NET 3.5
+Debug.Log(String.Format("Player health: {0}", Health)); // or
+Debug.Log("Player health: " + Health);
+
+// .NET 4.x
+Debug.Log($"Player health: {Health}");
+```
 
 ## Index initializers
 private Dictionary<int, string> webErrors = new Dictionary<int, string>
@@ -351,6 +480,18 @@ public string Label
     get => label;
     set => this.label = value ?? "Default label";
 }
+// .NET 3.5
+private int TakeDamage(int amount)
+{
+    return Health -= amount;
+}
+
+// .NET 4.x
+private int TakeDamage(int amount) => Health -= amount;
+
+// .NET 4.x
+public string PlayerHealthUiText => $"Player health: {Health}";
+
 ```
 
 
@@ -433,10 +574,6 @@ Method calls may now use named arguments that precede positional arguments when 
 // The method can be called in the normal way, by using positional arguments.
 PrintOrderDetails("Gift Shop", 31, "Red Mug");
 
-// Named arguments can be supplied for the parameters in any order.
-PrintOrderDetails(orderNum: 31, productName: "Red Mug", sellerName: "Gift Shop");
-PrintOrderDetails(productName: "Red Mug", sellerName: "Gift Shop", orderNum: 31);
-
 // Named arguments mixed with positional arguments are valid
 // as long as they are used in their correct position.
 PrintOrderDetails("Gift Shop", 31, productName: "Red Mug");
@@ -469,6 +606,8 @@ ref var r = ref (arr != null ? ref arr[0] : ref otherArr[0]);
 ```
 The variable r is a reference to the first value in either arr or otherArr.
 
+
+
 # c# 7.3
 The following new features support the theme of better performance for safe code:
 
@@ -485,4 +624,3 @@ The following enhancements were made to existing features:
 ## You may attach attributes to the backing field of auto-implemented properties.
 ## Method resolution when arguments differ by in has been improved.
 ## Overload resolution now has fewer ambiguous cases.
-
