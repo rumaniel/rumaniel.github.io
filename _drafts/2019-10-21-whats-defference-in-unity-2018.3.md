@@ -23,6 +23,11 @@ categories: [unity, c#]
 파라미터의 포지션이 아닌 파라미터의 이름을 명시해 인자를 넘길 수 있게 해줍니다.
 
 ```c#
+void UpdateProfile(string name, int age, string job)
+{
+    // do
+}
+
 void Start()
 {
     // 평범하게 호출하기
@@ -32,17 +37,11 @@ void Start()
     UpdateProfile(age: 32, job: "Programmer", name: "Kim");
     UpdateProfile(job: "Programmer", name: "Kim", age: 32);
 
-    // 혼합해 사용시 컴파일 에러가 발생합니다.
+    // 혼용해 사용시 컴파일 에러가 발생합니다.
     // UpdateProfile(job: "Programmer", 32, "Kim");
     // UpdateProfile(32, name: "Kim", "Programmer");
     // UpdateProfile(32, "Programmer", name: "Kim");
 }
-
-void UpdateProfile(string name, int age, string job)
-{
-    // do
-}
-
 ```
 ## Generic covariant and contravariant
 ## Embedded interop types
@@ -50,67 +49,61 @@ void UpdateProfile(string name, int age, string job)
 
 # c# 5
 ## New keyword async await
-Asynchronous programming allows time consuming operations to take place without causing your application to become unresponsive. This functionality also allows your code to wait for time consuming operations to finish before continuing with code that depends on the results of these operations. For example, you could wait for a file to load or a network operation to complete.
-
-In Unity, asynchronous programming is typically accomplished with coroutines. However, since C# 5, the preferred method of asynchronous programming in .NET development has been the Task-based Asynchronous Pattern (TAP) using the async and await keywords with System.Threading.Task. In summary, in an async function you can await a task's completion without blocking the rest of your application from updating:
+비동기 작업이 가능한 `async` `await` 키워드가 생겼습니다.
 
 ```C#
-// Unity coroutine
+// Unity 코루틴 경우
 using UnityEngine;
 public class UnityCoroutineExample : MonoBehaviour
 {
     private void Start()
     {
-        StartCoroutine(WaitOneSecond());
-        DoMoreStuff(); // This executes without waiting for WaitOneSecond
+        var coroutine = StartCoroutine(WaitAndPrint(2.0f));
+        Debug.Log("Before wait " + Time.time);
     }
-    private IEnumerator WaitOneSecond()
+
+    private IEnumerator WaitAndPrint(float waitTime)
     {
-        yield return new WaitForSeconds(1.0f);
-        Debug.Log("Finished waiting.");
+        yield return new WaitForSeconds(waitTime);
+        Debug.Log("Finish wait " + Time.time);
     }
 }
-```#
-```c
-// .NET 4.x async-await
+```
+```c#
+// .NET 4.x async-await 경우
 using UnityEngine;
 using System.Threading.Tasks;
 public class AsyncAwaitExample : MonoBehaviour
 {
     private async void Start()
     {
-        Debug.Log("Wait.");
-        await WaitOneSecondAsync();
-        DoMoreStuff(); // Will not execute until WaitOneSecond has completed
+        Debug.Log("Before wait " + Time.time);
+        await WaitAndPrint(1.5f);
+        Debug.Log("Print when WaitAndPrint has completed");
     }
-    private async Task WaitOneSecondAsync()
+    private async Task WaitAndPrint(float time)
     {
-        await Task.Delay(TimeSpan.FromSeconds(1));
-        Debug.Log("Finished waiting.");
+        await Task.Delay(TimeSpan.FromSeconds(time));
+        Debug.Log("Finish wait " + Time.time);
     }
 }
 ```
-TAP is a complex subject, with Unity-specific nuances developers should consider. As a result, TAP isn't a universal replacement for coroutines in Unity; however, it is another tool to leverage. The scope of this feature is beyond this article, but some general best practices and tips are provided below.
 
-Getting started reference for TAP with Unity
-These tips can help you get started with TAP in Unity:
+유니티에서 비동기 프로그래밍을 시작하기 위한 참고사항
 
-* Asynchronous functions intended to be awaited should have the return type Task or Task<TResult>.
-* Asynchronous functions that return a task should have the suffix "Async" appended to their names. The "Async" suffix helps indicate that a function should always be awaited.
-* Only use the async void return type for functions that fire off async functions from traditional synchronous code. Such functions cannot themselves be awaited and shouldn't have the "Async" suffix in their names.
-* Unity uses the UnitySynchronizationContext to ensure async functions run on the main thread by default. The Unity API isn't accessible outside of the main thread.
-* It's possible to run tasks on background threads with methods like Task.Run and Task.ConfigureAwait(false). This technique is useful for offloading expensive operations from the main thread to enhance performance. However, using background threads can lead to problems that are difficult to debug, such as race conditions.
-* The Unity API isn't accessible outside the main thread.
-* Tasks that use threads aren't supported on Unity WebGL builds.
-Differences between coroutines and TAP
-There are some important differences between coroutines and TAP / async-await:
+* 비동기 함수는 `Task` 나 `Task<TResult>`의 리턴값을 가져야 합니다.
+* task를 리턴하는 비동기 함수는 언제나 `async` 키워드를 붙여야 합니다.
+* 동기식 코드에서 비동기 함수를 실행 할 때만 `async void` 형이여야 합니다.
+* 유니티는 UnitySynchronizationContext 를 사용하여 기본적으로 메인 스레드에서 비동기 함수를 실행합니다.
+* unity API 는 메인 스레드 외부에서 접근 불가능합니다.
+* 현재 Unity WebGL 에서는 스레드를 사용하는 작업을 지원 하지 않습니다.
 
-* Coroutines cannot return values, but Task<TResult> can.
-* You cannot put a yield in a try-catch statement, making error handling difficult with coroutines. However, try-catch works with TAP.
-* Unity's coroutine feature isn't available in classes that don't derive from MonoBehaviour. TAP is great for asynchronous programming in such classes.
-* At this point, Unity doesn't suggest TAP as a wholesale replacement of coroutines. Profiling is the only way to know the specific results of one approach versus the other for any given project.
-https://docs.microsoft.com/en-us/dotnet/standard/async-in-depth
-https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/index
+### 코루틴과 async-await 중요 차이점
+* 코루틴은 값을 리턴 할 수 없지만, `Task<TResult>` 는 가능합니다.
+* try-catch 문에 `yield` 를 넣을 수 없어서 코루틴에서 에러 찾기는 어렵습니다. 하지만 async-await 에서는 try-catch 문이 가능합니다.
+* 코루틴은 MonoBehaviour 에서 파생되지 않는 클래스에서는 사용 불가능합니다.
+* async-await 가 유니티 coroutine을 완전히 대체하라고 권하지 않습니다. 프로파일링을 통해 결과를 확인하고 접근하세요.
+
 
 ## Caller info attributes
 The caller info attribute lets you easily retrieve information about the context in which you're running without resorting to a ton of boilerplate reflection code. It has many uses in diagnostics and logging tasks.
