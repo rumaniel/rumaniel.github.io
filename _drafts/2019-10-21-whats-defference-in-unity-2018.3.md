@@ -20,37 +20,29 @@ categories: [unity, c#]
 `dynamic` 은 `object`와 대부분 상황에서 비슷하지만, 형이 런타임에서 결정됩니다.
 
 ## Named/optional arguments
-Named arguments enable you to specify an argument for a particular parameter by associating the argument with the parameter's name rather than with the parameter's position in the parameter list.
+파라미터의 포지션이 아닌 파라미터의 이름을 명시해 인자를 넘길 수 있게 해줍니다.
 
 ```c#
-class NamedExample
+void Start()
 {
-    static void Main(string[] args)
-    {
-        // The method can be called in the normal way, by using positional arguments.
-        PrintOrderDetails("Gift Shop", 31, "Red Mug");
+    // 평범하게 호출하기
+    UpdateProfile("Kim", 32, "Programmer");
 
-        // Named arguments can be supplied for the parameters in any order.
-        PrintOrderDetails(orderNum: 31, productName: "Red Mug", sellerName: "Gift Shop");
-        PrintOrderDetails(productName: "Red Mug", sellerName: "Gift Shop", orderNum: 31);
+    // 순서와 성관없이 호출 가능
+    UpdateProfile(age: 32, job: "Programmer", name: "Kim");
+    UpdateProfile(job: "Programmer", name: "Kim", age: 32);
 
-        // However, mixed arguments are invalid if used out-of-order.
-        // The following statements will cause a compiler error.
-        // PrintOrderDetails(productName: "Red Mug", 31, "Gift Shop");
-        // PrintOrderDetails(31, sellerName: "Gift Shop", "Red Mug");
-        // PrintOrderDetails(31, "Red Mug", sellerName: "Gift Shop");
-    }
-
-    static void PrintOrderDetails(string sellerName, int orderNum, string productName)
-    {
-        if (string.IsNullOrWhiteSpace(sellerName))
-        {
-            throw new ArgumentException(message: "Seller name cannot be null or empty.", paramName: nameof(sellerName));
-        }
-
-        Console.WriteLine($"Seller: {sellerName}, Order #: {orderNum}, Product: {productName}");
-    }
+    // 혼합해 사용시 컴파일 에러가 발생합니다.
+    // UpdateProfile(job: "Programmer", 32, "Kim");
+    // UpdateProfile(32, name: "Kim", "Programmer");
+    // UpdateProfile(32, "Programmer", name: "Kim");
 }
+
+void UpdateProfile(string name, int age, string job)
+{
+    // do
+}
+
 ```
 ## Generic covariant and contravariant
 ## Embedded interop types
@@ -151,6 +143,7 @@ https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-6
 ## Read-only auto-properties
 Read-only auto-properties provide a more concise syntax to create immutable types. You declare the auto-property with only a get accessor:
 
+```c#
 public string FirstName { get; }
 public string LastName { get;  }
 The FirstName and LastName properties can be set only in the body of the constructor of the same class:
@@ -174,11 +167,14 @@ public class Student
         LastName = newLastName;
     }
 }
+```
 
 ## Auto-property initializers
 Auto-property initializers let you declare the initial value for an auto-property as part of the property declaration.
 
+```c#
 public ICollection<double> Grades { get; } = new List<double>();
+```
 The Grades member is initialized where it's declared. That makes it easier to perform the initialization exactly once. The initialization is part of the property declaration, making it easier to equate the storage allocation with the public interface for Student objects
 
 ```c#
@@ -192,12 +188,10 @@ public int Health { get; set; } = 100;
 ## Expression-bodied function members
 Many members that you write are single statements that could be single expressions. Write an expression-bodied member instead. It works for methods and read-only properties. For example, an override of ToString() is often a great candidate:
 
-
+```c#
 public override string ToString() => $"{LastName}, {FirstName}";
-You can also use this syntax for read-only properties:
-
-
 public string FullName => $"{FirstName} {LastName}";
+```
 
 ## using static
 The using static enhancement enables you to import the static methods of a single class. You specify the class you're using:
@@ -230,8 +224,38 @@ public class UsingStaticExample: MonoBehaviour
 
 ## Null-conditional operators
 The null conditional operator makes null checks much easier and fluid. Replace the member access . with ?.:
-
+```c#
 var first = person?.FirstName;
+```
+Available in C# 6 and later, a null-conditional operator applies a member access, ?., or element access, ?[], operation to its operand only if that operand evaluates to non-null. If the operand evaluates to null, the result of applying the operator is null. The null-conditional member access operator ?. is also known as the Elvis operator.
+
+The null-conditional operators are short-circuiting. That is, if one operation in a chain of conditional member or element access operations returns null, the rest of the chain doesn't execute. In the following example, B is not evaluated if A evaluates to null and C is not evaluated if A or B evaluates to null:
+
+```c#
+A?.B?.Do(C);
+A?.B?[C];
+
+double SumNumbers(List<double[]> setsOfNumbers, int indexOfSetToSum)
+{
+    return setsOfNumbers?[indexOfSetToSum]?.Sum() ?? double.NaN;
+}
+
+var sum1 = SumNumbers(null, 0);
+Debug.Log(sum1);  // output: NaN
+
+var numberSets = new List<double[]>
+{
+    new[] { 1.0, 2.0, 3.0 },
+    null
+};
+
+var sum2 = SumNumbers(numberSets, 0);
+Debug.Log(sum2);  // output: 6
+
+var sum3 = SumNumbers(numberSets, 1);
+Debug.Log(sum3);  // output: NaN
+```
+
 
 ## String interpolation
 With C# 6, the new string interpolation feature enables you to embed expressions in a string. Simply preface the string with $and use expressions between { and } instead of ordinals:
@@ -267,9 +291,9 @@ The existing syntax that supports out parameters has been improved in this versi
 
 ```c#
 if (int.TryParse(input, out var answer))
-    Console.WriteLine(answer);
+    Debug.Log(answer);
 else
-    Console.WriteLine("Could not parse input");
+    Debug.Log("Could not parse input");
 ```
 
 ## Tuples
@@ -279,14 +303,14 @@ Tuples were available before C# 7.0, but they were inefficient and had no langua
 
 ```c#
 (string Alpha, string Beta) namedLetters = ("a", "b");
-Console.WriteLine($"{namedLetters.Alpha}, {namedLetters.Beta}");
+Debug.Log($"{namedLetters.Alpha}, {namedLetters.Beta}");
 
 var alphabetStart = (Alpha: "a", Beta: "b");
-Console.WriteLine($"{alphabetStart.Alpha}, {alphabetStart.Beta}");
+Debug.Log($"{alphabetStart.Alpha}, {alphabetStart.Beta}");
 
 (int max, int min) = Range(numbers);
-Console.WriteLine(max);
-Console.WriteLine(min);
+Debug.Log(max);
+Debug.Log(min);
 
 public class Point
 {
@@ -325,7 +349,7 @@ public class Example
    {
        var (_, _, _, pop1, _, pop2) = QueryCityDataForYears("New York City", 1960, 2010);
 
-       Console.WriteLine($"Population change, 1960 to 2010: {pop2 - pop1:N0}");
+       Debug.Log($"Population change, 1960 to 2010: {pop2 - pop1:N0}");
    }
 
    private static (string, double, int, int, int, int) QueryCityDataForYears(string name, int year1, int year2)
@@ -420,9 +444,9 @@ public static ref int Find(int[,] matrix, Func<int, bool> predicate)
 }
 
 ref var item = ref MatrixSearch.Find(matrix, (val) => val == 42);
-Console.WriteLine(item);
+Debug.Log(item);
 item = 24;
-Console.WriteLine(matrix[4, 2]);
+Debug.Log(matrix[4, 2]);
 ```
 The C# language has several rules that protect you from misusing the ref locals and returns:
 
@@ -611,16 +635,16 @@ The variable r is a reference to the first value in either arr or otherArr.
 # c# 7.3
 The following new features support the theme of better performance for safe code:
 
-## Indexing `fixed` fields does not require pinning
-## You can reassign ref local variables.
-## You can use initializers on stackalloc arrays.
-## You can use fixed statements with any type that supports a pattern.
-## You can use additional generic constraints.
+* Indexing `fixed` fields does not require pinning
+* You can reassign ref local variables.
+* You can use initializers on stackalloc arrays.
+* You can use fixed statements with any type that supports a pattern.
+* You can use additional generic constraints.
 
 The following enhancements were made to existing features:
 
-## You can test == and != with tuple types.
-## You can use expression variables in more locations.
-## You may attach attributes to the backing field of auto-implemented properties.
-## Method resolution when arguments differ by in has been improved.
-## Overload resolution now has fewer ambiguous cases.
+* You can test == and != with tuple types.
+* You can use expression variables in more locations.
+* You may attach attributes to the backing field of auto-implemented properties.
+* Method resolution when arguments differ by in has been improved.
+* Overload resolution now has fewer ambiguous cases.
