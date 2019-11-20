@@ -56,13 +56,13 @@ void Start()
 using UnityEngine;
 public class UnityCoroutineExample : MonoBehaviour
 {
-    private void Start()
+    void Start()
     {
         var coroutine = StartCoroutine(WaitAndPrint(2.0f));
         Debug.Log("Before wait " + Time.time);
     }
 
-    private IEnumerator WaitAndPrint(float waitTime)
+    IEnumerator WaitAndPrint(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
         Debug.Log("Finish wait " + Time.time);
@@ -75,13 +75,13 @@ using UnityEngine;
 using System.Threading.Tasks;
 public class AsyncAwaitExample : MonoBehaviour
 {
-    private async void Start()
+    async void Start()
     {
         Debug.Log("Before wait " + Time.time);
         await WaitAndPrint(1.5f);
         Debug.Log("Print when WaitAndPrint has completed");
     }
-    private async Task WaitAndPrint(float time)
+    async Task WaitAndPrint(float time)
     {
         await Task.Delay(TimeSpan.FromSeconds(time));
         Debug.Log("Finish wait " + Time.time);
@@ -106,22 +106,23 @@ public class AsyncAwaitExample : MonoBehaviour
 
 
 ## Caller info attributes
-The caller info attribute lets you easily retrieve information about the context in which you're running without resorting to a ton of boilerplate reflection code. It has many uses in diagnostics and logging tasks.
+리플렉션 코드 없이 많은 컨텍스트 정보를 쉽게 가져 오게끔 해줍니다.
+
 
 ```c#
-private void Start ()
+void Start ()
 {
     ShowCallerInfo("Something happened.");
 }
-public void ShowCallerInfo(string message,
+void ShowCallerInfo(string message,
         [System.Runtime.CompilerServices.CallerMemberName] string memberName = "",
         [System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "",
         [System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
 {
-    Debug.Log($"message: {message}");
-    Debug.Log($"member name: {memberName}");
-    Debug.Log($"source file path: {sourceFilePath}");
-    Debug.Log($"source line number: {sourceLineNumber}");
+    Debug.Log("message: " + message);
+    Debug.Log("member name: " + memberName);
+    Debug.Log("source file path: " + sourceFilePath);
+    Debug.Log("source line number: " + sourceLineNumber);
 }
 // Output:
 // Something happened
@@ -132,58 +133,78 @@ public void ShowCallerInfo(string message,
 
 
 # c# 6
-https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-6
 ## Read-only auto-properties
-Read-only auto-properties provide a more concise syntax to create immutable types. You declare the auto-property with only a get accessor:
+읽기 전용 프로퍼티는 간단히 `get` 만 선언함으로써 만들 수 있습니다.
 
 ```c#
-public string FirstName { get; }
-public string LastName { get;  }
-The FirstName and LastName properties can be set only in the body of the constructor of the same class:
-
-public Student(string firstName, string lastName)
+public class NPC
 {
-    if (IsNullOrWhiteSpace(lastName))
-        throw new ArgumentException(message: "Cannot be blank", paramName: nameof(lastName));
-    FirstName = firstName;
-    LastName = lastName;
-}
-Trying to set LastName in another method generates a CS0200 compilation error:
+    public int health { get; }
 
-public class Student
-{
-    public string LastName { get;  }
-
-    public void ChangeName(string newLastName)
+    public NPC(int health)
     {
-        // Generates CS0200: Property or indexer cannot be assigned to -- it is read only
-        LastName = newLastName;
+        this.health = health;
+    }
+}
+```
+생성자가 아닌 곳에서 접근 시 에러를 생성합니다.
+```c#
+public class NPC
+{
+    public int health { get; }
+
+    public void SetHealth(int health)
+    {
+        // 에러 발생
+        this.health = health;
     }
 }
 ```
 
 ## Auto-property initializers
-Auto-property initializers let you declare the initial value for an auto-property as part of the property declaration.
+자동 프로퍼티 생성자는 프로퍼티 선언시 값을 초기화 할 수 있게 해줍니다.
+
 
 ```c#
 public ICollection<double> Grades { get; } = new List<double>();
-```
-The Grades member is initialized where it's declared. That makes it easier to perform the initialization exactly once. The initialization is part of the property declaration, making it easier to equate the storage allocation with the public interface for Student objects
 
-```c#
-// .NET 3.5
-public int Health { get; set; } // Health has to be initialized somewhere else, like Start()
-
-// .NET 4.x
 public int Health { get; set; } = 100;
 ```
 
+## Index initializers
+```c#
+// .NET 3.5
+private Dictionary<int, string> messages = new Dictionary<int, string>
+{
+    { 404, "Page not Found"},
+    { 302, "Page moved, but left a forwarding address."},
+    { 500, "The web server can't come out to play today."}
+};
+
+// .NET 4.x
+private Dictionary<int, string> webErrors = new Dictionary<int, string>
+{
+    [404] = "Page not Found",
+    [302] = "Page moved, but left a forwarding address.",
+    [500] = "The web server can't come out to play today."
+};
+```
+
+## String interpolation
+```c#
+// .NET 3.5
+Debug.Log(String.Format("{0} health: {1}", playerName, health));
+
+// .NET 4.x
+Debug.Log($"{playerName} health: {health}");
+```
+
 ## Expression-bodied function members
-Many members that you write are single statements that could be single expressions. Write an expression-bodied member instead. It works for methods and read-only properties. For example, an override of ToString() is often a great candidate:
+하나의 식에 여러 멤버변수를 표현 할 수 있습니다.
 
 ```c#
-public override string ToString() => $"{LastName}, {FirstName}";
-public string FullName => $"{FirstName} {LastName}";
+public override string ToString() => $"{name} : {health * 0.5}";
+public string GetInfo => $"{name} : {(hpRatio < 0.1 ? "Dead" : "Live")}";
 ```
 
 ## using static
@@ -250,25 +271,6 @@ Debug.Log(sum3);  // output: NaN
 ```
 
 
-## String interpolation
-With C# 6, the new string interpolation feature enables you to embed expressions in a string. Simply preface the string with $and use expressions between { and } instead of ordinals:
-public string FullName => $"{FirstName} {LastName}";
-```c#
-// .NET 3.5
-Debug.Log(String.Format("Player health: {0}", Health)); // or
-Debug.Log("Player health: " + Health);
-
-// .NET 4.x
-Debug.Log($"Player health: {Health}");
-```
-
-## Index initializers
-private Dictionary<int, string> webErrors = new Dictionary<int, string>
-{
-    [404] = "Page not Found",
-    [302] = "Page moved, but left a forwarding address.",
-    [500] = "The web server can't come out to play today."
-};
 
 
 ## Extension Add methods in collection initializers
