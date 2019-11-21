@@ -208,7 +208,7 @@ public string GetInfo => $"{name} : {(hpRatio < 0.1 ? "Dead" : "Live")}";
 ```
 
 ## using static
-The using static enhancement enables you to import the static methods of a single class. You specify the class you're using:
+한 클래스의 스태틱 메소드를 가져오는 것이 향상되었습니다.
 ```c#
 // .NET 3.5
 using UnityEngine;
@@ -237,6 +237,7 @@ public class UsingStaticExample: MonoBehaviour
 ```
 
 ## Null-conditional operators
+널 상태 오퍼레이터는 Null 체크를 쉽고 부드럽게 만들어줍니다. 단순히 멤버 접근을 .에서 ?. 로 바꾸세요.
 The null conditional operator makes null checks much easier and fluid. Replace the member access . with ?.:
 ```c#
 var first = person?.FirstName;
