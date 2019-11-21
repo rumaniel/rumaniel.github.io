@@ -237,19 +237,22 @@ public class UsingStaticExample: MonoBehaviour
 ```
 
 ## Null-conditional operators
-널 상태 오퍼레이터는 Null 체크를 쉽고 부드럽게 만들어줍니다. 단순히 멤버 접근을 .에서 ?. 로 바꾸세요.
-The null conditional operator makes null checks much easier and fluid. Replace the member access . with ?.:
+널 상태 오퍼레이터는 Null 체크를 쉽고 부드럽게 만들어줍니다. 단순히 멤버 접근을 `.`에서 `?.` 로 바꾸세요.
+
 ```c#
 var first = person?.FirstName;
 ```
-Available in C# 6 and later, a null-conditional operator applies a member access, ?., or element access, ?[], operation to its operand only if that operand evaluates to non-null. If the operand evaluates to null, the result of applying the operator is null. The null-conditional member access operator ?. is also known as the Elvis operator.
-
-The null-conditional operators are short-circuiting. That is, if one operation in a chain of conditional member or element access operations returns null, the rest of the chain doesn't execute. In the following example, B is not evaluated if A evaluates to null and C is not evaluated if A or B evaluates to null:
+person 객체가 null 이면 first 변수에 null 이 할당됩니다. person 객체가 null 이 아니라면 FirstName 이 할당됩니다.
+person 변수가 null 일 경우에 `NullRefferenceException` 을 생성하지 않고 null 을 반환합니다. 또 배열 혹은 인덱스에 접근할때 `[]` 를 `?[]`로 바꾸는걸로 사용가능합니다.
 
 ```c#
 A?.B?.Do(C);
 A?.B?[C];
+```
 
+The null-conditional operators are short-circuiting. That is, if one operation in a chain of conditional member or element access operations returns null, the rest of the chain doesn't execute. In the following example, B is not evaluated if A evaluates to null and C is not evaluated if A or B evaluates to null:
+
+```c#
 double SumNumbers(List<double[]> setsOfNumbers, int indexOfSetToSum)
 {
     return setsOfNumbers?[indexOfSetToSum]?.Sum() ?? double.NaN;
