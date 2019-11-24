@@ -277,22 +277,20 @@ public static class DictionaryExtension
 
 # c# 7.0
 ## out variables
-You can declare out values inline as arguments to the method where they're used.
-
-The existing syntax that supports out parameters has been improved in this version. You can now declare out variables in the argument list of a method call, rather than writing a separate declaration statement:
-
+이제 `out` 변수를 따로 선언하는게 아닌 메소드가 불리는 곳에서 인자로 선언할 수 있습니다.
 
 ```c#
-if (int.TryParse(input, out var answer))
-    Debug.Log(answer);
-else
-    Debug.Log("Could not parse input");
+// .NET 3.5
+bool error;
+string text = StringTable.GetString("SOME_TEXT", out error);
+
+// .NET 4.x
+string text = StringTable.GetString("SOME_TEXT", out var error);
 ```
 
 ## Tuples
-You can create lightweight, unnamed types that contain multiple public fields. Compilers and IDE tools understand the semantics of these types.
-
-Tuples were available before C# 7.0, but they were inefficient and had no language support.
+이제 가볍고 여러 공개 필드를 가지는 명시되지 않는 타입을 만들 수 있습니다. 컴파일러나 IDE는 이러한 타입의 시맨틱을 이해합니다.
+튜플은 C# 7.0 이전에도 사용 가능했으나, 효과적이지 않고 언어적 도움도 없었습니다.
 
 ```c#
 (string Alpha, string Beta) namedLetters = ("a", "b");
@@ -323,13 +321,13 @@ var p = new Point(3.14, 2.71);
 
 
 ## Discards
-Discards are temporary, write-only variables used in assignments when you don't care about the value assigned. They're most useful when deconstructing tuples and user-defined types, as well as when calling methods with out parameters.
+디스카드는 `_`의 이름을 가진 쓰기 전용 변수입니다. 단순히 버리기를 의도하는 하나의 변수에 모두 할당 할 수 있습니다. 디스카드는 할당되지 안흔 변수와 같습니다.
+디스카드는 다음의 경우에 도움을 줍니다.
 
-
-* When deconstructing tuples or user-defined types.
-* When calling methods with out parameters.
-* In a pattern matching operation with the is and switch statements.
-* As a standalone identifier when you want to explicitly identify the value of an assignment as a discard.
+* 튜플이나 유저정의 형식을 해체할때.
+* `out` 인자 없이 함수가 호출될때.
+* `is`나 `switch` 구문이 사용되는 패턴 매칭 연산때.
+* 명백히 버리기 위해 할당한 단독 형식자일 경우에.
 
 
 ```c#
