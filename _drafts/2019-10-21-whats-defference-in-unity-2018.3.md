@@ -396,7 +396,7 @@ public static int SumPositiveNumbers(IEnumerable<object> sequence)
             // 일반적인 상수 패턴
             case 0:
                 break;
-            // childSequence: is a type pattern.
+            // 타입 패턴
             case IEnumerable<int> childSequence:
             {
                 foreach(var item in childSequence)
@@ -419,7 +419,8 @@ public static int SumPositiveNumbers(IEnumerable<object> sequence)
 ```
 
 ## ref locals and returns
-Method local variables and return values can be references to other storage.
+메소드 로컬 변수와 리턴 값은 다른 저장공간으로 레퍼런싱 될 수 있습니다.
+
 ```c#
 public static ref int Find(int[,] matrix, Func<int, bool> predicate)
 {
