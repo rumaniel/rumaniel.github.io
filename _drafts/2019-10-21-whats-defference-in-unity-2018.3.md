@@ -200,8 +200,6 @@ Debug.Log($"{playerName} health: {health}");
 ```
 
 ## Expression-bodied function members
-하나의 식에 여러 멤버변수를 표현 할 수 있습니다.
-
 ```c#
 public override string ToString() => $"{name} : {health * 0.5}";
 public string GetInfo => $"{name} : {(hpRatio < 0.1 ? "Dead" : "Live")}";
@@ -246,40 +244,36 @@ person 객체가 null 이면 first 변수에 null 이 할당됩니다. person �
 person 변수가 null 일 경우에 `NullRefferenceException` 을 생성하지 않고 null 을 반환합니다. 또 배열 혹은 인덱스에 접근할때 `[]` 를 `?[]`로 바꾸는걸로 사용가능합니다.
 
 ```c#
+first = person?.FirstName ?? "Unspecified";
+```
+`??` 오퍼레이터와 함꼐 해서 Default 값을 셋팅 할 수도 있습니다.
+
+```c#
 A?.B?.Do(C);
 A?.B?[C];
 ```
-
-The null-conditional operators are short-circuiting. That is, if one operation in a chain of conditional member or element access operations returns null, the rest of the chain doesn't execute. In the following example, B is not evaluated if A evaluates to null and C is not evaluated if A or B evaluates to null:
-
-```c#
-double SumNumbers(List<double[]> setsOfNumbers, int indexOfSetToSum)
-{
-    return setsOfNumbers?[indexOfSetToSum]?.Sum() ?? double.NaN;
-}
-
-var sum1 = SumNumbers(null, 0);
-Debug.Log(sum1);  // output: NaN
-
-var numberSets = new List<double[]>
-{
-    new[] { 1.0, 2.0, 3.0 },
-    null
-};
-
-var sum2 = SumNumbers(numberSets, 0);
-Debug.Log(sum2);  // output: 6
-
-var sum3 = SumNumbers(numberSets, 1);
-Debug.Log(sum3);  // output: NaN
-```
-
-
-
+앞의 오퍼레이터가 널을 리턴한다면 뒤의 나머지 체인들을 실행되지 않습니다. 위 예제에서는 만약 A나 B가 널이라면 C를 실행 하지 않습니다.
 
 ## Extension Add methods in collection initializers
-Another feature that makes collection initialization easier is the ability to use an extension method for the Add method. This feature was added for parity with Visual Basic. The feature is most useful when you have a custom collection class that has a method with a different name to semantically add new items.
+콜렉션 이니셜라이저에 Add 메소드 익스텐션이 적용됩니다.
+```c#
+var dic = new Dictionary<int, string> { 1, 2, 4 };
 
+foreach (var a in dic)
+	Console.WriteLine($"[{a.Key}] : {a.Value}");
+    // [1] : 1
+    // [2] : 2
+    // [4] : 4
+
+
+public static class DictionaryExtension
+{
+	public static void Add(this Dictionary<int, string> dict, int index)
+	{
+		dict.Add(index, index.ToString());
+	}
+}
+```
 
 # c# 7.0
 ## out variables
