@@ -367,27 +367,23 @@ public class Example
 ```
 
 ## Pattern Matching
-You can create branching logic based on arbitrary types and values of the members of those types.
+패턴 매칭은 객체 뿐만 아니라 프로퍼티에 대해 메서드 디스패치를 구현 할 수 있게 해주는 기능입니다.
+패턴 매칭은 `switch`와 `is` 구문을 지원합니다. 패턴에 대해 추가적인 특별한 룰을 지정하기 위해 `when` 키워드를 씁니다.
+2가지 사용 방법을 소개하겠습니다.
 
-When deconstructing tuples or user-defined types.
-When calling methods with out parameters.
-In a pattern matching operation with the is and switch statements.
-As a standalone identifier when you want to explicitly identify the value of an assignment as a discard.
-
-1. The is pattern expression extends the familiar is operator to query an object about its type and assign the result in one instruction. The following code checks if a variable is an int, and if so, adds it to the current sum:
-
+1. `is` 패턴 표현식은 익숙한 `is` 연산자를 사용하여 해당 타입에 대한 객체를 질의하고 결과를 할당하는것을 하나의 명령어로 처리합니다.
 
 ```c#
 if (input is int count)
     sum += count;
 ```
 
-2. The switch match expression has a familiar syntax, based on the switch statement already part of the C# language. The updated switch statement has several new constructs:
+2. 기존 스위치 문에 몇가지가 추가되었습니다.
 
-* The governing type of a switch expression is no longer restricted to integral types, Enum types, string, or a nullable type corresponding to one of those types. Any type may be used.
-* You can test the type of the switch expression in each case label. As with the is expression, you may assign a new variable to that type.
-* You may add a when clause to further test conditions on that variable.
-* The order of case labels is now important. The first branch to match is executed; others are skipped.
+* 모든 타입이 다 사용가능합니다.
+* 각각의 라벨에서 스위치 표현식을 체크 할 수 있습니다. `is` 표현식과 마찬가지로 새 변수를 할당 할 수 있습니다.
+* 해당 변수에 대한 추가 체크 조건을 위해 `when` 절을 추가 할 수 있습니다.
+* `case` 라벨 순서는 이제 중요합니다. 첫번째 일치하는 매칭 구문이 실행되고 나머진 지나갑니다.
 
 ```c#
 public static int SumPositiveNumbers(IEnumerable<object> sequence)
@@ -397,7 +393,7 @@ public static int SumPositiveNumbers(IEnumerable<object> sequence)
     {
         switch (i)
         {
-            // is the familiar constant pattern.
+            // 일반적인 상수 패턴
             case 0:
                 break;
             // childSequence: is a type pattern.
@@ -407,11 +403,11 @@ public static int SumPositiveNumbers(IEnumerable<object> sequence)
                     sum += (item > 0) ? item : 0;
                 break;
             }
-            // is a type pattern with an additional when condition.
+            // 추가적인 when 절을 이용한 패턴
             case int n when n > 0:
                 sum += n;
                 break;
-            // is the null pattern.
+            // null 패턴
             case null:
                 throw new NullReferenceException("Null found in sequence");
             default:
