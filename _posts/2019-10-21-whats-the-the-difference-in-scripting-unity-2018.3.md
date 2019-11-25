@@ -1,10 +1,12 @@
 ---
 layout: post
-title: Unity 2018.3 버전 이후 사용할 수 있는 C# 기능들
+title: Unity 2018.3 버전 이후 사용할 수 있는 C# 스크립팅 소개
 image: /img/hello_world.jpeg
-tags: [unity, c#, ]
+tags: [unity, c#]
 categories: [unity, c#]
 ---
+
+What's the difference in scripting Unity 2018.3 from the previous version
 
 유니티 2017.1 버전부터 로즐린 컴파일러가 실험적으로 도입되 .NET 4.x 와 동등하고, C# 6와 호환되는 스크립팅 런타임이 사용 가능합니다. 2018.1 부터는 .NET 3.5 런타임이 레거시가 되고, 2018.3 부터는 c# 7.3 버전이 사용 가능합니다.
 
