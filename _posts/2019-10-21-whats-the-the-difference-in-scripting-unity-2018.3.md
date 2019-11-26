@@ -3,13 +3,13 @@ layout: post
 title: Unity 2018.3 버전 이후 사용할 수 있는 C# 스크립팅 소개
 image: /assets/coding.jpg
 date: 2019-10-21 22:24:34 +0900
-tags: [unity, c#]
-categories: [unity, c#]
+tags: [unity, C#]
+categories: [unity, C#]
 ---
 
 What's the difference in scripting Unity 2018.3 from the previous version
 
-유니티 2017.1 버전부터 로즐린 컴파일러가 실험적으로 도입되 .NET 4.x 와 동등하고, C# 6와 호환되는 스크립팅 런타임이 사용 가능합니다. 2018.1 부터는 .NET 3.5 런타임이 레거시가 되고, 2018.3 부터는 c# 7.3 버전이 사용 가능합니다.
+유니티 2017.1 버전부터 로즐린 컴파일러가 실험적으로 적용 되 .NET 4.x 와 동등하고, C# 6와 호환되는 스크립팅 런타임이 사용 가능합니다. 2018.1 부터는 .NET 3.5 런타임이 레거시가 되고, 2018.3 부터는 C# 7.3 버전이 사용 가능합니다.
 
 * 2017.1 .NET 4.6, C# 6 Compatible version
 * 2018.1 .NET 4.x Equivalent runtime is no longer considered experimental,
@@ -18,14 +18,14 @@ What's the difference in scripting Unity 2018.3 from the previous version
 
 그건 유니티에서 최신 C# 의 기능 사용이 제한적이었습니다. 그래서 이제 사용 가능한 쓸만한 C# 기능들을 정리하였습니다.
 
-# c# 4
+# C# 4
 ## Dynamic binding
 `dynamic` 은 `object`와 대부분 상황에서 비슷하지만, 형이 런타임에서 결정됩니다.
 
 ## Named/optional arguments
 파라미터의 포지션이 아닌 파라미터의 이름을 명시해 인자를 넘길 수 있게 해줍니다.
 
-```c#
+```C#
 void UpdateProfile(string name, int age, string job)
 {
     // do
@@ -50,7 +50,7 @@ void Start()
 ## Embedded interop types
 
 
-# c# 5
+# C# 5
 ## New keyword async await
 비동기 작업이 가능한 `async` `await` 키워드가 생겼습니다.
 
@@ -72,7 +72,7 @@ public class UnityCoroutineExample : MonoBehaviour
     }
 }
 ```
-```c#
+```C#
 // .NET 4.x async-await 경우
 using UnityEngine;
 using System.Threading.Tasks;
@@ -112,7 +112,7 @@ public class AsyncAwaitExample : MonoBehaviour
 리플렉션 코드 없이 많은 컨텍스트 정보를 쉽게 가져 오게끔 해줍니다.
 
 
-```c#
+```C#
 void Start ()
 {
     ShowCallerInfo("Something happened.");
@@ -135,11 +135,11 @@ void ShowCallerInfo(string message,
 ```
 
 
-# c# 6
+# C# 6
 ## Read-only auto-properties
 읽기 전용 프로퍼티는 간단히 `get` 만 선언함으로써 만들 수 있습니다.
 
-```c#
+```C#
 public class NPC
 {
     public int health { get; }
@@ -151,7 +151,7 @@ public class NPC
 }
 ```
 생성자가 아닌 곳에서 접근 시 에러를 생성합니다.
-```c#
+```C#
 public class NPC
 {
     public int health { get; }
@@ -168,14 +168,14 @@ public class NPC
 자동 프로퍼티 생성자는 프로퍼티 선언시 값을 초기화 할 수 있게 해줍니다.
 
 
-```c#
+```C#
 public ICollection<double> Grades { get; } = new List<double>();
 
 public int Health { get; set; } = 100;
 ```
 
 ## Index initializers
-```c#
+```C#
 // .NET 3.5
 private Dictionary<int, string> messages = new Dictionary<int, string>
 {
@@ -194,7 +194,7 @@ private Dictionary<int, string> webErrors = new Dictionary<int, string>
 ```
 
 ## String interpolation
-```c#
+```C#
 // .NET 3.5
 Debug.Log(String.Format("{0} health: {1}", playerName, health));
 
@@ -203,14 +203,14 @@ Debug.Log($"{playerName} health: {health}");
 ```
 
 ## Expression-bodied function members
-```c#
+```C#
 public override string ToString() => $"{name} : {health * 0.5}";
 public string GetInfo => $"{name} : {(hpRatio < 0.1 ? "Dead" : "Live")}";
 ```
 
 ## using static
 한 클래스의 스태틱 메소드를 가져오는 것이 향상되었습니다.
-```c#
+```C#
 // .NET 3.5
 using UnityEngine;
 public class Example : MonoBehaviour
@@ -240,18 +240,18 @@ public class UsingStaticExample: MonoBehaviour
 ## Null-conditional operators
 널 상태 오퍼레이터는 Null 체크를 쉽고 부드럽게 만들어줍니다. 단순히 멤버 접근을 `.`에서 `?.` 로 바꾸세요.
 
-```c#
+```C#
 var first = person?.FirstName;
 ```
 person 객체가 null 이면 first 변수에 null 이 할당됩니다. person 객체가 null 이 아니라면 FirstName 이 할당됩니다.
 person 변수가 null 일 경우에 `NullRefferenceException` 을 생성하지 않고 null 을 반환합니다. 또 배열 혹은 인덱스에 접근할때 `[]` 를 `?[]`로 바꾸는걸로 사용가능합니다.
 
-```c#
+```C#
 first = person?.FirstName ?? "Unspecified";
 ```
 `??` 오퍼레이터와 함꼐 해서 Default 값을 셋팅 할 수도 있습니다.
 
-```c#
+```C#
 A?.B?.Do(C);
 A?.B?[C];
 ```
@@ -259,7 +259,7 @@ A?.B?[C];
 
 ## Extension Add methods in collection initializers
 콜렉션 이니셜라이저에 Add 메소드 익스텐션이 적용됩니다.
-```c#
+```C#
 var dic = new Dictionary<int, string> { 1, 2, 4 };
 
 foreach (var a in dic)
@@ -278,11 +278,11 @@ public static class DictionaryExtension
 }
 ```
 
-# c# 7.0
+# C# 7.0
 ## out variables
 이제 `out` 변수를 따로 선언하는게 아닌 메소드가 불리는 곳에서 인자로 선언할 수 있습니다.
 
-```c#
+```C#
 // .NET 3.5
 bool error;
 string text = StringTable.GetString("SOME_TEXT", out error);
@@ -295,7 +295,7 @@ string text = StringTable.GetString("SOME_TEXT", out var error);
 이제 가볍고 여러 공개 필드를 가지는 명시되지 않는 타입을 만들 수 있습니다. 컴파일러나 IDE는 이러한 타입의 시맨틱을 이해합니다.
 튜플은 C# 7.0 이전에도 사용 가능했으나, 효과적이지 않고 언어적 도움도 없었습니다.
 
-```c#
+```C#
 (string Alpha, string Beta) namedLetters = ("a", "b");
 Debug.Log($"{namedLetters.Alpha}, {namedLetters.Beta}");
 
@@ -333,7 +333,7 @@ var p = new Point(3.14, 2.71);
 * 명백히 버리기 위해 할당한 단독 형식자일 경우에.
 
 
-```c#
+```C#
 using System;
 using System.Collections.Generic;
 
@@ -376,7 +376,7 @@ public class Example
 
 1. `is` 패턴 표현식은 익숙한 `is` 연산자를 사용하여 해당 타입에 대한 객체를 질의하고 결과를 할당하는것을 하나의 명령어로 처리합니다.
 
-```c#
+```C#
 if (input is int count)
     sum += count;
 ```
@@ -388,7 +388,7 @@ if (input is int count)
 * 해당 변수에 대한 추가 체크 조건을 위해 `when` 절을 추가 할 수 있습니다.
 * `case` 라벨 순서는 이제 중요합니다. 첫번째 일치하는 매칭 구문이 실행되고 나머진 지나갑니다.
 
-```c#
+```C#
 public static int SumPositiveNumbers(IEnumerable<object> sequence)
 {
     int sum = 0;
@@ -422,9 +422,18 @@ public static int SumPositiveNumbers(IEnumerable<object> sequence)
 ```
 
 ## ref locals and returns
-메소드 로컬 변수와 리턴 값은 다른 저장공간으로 레퍼런싱 될 수 있습니다.
+밸류 타입에 대한 Refference를 다룰 수 있습니다.
 
-```c#
+```C#
+int number = 0;
+
+ref int copyNumber = ref number;
+
+copyNumber = 1;
+
+Debug.Log($"number : {number}"); // 1
+Debug.Log($"copyNumber : {copyNumber}"); // 1
+
 public static ref int Find(int[,] matrix, Func<int, bool> predicate)
 {
     for (int i = 0; i < matrix.GetLength(0); i++)
@@ -439,22 +448,18 @@ Debug.Log(item);
 item = 24;
 Debug.Log(matrix[4, 2]);
 ```
-The C# language has several rules that protect you from misusing the ref locals and returns:
+C# 언어에서는 ref local과 return을 잘못 사용하는것을 막아 줄 몇 가지 규칙들이 있습니다.
 
-* You must add the ref keyword to the method signature and to all return statements in a method.
-    * That makes it clear the method returns by reference throughout the method.
-* A ref return may be assigned to a value variable, or a ref variable.
-    * The caller controls whether the return value is copied or not. Omitting the ref modifier when assigning the return value indicates that the caller wants a copy of the value, not a reference to the storage.
-* You can't assign a standard method return value to a ref local variable.
-    * That disallows statements like ref int i = sequence.Count();
-* You can't return a ref to a variable whose lifetime doesn't extend beyond the execution of the method.
-    * That means you can't return a reference to a local variable or a variable with a similar scope.
-* ref locals and returns can't be used with async methods.
-   * The compiler can't know if the referenced variable has been set to its final value when the async method returns.
+* 모든 메소드의 호출과 리턴 구문에는 반드시 `ref` 키워드를 넣어야 합니다.
+* ref 리턴은 밸류 변수나 ref 변수에 할당됩니다.
+* 일반 메소드 리턴 값을 ref 로컬 변수에 할당 할 수 없습니다.
+* 비슷한 스코프 혹은 로컬 변수에 레퍼런스를 리턴 할 수 없습니다.
+* ref local 과 return 은 비동기 메소드와 함께 사용 할 수 없습니다.
 
 ## Local Functions
-You can nest functions inside other functions to limit their scope and visibility.
-```c#
+스코프와 가시성이 허락하는 아래에서 다른 함수 내에 함수를 끼워 넣을 수 있습니다.
+
+```C#
 public static IEnumerable<char> AlphabetSubset3(char start, char end)
 {
     if (start < 'a' || start > 'z')
@@ -480,7 +485,7 @@ https://docs.microsoft.com/en-us/dotnet/csharp/local-functions-vs-lambdas
 The list of members that can be authored using expressions has grown.
 you can implement constructors, finalizers, and get and set accessors on properties and indexers.
 
-```c#
+```C#
 // Expression-bodied constructor
 public ExpressionMembersExample(string label) => this.Label = label;
 
@@ -521,7 +526,7 @@ Methods declared with the async modifier can return other types in addition to T
 ## Numeric literal syntax improvements
 New tokens improve readability for numeric constants.
 
-```c#
+```C#
 public const int Sixteen =   0b0001_0000;
 public const int ThirtyTwo = 0b0010_0000;
 public const int SixtyFour = 0b0100_0000;
@@ -529,19 +534,19 @@ public const int OneHundredTwentyEight = 0b1000_0000;
 ```
 The 0b at the beginning of the constant indicates that the number is written as a binary number. Binary numbers can get long, so it's often easier to see the bit patterns by introducing the _ as a digit separator, as shown above in the binary constant. The digit separator can appear anywhere in the constant. For base 10 numbers, it is common to use it as a thousands separator:
 
-```c#
+```C#
 public const long BillionsAndBillions = 100_000_000_000;
 ```
 
 The digit separator can be used with decimal, float, and double types as well:
 
-```c#
+```C#
 public const double AvogadroConstant = 6.022_140_857_747_474e23;
 public const decimal GoldenRatio = 1.618_033_988_749_894_848_204_586_834_365_638_117_720_309_179M;
 ```
 Taken together, you can declare numeric constants with much more readability.
 
-# c# 7.1
+# C# 7.1
 ## async Main method
 The entry point for an application can have the async modifier.
 An async main method enables you to use await in your Main method. Previously you would need to write:
@@ -551,22 +556,22 @@ An async main method enables you to use await in your Main method. Previously yo
 You can use default literal expressions in default value expressions when the target type can be inferred.
 Default literal expressions are an enhancement to default value expressions. These expressions initialize a variable to the default value. Where you previously would write:
 
-```c#
+```C#
 Func<string, bool> whereClause = default(Func<string, bool>);
 ```
 You can now omit the type on the right-hand side of the initialization:
-```c#
+```C#
 Func<string, bool> whereClause = default;
 ```
 
 ## Inferred tuple element names
 The names of tuple elements can be inferred from tuple initialization in many cases.
-```c#
+```C#
 int count = 5;
 string label = "Colors used in the map";
 var pair = (count: count, label: label);
 ```
-```c#
+```C#
 int count = 5;
 string label = "Colors used in the map";
 var pair = (count, label); // element names are "count" and "label"
@@ -575,7 +580,7 @@ var pair = (count, label); // element names are "count" and "label"
 ## Pattern matching on generic type parameters
 You can use pattern match expressions on variables whose type is a generic type parameter.
 
-# c# 7.2
+# C# 7.2
 ## Techniques for writing safe efficient code
 A combination of syntax improvements that enable working with value types using reference semantics.
 * The `in` modifier on parameters, to specify that an argument is passed by reference but not modified by the called method. Adding the `in` modifier to an argument is a source compatible change.
@@ -585,7 +590,7 @@ A combination of syntax improvements that enable working with value types using 
 ## Non-trailing named arguments
 Named arguments can be followed by positional arguments.
 Method calls may now use named arguments that precede positional arguments when those named arguments are in the correct positions.
-```c#
+```C#
 // The method can be called in the normal way, by using positional arguments.
 PrintOrderDetails("Gift Shop", 31, "Red Mug");
 
@@ -604,7 +609,7 @@ PrintOrderDetails(31, "Red Mug", sellerName: "Gift Shop");
 
 ## Leading underscores in numeric literals
 Numeric literals can now have leading underscores before any printed digits.
-```c#
+```C#
 int binaryValue = 0b_0101_0101;
 ```
 
@@ -616,14 +621,14 @@ Struct members cannot be `private protected` because the struct cannot be inheri
 
 ## Conditional ref expressions
 The result of a conditional expression (?:) can now be a reference.
-```c#
+```C#
 ref var r = ref (arr != null ? ref arr[0] : ref otherArr[0]);
 ```
 The variable r is a reference to the first value in either arr or otherArr.
 
 
 
-# c# 7.3
+# C# 7.3
 The following new features support the theme of better performance for safe code:
 
 * Indexing `fixed` fields does not require pinning
