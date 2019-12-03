@@ -7,20 +7,18 @@ tags: [unity, C#]
 categories: [unity, C#]
 ---
 
-What's the difference in scripting Unity 2018.3 from the previous version
-
-유니티 2017.1 버전부터 로즐린 컴파일러가 실험적으로 적용 되 .NET 4.x 와 동등하고, C# 6와 호환되는 스크립팅 런타임이 사용 가능합니다. 2018.1 부터는 .NET 3.5 런타임이 레거시가 되고, 2018.3 부터는 C# 7.3 버전이 사용 가능합니다.
+유니티 2017.1 버전부터 [로즐린 컴파일러](https://github.com/dotnet/roslyn)가 실험적으로 적용 되 .NET 4.x, C# 6와 호환되는 스크립팅이 사용 가능합니다. 2018.1 부터는 .NET 3.5 런타임이 레거시가 되고, 2018.3 부터는 C# 7.3 버전이 사용 가능합니다.
 
 * 2017.1 .NET 4.6, C# 6 Compatible version
 * 2018.1 .NET 4.x Equivalent runtime is no longer considered experimental,
 * 2018.3 Support C# 7.3
 * 2019.2 Removed .NET 3.5 Equivalent
 
-그건 유니티에서 최신 C# 의 기능 사용이 제한적이었습니다. 그래서 이제 사용 가능한 쓸만한 C# 기능들을 정리하였습니다.
+그간 유니티에서 최신 C# 언어의 기능을 사용하는것은 제한적이었습니다. 그래서 이제 사용 가능한 C# 기능들을 정리해 보았습니다.
 
 # C# 4
 ## Dynamic binding
-`dynamic` 은 `object`와 대부분 상황에서 비슷하지만, 형이 런타임에서 결정됩니다.
+`dynamic` 은 `object`와 비슷하지만, 타입이 런타임에서 결정됩니다.
 
 ## Named/optional arguments
 파라미터의 포지션이 아닌 파라미터의 이름을 명시해 인자를 넘길 수 있게 해줍니다.
@@ -482,30 +480,27 @@ public static IEnumerable<char> AlphabetSubset3(char start, char end)
 https://docs.microsoft.com/en-us/dotnet/csharp/local-functions-vs-lambdas
 
 ## More expression-bodied members
-The list of members that can be authored using expressions has grown.
-you can implement constructors, finalizers, and get and set accessors on properties and indexers.
-
 ```C#
-// Expression-bodied constructor
+// 생성자
 public ExpressionMembersExample(string label) => this.Label = label;
 
-// Expression-bodied finalizer
+// 소멸자
 ~ExpressionMembersExample() => Console.Error.WriteLine("Finalized!");
 
 private string label;
 
-// Expression-bodied get / set accessors.
+// getter setter
 public string Label
 {
     get => label;
     set => this.label = value ?? "Default label";
 }
+
 // .NET 3.5
 private int TakeDamage(int amount)
 {
     return Health -= amount;
 }
-
 // .NET 4.x
 private int TakeDamage(int amount) => Health -= amount;
 
@@ -514,17 +509,14 @@ public string PlayerHealthUiText => $"Player health: {Health}";
 
 ```
 
-
 ## throw Expressions
-You can throw exceptions in code constructs that previously weren't allowed because throw was a statement.
-https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/throw#the-throw-expression
+생성자에서 `throw` 구문을 사용 할 수 있습니다.
 
 ## Generalized async return types
-Methods declared with the async modifier can return other types in addition to Task and Task<T>.
-
+async의 리턴 타입으로 `Task`와 `Task<T>`를 사용가능합니다.
 
 ## Numeric literal syntax improvements
-New tokens improve readability for numeric constants.
+새 토큰들은 상수를 읽는 가독성을 증가시킵니다.
 
 ```C#
 public const int Sixteen =   0b0001_0000;
