@@ -516,7 +516,7 @@ public string PlayerHealthUiText => $"Player health: {Health}";
 async의 리턴 타입으로 `Task`와 `Task<T>`를 사용가능합니다.
 
 ## Numeric literal syntax improvements
-새 토큰들은 상수를 읽는 가독성을 증가시킵니다.
+새 토큰들로 상수를 읽는 가독성을 좋아집니다.
 
 ```C#
 public const int Sixteen =   0b0001_0000;
@@ -524,19 +524,18 @@ public const int ThirtyTwo = 0b0010_0000;
 public const int SixtyFour = 0b0100_0000;
 public const int OneHundredTwentyEight = 0b1000_0000;
 ```
-The 0b at the beginning of the constant indicates that the number is written as a binary number. Binary numbers can get long, so it's often easier to see the bit patterns by introducing the _ as a digit separator, as shown above in the binary constant. The digit separator can appear anywhere in the constant. For base 10 numbers, it is common to use it as a thousands separator:
+상수의 시작부분에 있는 `0b`는 바이너리 넘버로 쓰여졌음을 나타냅니다. 바이너리 넘버는 더 길어질 수 있기때문에 digit seperator `_`를 통해 비트 패턴을 더 쉽게 확인 할수 있습니다. digit seperator는 상수 어디에나 나타날 수 있습니다.  기본적인 10진수의 경우 일반적으로 천 단위 구분자로 사용됩니다.
 
 ```C#
 public const long BillionsAndBillions = 100_000_000_000;
 ```
-
-The digit separator can be used with decimal, float, and double types as well:
+digit seperator 는 `decimal`, `float`, 그리고 `double` 타입에서도 사용 할 수 있습니다.
 
 ```C#
 public const double AvogadroConstant = 6.022_140_857_747_474e23;
 public const decimal GoldenRatio = 1.618_033_988_749_894_848_204_586_834_365_638_117_720_309_179M;
 ```
-Taken together, you can declare numeric constants with much more readability.
+숫자 상수를 더욱 가독성 좋게 선언 할 수 있습니다.
 
 # C# 7.1
 ## async Main method
