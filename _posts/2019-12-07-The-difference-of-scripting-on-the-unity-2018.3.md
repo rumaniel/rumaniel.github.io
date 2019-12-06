@@ -2,7 +2,7 @@
 layout: post
 title: Unity 2018.3 버전 이후 사용할 수 있는 C# 스크립팅 소개
 image: /assets/coding.jpg
-date: 2019-10-21 22:24:34 +0900
+date: 2019-12-07 22:24:34 +0900
 tags: [unity, C#]
 categories: [unity, C#]
 ---
