@@ -539,37 +539,32 @@ public const decimal GoldenRatio = 1.618_033_988_749_894_848_204_586_834_365_638
 
 # C# 7.1
 ## async Main method
-The entry point for an application can have the async modifier.
-An async main method enables you to use await in your Main method. Previously you would need to write:
-
-
 ## default literal expressions
-You can use default literal expressions in default value expressions when the target type can be inferred.
-Default literal expressions are an enhancement to default value expressions. These expressions initialize a variable to the default value. Where you previously would write:
+대상의 타입이 유추 가능한 경우 `default` 값 식에서 [리터럴](https://ko.wikipedia.org/wiki/%EB%A6%AC%ED%84%B0%EB%9F%B4) 식을 사용 할 수 있습니다.
 
 ```C#
+// .NET 3.5
 Func<string, bool> whereClause = default(Func<string, bool>);
-```
-You can now omit the type on the right-hand side of the initialization:
-```C#
+
+// .NET 4.x
 Func<string, bool> whereClause = default;
 ```
 
 ## Inferred tuple element names
-The names of tuple elements can be inferred from tuple initialization in many cases.
+튜플 엘레멘츠의 이름은 대부분 초기화 할때 유추 가능합니다.
 ```C#
+// C# 7.0
 int count = 5;
 string label = "Colors used in the map";
 var pair = (count: count, label: label);
-```
-```C#
+
+// C# 7.1
 int count = 5;
 string label = "Colors used in the map";
 var pair = (count, label); // element names are "count" and "label"
 ```
 
 ## Pattern matching on generic type parameters
-You can use pattern match expressions on variables whose type is a generic type parameter.
 
 # C# 7.2
 ## Techniques for writing safe efficient code
