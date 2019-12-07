@@ -568,49 +568,33 @@ var pair = (count, label); // element names are "count" and "label"
 
 # C# 7.2
 ## Techniques for writing safe efficient code
-A combination of syntax improvements that enable working with value types using reference semantics.
-* The `in` modifier on parameters, to specify that an argument is passed by reference but not modified by the called method. Adding the `in` modifier to an argument is a source compatible change.
-* The `ref readonly` modifier on method returns, to indicate that a method returns its value by reference but doesn't allow writes to that object. Adding the `ref readonly` modifier is a source compatible change, if the return is assigned to a value. Adding the `readonly` modifier to an existing `ref` return statement is an incompatible change. It requires callers to update the declaration of `ref` local variables to include the `readonly` modifier.
-* The `readonly struct` declaration, to indicate that a struct is immutable and should be passed as an `in` parameter to its member methods. Adding the `readonly` modifier to an existing struct declaration is a binary compatible change.
-* The `ref struct` declaration, to indicate that a struct type accesses managed memory directly and must always be stack allocated. Adding the `ref` modifier to an existing `struct` declaration is an incompatible change. A `ref struct` cannot be a member of a class or used in other locations where it may be allocated on the heap.
+* `in`  파라미터에서 레퍼런스로 전달되지만 불린 함수에서 수정되지 않게 해줍니다.
+* `ref readonly` 한정자는 레퍼런스 값을 반환하지만 해당 오브젝트에 값을 쓰는걸 허용하지 않는걸 나타냅니다. `ref readonly` 한정자를 추가하는것은 호환 가능한 변경이나, 이미 존재하는 `ref` 반환에 `readonly`를 추가하는 것은 호환 가능하지 않는 변경입니다. 호출자가 `ref` 지역 변수를 `readonly` 한정자가 포함되도록 선언을 변경해야 합니다.
+* `readyonly struct` 선언은 구조체가 이뮤터블하고 멤버 변수로 `in` 파라미터로서 넘겨져야 합니다. 기존의 구조체 선언에 `readonly` 한정자를 추가하는것은 [이진 호환 가능 변경](https://docs.microsoft.com/ko-kr/dotnet/csharp/whats-new/version-update-considerations#binary-compatible-changes) 입니다.
+* `ref struct` 선언은 구조체 타입이 직접 매니지드 메모리에 접근 할 수 있고 언제나 스택에 할당 됨을 나타냅니다. 기존의 `stuct` 선언에 `ref` 한정자를 추가하는 것은 호환 가능하지 않는 변경입니다. `ref struct`는 구조체의 멤버가 될 수 없거나 힙에 할당되지 않는 다른 영역에서 사용이 불가능합니다.
+
 ## Non-trailing named arguments
-Named arguments can be followed by positional arguments.
-Method calls may now use named arguments that precede positional arguments when those named arguments are in the correct positions.
+명명된 아규먼트가 올바른 위치에 있을 시 위치 아규먼트 앞에 명명된 아규먼트를 사용 할 수 있습니다.
+
 ```C#
-// The method can be called in the normal way, by using positional arguments.
-PrintOrderDetails("Gift Shop", 31, "Red Mug");
-
-// Named arguments mixed with positional arguments are valid
-// as long as they are used in their correct position.
-PrintOrderDetails("Gift Shop", 31, productName: "Red Mug");
-PrintOrderDetails(sellerName: "Gift Shop", 31, productName: "Red Mug");    // C# 7.2 onwards
-PrintOrderDetails("Gift Shop", orderNum: 31, "Red Mug");                   // C# 7.2 onwards
-
-// However, mixed arguments are invalid if used out-of-order.
-// The following statements will cause a compiler error.
-PrintOrderDetails(productName: "Red Mug", 31, "Gift Shop");
-PrintOrderDetails(31, sellerName: "Gift Shop", "Red Mug");
-PrintOrderDetails(31, "Red Mug", sellerName: "Gift Shop");
+UpdateProfile(name: "Kim", 32, job: "Programmer");
+UpdateProfile("Kim", age: 32, "Programmer");
 ```
 
 ## Leading underscores in numeric literals
-Numeric literals can now have leading underscores before any printed digits.
+digit이 나오기전에 `_` digit seperator 를 사용 할 수 있습니다.
 ```C#
 int binaryValue = 0b_0101_0101;
 ```
 
 ## private protected access modifier
-The `private protected` access modifier enables access for derived classes in the same assembly.
-Struct members cannot be `private protected` because the struct cannot be inherited.
-
-
+`private protected` 한정자는 같은 어셈블리 내에 선언된 상속된 클래스들에서 접근 가능합니다. 구조체는 상속 받을 수 없기 떄문에 선언 할 수 없습니다.
 
 ## Conditional ref expressions
-The result of a conditional expression (?:) can now be a reference.
+삼항 연산자(?:) 의 결과는 레퍼런스가 될 수 있습니다.
 ```C#
 ref var r = ref (arr != null ? ref arr[0] : ref otherArr[0]);
 ```
-The variable r is a reference to the first value in either arr or otherArr.
 
 
 
