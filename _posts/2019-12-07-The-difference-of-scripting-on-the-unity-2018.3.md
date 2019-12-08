@@ -30,7 +30,8 @@ categories: [unity, C#]
 ## Named/optional arguments
 Parameters의 포지션이 아닌 Parameters의 이름을 명시해 arguments를 넘길 수 있게 해줍니다.
 
-```C#
+{% highlight c# %}
+
 void UpdateProfile(string name, int age, string job)
 {
     // do
@@ -50,7 +51,9 @@ void Start()
     // UpdateProfile(32, name: "Kim", "Programmer");
     // UpdateProfile(32, "Programmer", name: "Kim");
 }
-```
+
+{% endhighlight %}
+
 ## Generic covariant and contravariant
 ## Embedded interop types
 
@@ -59,7 +62,8 @@ void Start()
 ## New keyword async await
 비동기 작업이 가능한 `async` `await` 키워드가 생겼습니다.
 
-```C#
+{% highlight c# %}
+
 // Unity 코루틴 경우
 using UnityEngine;
 public class UnityCoroutineExample : MonoBehaviour
@@ -76,8 +80,11 @@ public class UnityCoroutineExample : MonoBehaviour
         Debug.Log("Finish wait " + Time.time);
     }
 }
-```
-```C#
+
+{% endhighlight %}
+
+{% highlight c# %}
+
 // .NET 4.x async-await 경우
 using UnityEngine;
 using System.Threading.Tasks;
@@ -95,7 +102,9 @@ public class AsyncAwaitExample : MonoBehaviour
         Debug.Log("Finish wait " + Time.time);
     }
 }
-```
+
+{% endhighlight %}
+
 
 유니티에서 비동기 프로그래밍을 시작하기 위한 참고사항
 
@@ -117,7 +126,8 @@ public class AsyncAwaitExample : MonoBehaviour
 리플렉션 코드 없이 많은 컨텍스트 정보를 쉽게 가져 오게끔 해줍니다.
 
 
-```C#
+{% highlight c# %}
+
 void Start ()
 {
     ShowCallerInfo("Something happened.");
@@ -137,14 +147,17 @@ void ShowCallerInfo(string message,
 // member name: Start
 // source file path: D:\Documents\unity-scripting-upgrade\Unity Project\Assets\CallerInfoTest.cs
 // source line number: 10
-```
+
+{% endhighlight %}
+
 
 
 # C#6
 ## Read-only auto-properties
 읽기 전용 프로퍼티는 간단히 `get` 만 선언함으로써 만들 수 있습니다.
 
-```C#
+{% highlight c# %}
+
 public class NPC
 {
     public int health { get; }
@@ -154,9 +167,12 @@ public class NPC
         this.health = health;
     }
 }
-```
+
+{% endhighlight %}
+
 생성자가 아닌 곳에서 접근 시 에러를 생성합니다.
-```C#
+{% highlight c# %}
+
 public class NPC
 {
     public int health { get; }
@@ -167,20 +183,26 @@ public class NPC
         this.health = health;
     }
 }
-```
+
+{% endhighlight %}
+
 
 ## Auto-property initializers
 자동 프로퍼티 생성자는 프로퍼티 선언시 값을 초기화 할 수 있게 해줍니다.
 
 
-```C#
+{% highlight c# %}
+
 public ICollection<double> Grades { get; } = new List<double>();
 
 public int Health { get; set; } = 100;
-```
+
+{% endhighlight %}
+
 
 ## Index initializers
-```C#
+{% highlight c# %}
+
 // .NET 3.5
 private Dictionary<int, string> messages = new Dictionary<int, string>
 {
@@ -196,26 +218,35 @@ private Dictionary<int, string> webErrors = new Dictionary<int, string>
     [302] = "Page moved, but left a forwarding address.",
     [500] = "The web server can't come out to play today."
 };
-```
+
+{% endhighlight %}
+
 
 ## String interpolation
-```C#
+{% highlight c# %}
+
 // .NET 3.5
 Debug.Log(String.Format("{0} health: {1}", playerName, health));
 
 // .NET 4.x
 Debug.Log($"{playerName} health: {health}");
-```
+
+{% endhighlight %}
+
 
 ## Expression-bodied function members
-```C#
+{% highlight c# %}
+
 public override string ToString() => $"{name} : {health * 0.5}";
 public string GetInfo => $"{name} : {(hpRatio < 0.1 ? "Dead" : "Live")}";
-```
+
+{% endhighlight %}
+
 
 ## using static
 한 클래스의 스태틱 메소드를 가져오는 것이 향상되었습니다.
-```C#
+{% highlight c# %}
+
 // .NET 3.5
 using UnityEngine;
 public class Example : MonoBehaviour
@@ -240,31 +271,43 @@ public class UsingStaticExample: MonoBehaviour
         // 3
     }
 }
-```
+
+{% endhighlight %}
+
 
 ## Null-conditional operators
 널 상태 오퍼레이터는 Null 체크를 쉽고 부드럽게 만들어줍니다. 단순히 멤버 접근을 `.`에서 `?.` 로 바꾸세요.
 
-```C#
+{% highlight c# %}
+
 var first = person?.FirstName;
-```
+
+{% endhighlight %}
+
 person 객체가 null 이면 first 변수에 null 이 할당됩니다. person 객체가 null 이 아니라면 FirstName 이 할당됩니다.
 person 변수가 null 일 경우에 `NullRefferenceException` 을 생성하지 않고 null 을 반환합니다. 또 배열 혹은 인덱스에 접근할때 `[]` 를 `?[]`로 바꾸는걸로 사용가능합니다.
 
-```C#
+{% highlight c# %}
+
 first = person?.FirstName ?? "Unspecified";
-```
+
+{% endhighlight %}
+
 `??` 오퍼레이터와 함꼐 해서 Default 값을 셋팅 할 수도 있습니다.
 
-```C#
+{% highlight c# %}
+
 A?.B?.Do(C);
 A?.B?[C];
-```
+
+{% endhighlight %}
+
 앞의 오퍼레이터가 널을 리턴한다면 뒤의 나머지 체인들을 실행되지 않습니다. 위 예제에서는 만약 A나 B가 널이라면 C를 실행 하지 않습니다.
 
 ## Extension Add methods in collection initializers
 콜렉션 이니셜라이저에 Add 메소드 익스텐션이 적용됩니다.
-```C#
+{% highlight c# %}
+
 var dic = new Dictionary<int, string> { 1, 2, 4 };
 
 foreach (var a in dic)
@@ -281,26 +324,32 @@ public static class DictionaryExtension
 		dict.Add(index, index.ToString());
 	}
 }
-```
+
+{% endhighlight %}
+
 
 # C#7.0
 ## out variables
 이제 `out` 변수를 따로 선언하는게 아닌 메소드가 불리는 곳에서 arguments로 선언할 수 있습니다.
 
-```C#
+{% highlight c# %}
+
 // .NET 3.5
 bool error;
 string text = StringTable.GetString("SOME_TEXT", out error);
 
 // .NET 4.x
 string text = StringTable.GetString("SOME_TEXT", out var error);
-```
+
+{% endhighlight %}
+
 
 ## Tuples
 이제 가볍고 여러 공개 필드를 가지는 명시되지 않는 타입을 만들 수 있습니다. 컴파일러나 IDE는 이러한 타입의 시맨틱을 이해합니다.
 튜플은 C#7.0 이전에도 사용 가능했으나, 효과적이지 않고 언어적 도움도 없었습니다.
 
-```C#
+{% highlight c# %}
+
 (string Alpha, string Beta) namedLetters = ("a", "b");
 Debug.Log($"{namedLetters.Alpha}, {namedLetters.Beta}");
 
@@ -325,7 +374,9 @@ public class Point
 
 var p = new Point(3.14, 2.71);
 (double X, double Y) = p;
-```
+
+{% endhighlight %}
+
 
 
 ## Discards
@@ -338,7 +389,8 @@ var p = new Point(3.14, 2.71);
 * 명백히 버리기 위해 할당한 단독 형식자일 경우에.
 
 
-```C#
+{% highlight c# %}
+
 using System;
 using System.Collections.Generic;
 
@@ -372,7 +424,9 @@ public class Example
 }
 // The example displays the following output:
 //      Population change, 1960 to 2010: 393,149
-```
+
+{% endhighlight %}
+
 
 ## Pattern Matching
 패턴 매칭은 객체 뿐만 아니라 프로퍼티에 대해 메서드 디스패치를 구현 할 수 있게 해주는 기능입니다.
@@ -381,10 +435,13 @@ public class Example
 
 1. `is` 패턴 표현식은 익숙한 `is` 연산자를 사용하여 해당 타입에 대한 객체를 질의하고 결과를 할당하는것을 하나의 명령어로 처리합니다.
 
-```C#
+{% highlight c# %}
+
 if (input is int count)
     sum += count;
-```
+
+{% endhighlight %}
+
 
 2. 기존 스위치 문에 몇가지가 추가되었습니다.
 
@@ -393,7 +450,8 @@ if (input is int count)
 * 해당 변수에 대한 추가 체크 조건을 위해 `when` 절을 추가 할 수 있습니다.
 * `case` 라벨 순서는 이제 중요합니다. 첫번째 일치하는 매칭 구문이 실행되고 나머진 지나갑니다.
 
-```C#
+{% highlight c# %}
+
 public static int SumPositiveNumbers(IEnumerable<object> sequence)
 {
     int sum = 0;
@@ -424,12 +482,15 @@ public static int SumPositiveNumbers(IEnumerable<object> sequence)
     }
     return sum;
 }
-```
+
+{% endhighlight %}
+
 
 ## ref locals and returns
 밸류 타입에 대한 Refference를 다룰 수 있습니다.
 
-```C#
+{% highlight c# %}
+
 int number = 0;
 
 ref int copyNumber = ref number;
@@ -452,7 +513,9 @@ ref var item = ref MatrixSearch.Find(matrix, (val) => val == 42);
 Debug.Log(item);
 item = 24;
 Debug.Log(matrix[4, 2]);
-```
+
+{% endhighlight %}
+
 C#언어에서는 ref local과 return을 잘못 사용하는것을 막아 줄 몇 가지 규칙들이 있습니다.
 
 * 모든 메소드의 호출과 리턴 구문에는 반드시 `ref` 키워드를 넣어야 합니다.
@@ -464,7 +527,8 @@ C#언어에서는 ref local과 return을 잘못 사용하는것을 막아 줄 �
 ## Local Functions
 스코프와 가시성이 허락하는 아래에서 다른 함수 내에 함수를 끼워 넣을 수 있습니다.
 
-```C#
+{% highlight c# %}
+
 public static IEnumerable<char> AlphabetSubset3(char start, char end)
 {
     if (start < 'a' || start > 'z')
@@ -483,11 +547,14 @@ public static IEnumerable<char> AlphabetSubset3(char start, char end)
             yield return c;
     }
 }
-```
+
+{% endhighlight %}
+
 https://docs.microsoft.com/en-us/dotnet/csharp/local-functions-vs-lambdas
 
 ## More expression-bodied members
-```C#
+{% highlight c# %}
+
 // 생성자
 public ExpressionMembersExample(string label) => this.Label = label;
 
@@ -514,7 +581,9 @@ private int TakeDamage(int amount) => Health -= amount;
 // .NET 4.x
 public string PlayerHealthUiText => $"Player health: {Health}";
 
-```
+
+{% endhighlight %}
+
 
 ## throw Expressions
 생성자에서 `throw` 구문을 사용 할 수 있습니다.
@@ -525,23 +594,32 @@ async의 리턴 타입으로 `Task`와 `Task<T>`를 사용가능합니다.
 ## Numeric literal syntax improvements
 새 토큰들로 상수를 읽는 가독성을 좋아집니다.
 
-```C#
+{% highlight c# %}
+
 public const int Sixteen =   0b0001_0000;
 public const int ThirtyTwo = 0b0010_0000;
 public const int SixtyFour = 0b0100_0000;
 public const int OneHundredTwentyEight = 0b1000_0000;
-```
+
+{% endhighlight %}
+
 상수의 시작부분에 있는 `0b`는 바이너리 넘버로 쓰여졌음을 나타냅니다. 바이너리 넘버는 더 길어질 수 있기때문에 digit seperator `_`를 통해 비트 패턴을 더 쉽게 확인 할수 있습니다. digit seperator는 상수 어디에나 나타날 수 있습니다.  기본적인 10진수의 경우 일반적으로 천 단위 구분자로 사용됩니다.
 
-```C#
+{% highlight c# %}
+
 public const long BillionsAndBillions = 100_000_000_000;
-```
+
+{% endhighlight %}
+
 digit seperator 는 `decimal`, `float`, 그리고 `double` 타입에서도 사용 할 수 있습니다.
 
-```C#
+{% highlight c# %}
+
 public const double AvogadroConstant = 6.022_140_857_747_474e23;
 public const decimal GoldenRatio = 1.618_033_988_749_894_848_204_586_834_365_638_117_720_309_179M;
-```
+
+{% endhighlight %}
+
 숫자 상수를 더욱 가독성 좋게 선언 할 수 있습니다.
 
 # C#7.1
@@ -549,17 +627,21 @@ public const decimal GoldenRatio = 1.618_033_988_749_894_848_204_586_834_365_638
 ## default literal expressions
 대상의 타입이 유추 가능한 경우 `default` 값 식에서 [리터럴](https://ko.wikipedia.org/wiki/%EB%A6%AC%ED%84%B0%EB%9F%B4) 식을 사용 할 수 있습니다.
 
-```C#
+{% highlight c# %}
+
 // .NET 3.5
 Func<string, bool> whereClause = default(Func<string, bool>);
 
 // .NET 4.x
 Func<string, bool> whereClause = default;
-```
+
+{% endhighlight %}
+
 
 ## Inferred tuple element names
 튜플 엘레멘츠의 이름은 대부분 초기화 할때 유추 가능합니다.
-```C#
+{% highlight c# %}
+
 // C#7.0
 int count = 5;
 string label = "Colors used in the map";
@@ -569,7 +651,9 @@ var pair = (count: count, label: label);
 int count = 5;
 string label = "Colors used in the map";
 var pair = (count, label); // element names are "count" and "label"
-```
+
+{% endhighlight %}
+
 
 ## Pattern matching on generic type parameters
 
@@ -583,25 +667,34 @@ var pair = (count, label); // element names are "count" and "label"
 ## Non-trailing named arguments
 명명된 아규먼트가 올바른 위치에 있을 시 위치 아규먼트 앞에 명명된 아규먼트를 사용 할 수 있습니다.
 
-```C#
+{% highlight c# %}
+
 UpdateProfile(name: "Kim", 32, job: "Programmer");
 UpdateProfile("Kim", age: 32, "Programmer");
-```
+
+{% endhighlight %}
+
 
 ## Leading underscores in numeric literals
 digit이 나오기전에 `_` digit seperator 를 사용 할 수 있습니다.
-```C#
+{% highlight c# %}
+
 int binaryValue = 0b_0101_0101;
-```
+
+{% endhighlight %}
+
 
 ## private protected access modifier
 `private protected` 한정자는 같은 어셈블리 내에 선언된 상속된 클래스들에서 접근 가능합니다. 구조체는 상속 받을 수 없기 떄문에 선언 할 수 없습니다.
 
 ## Conditional ref expressions
 삼항 연산자(?:) 의 결과는 레퍼런스가 될 수 있습니다.
-```C#
+{% highlight c# %}
+
 ref var r = ref (arr != null ? ref arr[0] : ref otherArr[0]);
-```
+
+{% endhighlight %}
+
 
 
 # C#7.3
