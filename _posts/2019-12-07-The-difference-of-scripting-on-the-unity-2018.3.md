@@ -7,21 +7,28 @@ tags: [unity, C#]
 categories: [unity, C#]
 ---
 
-유니티 2017.1 버전부터 [로즐린 컴파일러](https://github.com/dotnet/roslyn)가 실험적으로 적용 되 .NET 4.x, C# 6와 호환되는 스크립팅이 사용 가능합니다. 2018.1 부터는 .NET 3.5 런타임이 레거시가 되고, 2018.3 부터는 C# 7.3 버전이 사용 가능합니다.
+유니티 2017.1 버전부터 [로즐린 컴파일러](https://github.com/dotnet/roslyn)가 실험적으로 적용 되 .NET 4.x, C#6와 호환되는 스크립팅이 사용 가능합니다. 2018.1 부터는 .NET 3.5 런타임이 레거시가 되고, 2018.3 부터는 C#7.3 버전이 사용 가능합니다.
 
-* 2017.1 .NET 4.6, C# 6 Compatible version
+* 2017.1 .NET 4.6, C#6 Compatible version
 * 2018.1 .NET 4.x Equivalent runtime is no longer considered experimental,
-* 2018.3 Support C# 7.3
+* 2018.3 Support C#7.3
 * 2019.2 Removed .NET 3.5 Equivalent
 
-그간 유니티에서 최신 C# 언어의 기능을 사용하는것은 제한적이었습니다. 그래서 이제 사용 가능한 C# 기능들을 정리해 보았습니다.
+그간 유니티에서 최신 C#언어의 기능을 사용하는것은 제한적이었습니다. 그래서 이제 사용 가능한 C#기능들을 정리해 보았습니다.
+* [C#4](#c#4)
+* [C#5](#c#5)
+* [C#6](#c#6)
+* [C#7.0](#c#7.0)
+* [C#7.1](#c#7.1)
+* [C#7.2](#c#7.2)
+* [C#7.3](#c#7.3)
 
-# C# 4
+# C#4
 ## Dynamic binding
 `dynamic` 은 `object`와 비슷하지만, 타입이 런타임에서 결정됩니다.
 
 ## Named/optional arguments
-파라미터의 포지션이 아닌 파라미터의 이름을 명시해 arguments를 넘길 수 있게 해줍니다.
+Parameters의 포지션이 아닌 Parameters의 이름을 명시해 arguments를 넘길 수 있게 해줍니다.
 
 ```C#
 void UpdateProfile(string name, int age, string job)
@@ -47,7 +54,8 @@ void Start()
 ## Generic covariant and contravariant
 ## Embedded interop types
 
-# C# 5
+
+# C#5
 ## New keyword async await
 비동기 작업이 가능한 `async` `await` 키워드가 생겼습니다.
 
@@ -132,7 +140,7 @@ void ShowCallerInfo(string message,
 ```
 
 
-# C# 6
+# C#6
 ## Read-only auto-properties
 읽기 전용 프로퍼티는 간단히 `get` 만 선언함으로써 만들 수 있습니다.
 
@@ -275,7 +283,7 @@ public static class DictionaryExtension
 }
 ```
 
-# C# 7.0
+# C#7.0
 ## out variables
 이제 `out` 변수를 따로 선언하는게 아닌 메소드가 불리는 곳에서 arguments로 선언할 수 있습니다.
 
@@ -290,7 +298,7 @@ string text = StringTable.GetString("SOME_TEXT", out var error);
 
 ## Tuples
 이제 가볍고 여러 공개 필드를 가지는 명시되지 않는 타입을 만들 수 있습니다. 컴파일러나 IDE는 이러한 타입의 시맨틱을 이해합니다.
-튜플은 C# 7.0 이전에도 사용 가능했으나, 효과적이지 않고 언어적 도움도 없었습니다.
+튜플은 C#7.0 이전에도 사용 가능했으나, 효과적이지 않고 언어적 도움도 없었습니다.
 
 ```C#
 (string Alpha, string Beta) namedLetters = ("a", "b");
@@ -445,7 +453,7 @@ Debug.Log(item);
 item = 24;
 Debug.Log(matrix[4, 2]);
 ```
-C# 언어에서는 ref local과 return을 잘못 사용하는것을 막아 줄 몇 가지 규칙들이 있습니다.
+C#언어에서는 ref local과 return을 잘못 사용하는것을 막아 줄 몇 가지 규칙들이 있습니다.
 
 * 모든 메소드의 호출과 리턴 구문에는 반드시 `ref` 키워드를 넣어야 합니다.
 * ref 리턴은 밸류 변수나 ref 변수에 할당됩니다.
@@ -536,7 +544,7 @@ public const decimal GoldenRatio = 1.618_033_988_749_894_848_204_586_834_365_638
 ```
 숫자 상수를 더욱 가독성 좋게 선언 할 수 있습니다.
 
-# C# 7.1
+# C#7.1
 ## async Main method
 ## default literal expressions
 대상의 타입이 유추 가능한 경우 `default` 값 식에서 [리터럴](https://ko.wikipedia.org/wiki/%EB%A6%AC%ED%84%B0%EB%9F%B4) 식을 사용 할 수 있습니다.
@@ -552,12 +560,12 @@ Func<string, bool> whereClause = default;
 ## Inferred tuple element names
 튜플 엘레멘츠의 이름은 대부분 초기화 할때 유추 가능합니다.
 ```C#
-// C# 7.0
+// C#7.0
 int count = 5;
 string label = "Colors used in the map";
 var pair = (count: count, label: label);
 
-// C# 7.1
+// C#7.1
 int count = 5;
 string label = "Colors used in the map";
 var pair = (count, label); // element names are "count" and "label"
@@ -565,11 +573,11 @@ var pair = (count, label); // element names are "count" and "label"
 
 ## Pattern matching on generic type parameters
 
-# C# 7.2
+# C#7.2
 ## Techniques for writing safe efficient code
-* `in`  파라미터에서 레퍼런스로 전달되지만 불린 함수에서 수정되지 않게 해줍니다.
+* `in`  Parameters에서 레퍼런스로 전달되지만 불린 함수에서 수정되지 않게 해줍니다.
 * `ref readonly` 한정자는 레퍼런스 값을 반환하지만 해당 오브젝트에 값을 쓰는걸 허용하지 않는걸 나타냅니다. `ref readonly` 한정자를 추가하는것은 호환 가능한 변경이나, 이미 존재하는 `ref` 반환에 `readonly`를 추가하는 것은 호환 가능하지 않는 변경입니다. 호출자가 `ref` 지역 변수를 `readonly` 한정자가 포함되도록 선언을 변경해야 합니다.
-* `readyonly struct` 선언은 구조체가 이뮤터블하고 멤버 변수로 `in` 파라미터로서 넘겨져야 합니다. 기존의 구조체 선언에 `readonly` 한정자를 추가하는것은 [이진 호환 가능 변경](https://docs.microsoft.com/ko-kr/dotnet/csharp/whats-new/version-update-considerations#binary-compatible-changes) 입니다.
+* `readyonly struct` 선언은 구조체가 이뮤터블하고 멤버 변수로 `in` Parameters로서 넘겨져야 합니다. 기존의 구조체 선언에 `readonly` 한정자를 추가하는것은 [이진 호환 가능 변경](https://docs.microsoft.com/ko-kr/dotnet/csharp/whats-new/version-update-considerations#binary-compatible-changes) 입니다.
 * `ref struct` 선언은 구조체 타입이 직접 매니지드 메모리에 접근 할 수 있고 언제나 스택에 할당 됨을 나타냅니다. 기존의 `stuct` 선언에 `ref` 한정자를 추가하는 것은 호환 가능하지 않는 변경입니다. `ref struct`는 구조체의 멤버가 될 수 없거나 힙에 할당되지 않는 다른 영역에서 사용이 불가능합니다.
 
 ## Non-trailing named arguments
@@ -596,7 +604,7 @@ ref var r = ref (arr != null ? ref arr[0] : ref otherArr[0]);
 ```
 
 
-# C# 7.3
+# C#7.3
 TODO
 
 ---
