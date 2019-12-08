@@ -64,7 +64,7 @@ void Start()
 
 {% highlight c# %}
 
-// Unity 코루틴 경우
+// Unity Coroutine
 using UnityEngine;
 public class UnityCoroutineExample : MonoBehaviour
 {
@@ -85,7 +85,7 @@ public class UnityCoroutineExample : MonoBehaviour
 
 {% highlight c# %}
 
-// .NET 4.x async-await 경우
+// .NET 4.x async-await
 using UnityEngine;
 using System.Threading.Tasks;
 public class AsyncAwaitExample : MonoBehaviour
@@ -106,8 +106,7 @@ public class AsyncAwaitExample : MonoBehaviour
 {% endhighlight %}
 
 
-유니티에서 비동기 프로그래밍을 시작하기 위한 참고사항
-
+### 유니티에서 비동기 프로그래밍을 시작하기 위한 참고사항
 * 비동기 함수는 `Task` 나 `Task<TResult>`의 리턴값을 가져야 합니다.
 * task를 리턴하는 비동기 함수는 언제나 `async` 키워드를 붙여야 합니다.
 * 동기식 코드에서 비동기 함수를 실행 할 때만 `async void` 형이여야 합니다.
@@ -121,10 +120,8 @@ public class AsyncAwaitExample : MonoBehaviour
 * 코루틴은 MonoBehaviour 에서 파생되지 않는 클래스에서는 사용 불가능합니다.
 * async-await 가 유니티 coroutine을 완전히 대체하라고 권하지 않습니다. 프로파일링을 통해 결과를 확인하고 접근하세요.
 
-
 ## Caller info attributes
 리플렉션 코드 없이 많은 컨텍스트 정보를 쉽게 가져 오게끔 해줍니다.
-
 
 {% highlight c# %}
 
@@ -150,11 +147,9 @@ void ShowCallerInfo(string message,
 
 {% endhighlight %}
 
-
-
 # C#6
 ## Read-only auto-properties
-읽기 전용 프로퍼티는 간단히 `get` 만 선언함으로써 만들 수 있습니다.
+읽기 전용 property는 간단히 `get` 만 선언함으로써 만들 수 있습니다.
 
 {% highlight c# %}
 
@@ -188,8 +183,7 @@ public class NPC
 
 
 ## Auto-property initializers
-자동 프로퍼티 생성자는 프로퍼티 선언시 값을 초기화 할 수 있게 해줍니다.
-
+자동 property 생성자는 property 선언시 값을 초기화 할 수 있게 해줍니다.
 
 {% highlight c# %}
 
@@ -198,7 +192,6 @@ public ICollection<double> Grades { get; } = new List<double>();
 public int Health { get; set; } = 100;
 
 {% endhighlight %}
-
 
 ## Index initializers
 {% highlight c# %}
@@ -308,9 +301,9 @@ A?.B?[C];
 콜렉션 이니셜라이저에 Add 메소드 익스텐션이 적용됩니다.
 {% highlight c# %}
 
-var dic = new Dictionary<int, string> { 1, 2, 4 };
+var dict = new Dictionary<int, string> { 1, 2, 4 };
 
-foreach (var a in dic)
+foreach (var a in dict)
 	Console.WriteLine($"[{a.Key}] : {a.Value}");
     // [1] : 1
     // [2] : 2
@@ -350,15 +343,11 @@ string text = StringTable.GetString("SOME_TEXT", out var error);
 
 {% highlight c# %}
 
-(string Alpha, string Beta) namedLetters = ("a", "b");
-Debug.Log($"{namedLetters.Alpha}, {namedLetters.Beta}");
+(string Alpha, string Beta) letter = ("a", "b");
+Debug.Log($"{letter.Alpha}, {letter.Beta}");
 
-var alphabetStart = (Alpha: "a", Beta: "b");
-Debug.Log($"{alphabetStart.Alpha}, {alphabetStart.Beta}");
-
-(int max, int min) = Range(numbers);
-Debug.Log(max);
-Debug.Log(min);
+var letter = (Alpha: "a", Beta: "b");
+Debug.Log($"{letter.Alpha}, {letter.Beta}");
 
 public class Point
 {
@@ -380,56 +369,49 @@ var p = new Point(3.14, 2.71);
 
 
 ## Discards
-디스카드는 `_`의 이름을 가진 쓰기 전용 변수입니다. 단순히 버리기를 의도하는 하나의 변수에 모두 할당 할 수 있습니다. 디스카드는 할당되지 안흔 변수와 같습니다.
-디스카드는 다음의 경우에 도움을 줍니다.
+Discard는 `_` 키워드로 사용하는 쓰기 전용 변수입니다. 단순히 버리기를 의도하는 하나의 변수나 모든 변수에 할당 할 수 있습니다.
+
+Discard는 할당되지 않은 변수와 같습니다.
+
+Discard는 다음의 경우에 도움을 줍니다.
 
 * 튜플이나 유저정의 형식을 해체할때.
 * `out` arguments 없이 함수가 호출될때.
 * `is`나 `switch` 구문이 사용되는 패턴 매칭 연산때.
-* 명백히 버리기 위해 할당한 단독 형식자일 경우에.
-
+* 명백히 버리기 위해 할당한 단독 형식일 경우에.
 
 {% highlight c# %}
 
-using System;
-using System.Collections.Generic;
 
-public class Example
+var (_, _, _, pop1, _, pop2) = QueryCityDataForYears("New York City", 1960, 2010);
+
+Debug.Log($"Population change, 1960 to 2010: {pop2 - pop1:N0}");
+
+
+private (string, double, int, int, int, int) QueryCityDataForYears(string name, int year1, int year2)
 {
-   public static void Main()
-   {
-       var (_, _, _, pop1, _, pop2) = QueryCityDataForYears("New York City", 1960, 2010);
+  int population1 = 0, population2 = 0;
+  double area = 0;
 
-       Debug.Log($"Population change, 1960 to 2010: {pop2 - pop1:N0}");
-   }
+  if (name == "New York City") {
+     area = 468.48;
+     if (year1 == 1960) {
+        population1 = 7781984;
+     }
+     if (year2 == 2010) {
+        population2 = 8175133;
+     }
+  return (name, area, year1, population1, year2, population2);
+  }
 
-   private static (string, double, int, int, int, int) QueryCityDataForYears(string name, int year1, int year2)
-   {
-      int population1 = 0, population2 = 0;
-      double area = 0;
-
-      if (name == "New York City") {
-         area = 468.48;
-         if (year1 == 1960) {
-            population1 = 7781984;
-         }
-         if (year2 == 2010) {
-            population2 = 8175133;
-         }
-      return (name, area, year1, population1, year2, population2);
-      }
-
-      return ("", 0, 0, 0, 0, 0);
-   }
+  return ("", 0, 0, 0, 0, 0);
 }
-// The example displays the following output:
-//      Population change, 1960 to 2010: 393,149
 
 {% endhighlight %}
 
 
 ## Pattern Matching
-패턴 매칭은 객체 뿐만 아니라 프로퍼티에 대해 메서드 디스패치를 구현 할 수 있게 해주는 기능입니다.
+패턴 매칭은 객체 뿐만 아니라 property에 대해 메서드 디스패치를 구현 할 수 있게 해주는 기능입니다.
 패턴 매칭은 `switch`와 `is` 구문을 지원합니다. 패턴에 대해 추가적인 특별한 룰을 지정하기 위해 `when` 키워드를 씁니다.
 2가지 사용 방법을 소개하겠습니다.
 
@@ -701,5 +683,7 @@ ref var r = ref (arr != null ? ref arr[0] : ref otherArr[0]);
 TODO
 
 ---
-참조
-
+참고사이트
+* https://blogs.unity3d.com/2018/07/11/scripting-runtime-improvements-in-unity-2018-2/
+* https://docs.microsoft.com/en-us/visualstudio/cross-platform/unity-scripting-upgrade?view=vs-2019
+* https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-version-history
