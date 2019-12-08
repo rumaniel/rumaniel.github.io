@@ -21,7 +21,7 @@ categories: [unity, C#]
 `dynamic` 은 `object`와 비슷하지만, 타입이 런타임에서 결정됩니다.
 
 ## Named/optional arguments
-파라미터의 포지션이 아닌 파라미터의 이름을 명시해 인자를 넘길 수 있게 해줍니다.
+파라미터의 포지션이 아닌 파라미터의 이름을 명시해 arguments를 넘길 수 있게 해줍니다.
 
 ```C#
 void UpdateProfile(string name, int age, string job)
@@ -46,7 +46,6 @@ void Start()
 ```
 ## Generic covariant and contravariant
 ## Embedded interop types
-
 
 # C# 5
 ## New keyword async await
@@ -278,7 +277,7 @@ public static class DictionaryExtension
 
 # C# 7.0
 ## out variables
-이제 `out` 변수를 따로 선언하는게 아닌 메소드가 불리는 곳에서 인자로 선언할 수 있습니다.
+이제 `out` 변수를 따로 선언하는게 아닌 메소드가 불리는 곳에서 arguments로 선언할 수 있습니다.
 
 ```C#
 // .NET 3.5
@@ -326,7 +325,7 @@ var p = new Point(3.14, 2.71);
 디스카드는 다음의 경우에 도움을 줍니다.
 
 * 튜플이나 유저정의 형식을 해체할때.
-* `out` 인자 없이 함수가 호출될때.
+* `out` arguments 없이 함수가 호출될때.
 * `is`나 `switch` 구문이 사용되는 패턴 매칭 연산때.
 * 명백히 버리기 위해 할당한 단독 형식자일 경우에.
 
@@ -597,20 +596,9 @@ ref var r = ref (arr != null ? ref arr[0] : ref otherArr[0]);
 ```
 
 
-
 # C# 7.3
-The following new features support the theme of better performance for safe code:
+TODO
 
-* Indexing `fixed` fields does not require pinning
-* You can reassign ref local variables.
-* You can use initializers on stackalloc arrays.
-* You can use fixed statements with any type that supports a pattern.
-* You can use additional generic constraints.
+---
+참조
 
-The following enhancements were made to existing features:
-
-* You can test == and != with tuple types.
-* You can use expression variables in more locations.
-* You may attach attributes to the backing field of auto-implemented properties.
-* Method resolution when arguments differ by in has been improved.
-* Overload resolution now has fewer ambiguous cases.
