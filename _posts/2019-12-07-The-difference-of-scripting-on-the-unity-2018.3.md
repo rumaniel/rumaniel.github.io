@@ -513,22 +513,13 @@ C#언어에서는 ref local과 return을 잘못 사용하는것을 막아 줄 �
 
 {% highlight c# %}
 
-public static IEnumerable<char> AlphabetSubset3(char start, char end)
+public string GetA()
 {
-    if (start < 'a' || start > 'z')
-        throw new ArgumentOutOfRangeException(paramName: nameof(start), message: "start must be a letter");
-    if (end < 'a' || end > 'z')
-        throw new ArgumentOutOfRangeException(paramName: nameof(end), message: "end must be a letter");
+    return PrintA();
 
-    if (end <= start)
-        throw new ArgumentException($"{nameof(end)} must be greater than {nameof(start)}");
-
-    return alphabetSubsetImplementation();
-
-    IEnumerable<char> alphabetSubsetImplementation()
+    string PrintA()
     {
-        for (var c = start; c < end; c++)
-            yield return c;
+        return "a";
     }
 }
 
