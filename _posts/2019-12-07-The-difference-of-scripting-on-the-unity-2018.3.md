@@ -23,6 +23,7 @@ categories: [unity, C#]
 * [C#7.2](#C72)
 * [C#7.3](#C73)
 
+---
 # C#4
 ## Dynamic binding
 `dynamic` 은 `object`와 비슷하지만, 타입이 런타임에서 결정됩니다.
@@ -57,7 +58,7 @@ void Start()
 ## Generic covariant and contravariant
 ## Embedded interop types
 
-
+---
 # C#5
 ## New keyword async await
 비동기 작업이 가능한 `async` `await` 키워드가 생겼습니다.
@@ -147,6 +148,7 @@ void ShowCallerInfo(string message,
 
 {% endhighlight %}
 
+---
 # C#6
 ## Read-only auto-properties
 읽기 전용 property는 간단히 `get` 만 선언함으로써 만들 수 있습니다.
@@ -320,7 +322,7 @@ public static class DictionaryExtension
 
 {% endhighlight %}
 
-
+---
 # C#7.0
 ## out variables
 이제 `out` 변수를 따로 선언하는게 아닌 메소드가 불리는 곳에서 arguments로 선언할 수 있습니다.
@@ -603,7 +605,7 @@ public const decimal GoldenRatio = 1.618_033_988_749_894_848_204_586_834_365_638
 {% endhighlight %}
 
 숫자 상수를 더욱 가독성 좋게 선언 할 수 있습니다.
-
+---
 # C#7.1
 ## async Main method
 ## default literal expressions
@@ -638,7 +640,7 @@ var pair = (count, label); // element names are "count" and "label"
 
 
 ## Pattern matching on generic type parameters
-
+---
 # C#7.2
 ## Techniques for writing safe efficient code
 * `in`  Parameters에서 레퍼런스로 전달되지만 불린 함수에서 수정되지 않게 해줍니다.
@@ -677,7 +679,7 @@ ref var r = ref (arr != null ? ref arr[0] : ref otherArr[0]);
 
 {% endhighlight %}
 
-
+---
 
 # C#7.3
 TODO
