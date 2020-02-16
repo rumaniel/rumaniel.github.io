@@ -104,5 +104,8 @@ int result = sumArray.Aggregate(3, (sum, next) => next > 2 ? sum + next : sum, r
 
 {% endhighlight %}
 
-https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable?redirectedfrom=MSDN&view=netframework-4.8#methods
-https://www.dotnetperls.com/linq
+
+---
+참고사이트
+- https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable?redirectedfrom=MSDN&view=netframework-4.8#methods
+- https://www.dotnetperls.com/linq
