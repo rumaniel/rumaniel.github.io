@@ -9,7 +9,7 @@ categories: [unity, C#]
 
 LINQ 를 직접 코드에 쓸 수 있게 해주는 확장 메소드들을 정리해보았습니다.
 
-- [Aggregate](#Aggregate)
+- [Aggregate](#aggregate)
 - [All](#All)
 - [Any](#Any)
 - [AsEnumerable](#AsEnumerable)
@@ -58,6 +58,7 @@ LINQ 를 직접 코드에 쓸 수 있게 해주는 확장 메소드들을 정리
 - [Zip](#Zip)
 
 # Aggregate
+
 - 각 요소에 메서드를 적용합니다.
 - 시퀀스동안 이전 요소들을 집계합니다.
 - 지정된 시드값은 초기 누산기 값으로 사용됩니다
