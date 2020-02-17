@@ -104,6 +104,23 @@ int result = sumArray.Aggregate(3, (sum, next) => next > 2 ? sum + next : sum, r
 
 {% endhighlight %}
 
+# All
+- 한 콜렉션 안의 모든 요소가 특정한 조건에 맞는지 알려줍니다.
+
+## example
+{% highlight c# %}
+public static bool All<TSource> (this System.Collections.Generic.IEnumerable<TSource> source, Func<TSource,bool> predicate);
+
+int sumArray = { 1, 2, 3, 4, 5 };
+bool isBiggerThanZero = sumArray.All(element => element > 0);
+// true
+
+bool isBiggerThanZeroOnEvens = (from number in sumArray
+                              where number%2 == 0
+                              select number).All(element => elment > 0);
+// IEnumerable returnad with { 2, 4 } and all true
+
+{% endhighlight %}
 
 ---
 참고사이트
