@@ -122,6 +122,20 @@ bool isBiggerThanZeroOnEvens = (from number in sumArray
 
 {% endhighlight %}
 
+# Any
+- 한 콜렉션 안의 최소 하나 이상의 요소가 특정한 조건에 맞는지 알려줍니다.
+
+## example
+{% highlight c# %}
+public static bool Any<TSource> (this System.Collections.Generic.IEnumerable<TSource> source);
+
+int sumArray = { 1, 2, 3, 4, 5};
+bool isBiggerThanFive = sumArray.Any(element => element > 5);
+// false
+bool isBiggerThanFour = sumArray.Any(element => element > 4);
+// true
+
+{% endhighlight %}
 ---
 참고사이트
 - https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable?redirectedfrom=MSDN&view=netframework-4.8#methods
