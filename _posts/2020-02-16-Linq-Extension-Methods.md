@@ -111,7 +111,7 @@ int result = sumArray.Aggregate(3, (sum, next) => next > 2 ? sum + next : sum, r
 {% highlight c# %}
 public static bool All<TSource> (this System.Collections.Generic.IEnumerable<TSource> source, Func<TSource,bool> predicate);
 
-int sumArray = { 1, 2, 3, 4, 5 };
+int[] sumArray = { 1, 2, 3, 4, 5 };
 bool isBiggerThanZero = sumArray.All(element => element > 0);
 // true
 
@@ -129,13 +129,31 @@ bool isBiggerThanZeroOnEvens = (from number in sumArray
 {% highlight c# %}
 public static bool Any<TSource> (this System.Collections.Generic.IEnumerable<TSource> source);
 
-int sumArray = { 1, 2, 3, 4, 5};
+int[] sumArray = { 1, 2, 3, 4, 5 };
 bool isBiggerThanFive = sumArray.Any(element => element > 5);
 // false
 bool isBiggerThanFour = sumArray.Any(element => element > 4);
 // true
 
 {% endhighlight %}
+
+# AsEnumerable
+- IEnumerable 에 상응하는 특별한 타입으로 캐스팅 할 수 있게 해줍니다.
+
+## example
+{% highlight c# %}
+public static System.Collections.Generic.IEnumerable<TSource> AsEnumerable<TSource> (this System.Collections.Generic.IEnumerable<TSource> source);
+
+int[] sumArray = {1, 2, 3, 4, 5 };
+var query = sumArray.AsEnumerable();
+
+foreach (var element in query)
+{
+
+}
+
+{% endhighlight %}
+
 ---
 참고사이트
 - https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable?redirectedfrom=MSDN&view=netframework-4.8#methods
