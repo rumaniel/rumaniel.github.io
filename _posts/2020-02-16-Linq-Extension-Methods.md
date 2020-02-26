@@ -154,6 +154,17 @@ foreach (var element in query)
 
 {% endhighlight %}
 
+# AsParallel
+- 병렬 연산으로 실행 될수 있게 해줍니다.
+
+## example
+{% highlight c# %}
+
+int[] sumArray = {1, 2, 3, 4, 5 };
+int sum = sumArray.AsRarallel().Sum();
+
+{% endhighlight %}
+
 ---
 참고사이트
 - https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable?redirectedfrom=MSDN&view=netframework-4.8#methods
