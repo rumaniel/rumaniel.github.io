@@ -9,17 +9,17 @@ categories: [unity, art]
 
 # 작성의도
 
-새로 프로젝트 셋팅할때 마다 고민되는 이슈.
+새로 프로젝트 셋팅할때 마다 고민되는 이슈들 정리.
+todo
 
 # 리소스
+
 1. 아트는 스케일 다운만 가능하다. 업 하면 퀄리티 잃는다.
--> 목표 해상도의 2배 큰 사이즈로 아트 작업 권장
+- 목표 해상도의 2배 큰 사이즈로 아트 작업 권장.
 
-2. 아트가 엔진에 임포트 될때 텍스쳐는 2^n 승으로 올라간다
--> 아틀라스화 하라
+2. 아트가 엔진에 임포트 될때 텍스쳐는 2^n 승으로 올라간다.
+- 아틀라스화 하라.
 
-3. 적정 해상도 유지하라
-With Retina (an Apple trademark) and other modern high-DPI screens, while the actual hardware resolution is very high (e.g. 4K), what they can do is to run at a simulated lower resolution (usually half, say for instance full-HD instead of 4K) but then they render images and text using twice the pixels, so that they appear very crisp.
 
 ## 카메라
 Orthographic 카메라에는 size 라는 파라미터가 있다. 이 수치의 2배가 된 값은 세로 축에 몇개의 유닛을 만들지를 나타낸다. 
@@ -27,12 +27,14 @@ Orthographic 카메라에는 size 라는 파라미터가 있다. 이 수치의 2
 16:9 = x:10
 x = (16 / 9) * 10
 x = 17.7 
-이고 이는 가로로 17.7 유닛을 보여줍니다.
+이고 이는 가로로 17.7 유닛을 보여준다.
 
 ## 스프라이트
 각 스프라이트는 픽셀당 유닛 설정 가능. 말그대로 한 유닛에 몇 픽셀을 보여줄것인가에 대한 값.
-사이즈가 5일때 1080p 에 대응하고 싶으면 1080/10 = 108 ppu 면 된다. 이런식으로 조절할것.
-Today high-DPI screens are usually 144 DPI, but you can find phones that boast up to 400 DPI or more since they are packing a lot of pixels on relatively small screens. 
+
+사이즈가 5일때 1080p 에 대응하고 싶으면 1080/10 = 108 ppu(pixel per unit) 면 된다. 이런식으로 조절할것.
+
+
 
 # 유니티
 ## 유닛
@@ -44,7 +46,7 @@ Orthographic 카메라에는 size 라는 파라미터가 있다. 이 수치의 2
 16:9 = x:10
 x = (16 / 9) * 10
 x = 17.7 
-이고 이는 가로로 17.7 유닛을 보여줍니다.
+이고 이는 가로로 17.7 유닛을 보여준다.
 
 ## 스프라이트
 각 스프라이트는 픽셀당 유닛 설정 가능. 말그대로 한 유닛에 몇 픽셀을 보여줄것인가에 대한 값.
