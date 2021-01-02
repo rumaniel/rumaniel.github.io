@@ -7,8 +7,6 @@ tags: [unity, C#]
 categories: [unity, C#]
 ---
 
-{% include reading-time.html %}
-
 유니티 2017.1 버전부터 [로즐린 컴파일러](https://github.com/dotnet/roslyn)가 실험적으로 적용 되 .NET 4.x, C#6와 호환되는 스크립팅이 사용 가능합니다. 2018.1 부터는 .NET 3.5 런타임이 레거시가 되고, 2018.3 부터는 C#7.3 버전이 사용 가능합니다.
 
 * 2017.1 .NET 4.6, C#6 Compatible version
