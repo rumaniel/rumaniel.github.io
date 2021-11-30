@@ -7,3 +7,4 @@ tags: [retrospect, turnover]
 categories: [retrospect]
 ---
 
+[Intro](/assets/coding.jpg)
