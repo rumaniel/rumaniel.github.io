@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Unity3d Package Dependency Bug
-image: /img/hello_world.jpeg
+image: /assets/2d.animation.mathematics.errors.png
 tags: [unity, c#]
 categories: [unity, c#]
 ---
