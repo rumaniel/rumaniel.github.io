@@ -87,3 +87,5 @@ Unity 2d animation package 는 아래와 같은 정보를 가지고 있습니다
 
 
 
+# todo
+Find related Unity bug report
