@@ -9,6 +9,9 @@ permalink: /about/
 Unity Client Programmer
 
 ## Projects
+**Slot & Dragons**, Apr 2021 
+
+- Unity3d를 이용한 게임 제작 전반
 
 **Jackpotjoy Slots,** Aug 2019 & **Starspins Slots,** May 2019
 
@@ -39,6 +42,10 @@ Unity Client Programmer
 - Android/iOS 부분의 3rd Party SDK 적용 및 유틸리티 코드 제작
 
 ## Professional Experiences
+**StudioZoo** Client Lead Programmer, June 2020 - Current
+
+- Unity3d를 이용한 클라이언트 개발 총괄
+- Google Analytics, Bigquery, DataStudio 를 이용한 데이터 수집, 시각화 및 분석
 
 **Bagelcode** Client Programmer, Jan 2014 - Current
 
