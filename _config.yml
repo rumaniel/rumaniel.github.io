@@ -20,7 +20,7 @@ description: >- # this means to ignore newlines until "baseurl:"
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://rumaniel.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username: rumaniel
-github_username:  rumaniel
+github_username: rumaniel
 
 # Build settings
 markdown: kramdown
@@ -35,6 +35,7 @@ plugins:
 disqus:
   shortname: rumaniel
 
+words_per_minute: 180
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
