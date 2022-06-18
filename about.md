@@ -47,7 +47,7 @@ Unity Client Programmer
 - Unity3d를 이용한 클라이언트 개발 총괄
 - Google Analytics, Bigquery, DataStudio 를 이용한 데이터 수집, 시각화 및 분석
 
-**Bagelcode** Client Programmer, Jan 2014 - Current
+**Bagelcode** Client Programmer, Jan 2014 - May 2020
 
 - Unity3d 를 이용한 클라이언트 UI 및 슬롯머신 게임 개발
 - iOS, Android 베이스로 한 퍼블리셔 SDK 및 결재모듈 등 다양한 Native SDK 연동 및 개발
