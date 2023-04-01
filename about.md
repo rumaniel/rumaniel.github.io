@@ -4,6 +4,11 @@ title: About
 permalink: /about/
 ---
 # 김효진
+# Resume
+
+---
+
+# 김효진
 
 ### General Game Programmer.
 
@@ -13,9 +18,17 @@ Unity3D 엔진을 주력으로 쓰는 개발자로 게임 핵심 매카닉 구�
 
 10명도 안되는 작은 팀에서 100명이 넘어가는 글로벌 회사로 성장하는 과정을 겪으며 개발 및 팀 프로세스와 매니징에 많은 변화를 겪었고 그러면서 다양한 협업툴과 방법론을 각각 규모별 목적별 조직에 맞춰 도입 및 운영을 해본 경험이 있습니다.
 
+https://rumaniel.github.io
+
+https://github.com/rumaniel
+
+rumaniel@hotmail.com
+
++82-10-6851-2148
+
 ## Professional Experiences
 
-**StudioZoo,** Lead Client Programmer, Jun 2020 - Current
+**StudioZoo,** Jun 2020 - Current, Lead Client Programmer
 
 - 스타트업 초기 멤버로 개발 환경 셋팅
 - Unity3D를 이용한 클라이언트 개발 및 배포 프로세스 전반 구축
@@ -24,9 +37,7 @@ Unity3D 엔진을 주력으로 쓰는 개발자로 게임 핵심 매카닉 구�
 
 **Bagelcode**
 
-May 2017 - May 2020, Senior Client Programmer,
-
-Jan 2014 - Apr 2017, Client Programmer
+May 2017 - May 2020, Senior Client Programmer,<br>Jan 2014 - Apr 2017, Client Programmer
 
 - Unity3d를 이용한 클라이언트 개발 전반
 - iOS, Android, webGL 기반 한 퍼블리셔 SDK 및 결재모듈 등 다양한 Native SDK 연동 및 자체 개발
