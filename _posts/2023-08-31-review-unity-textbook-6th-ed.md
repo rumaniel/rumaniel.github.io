@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Review Unity Textbook 6th ed
-image: /assets/tryagainhighschollmath/book_cover.jpg
+image: /assets/unitytextbook6thed/20230904_005608.jpg
 date: 2023-08-31 22:24:34 +0900
 tags: [unity, c#]
 categories: [unity, c#]
