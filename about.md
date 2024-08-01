@@ -26,6 +26,7 @@ rumaniel@hotmail.com
 
 - Unity3D를 이용한 클라이언트 개발 및 배포 프로세스 전반 구축
 - Express/Typescript 를 이용한 API 서버 구축
+- React를 이용한 관리자 페이지 구축
 - Terraform을 이용한 AWS 인프라 구축 및 관리
 - Helm chart를 이용한 AWS EKS에 배포 프로세스 구축
 - Github Action을 이용한 백엔드 배포 자동화
@@ -67,6 +68,7 @@ May 2017 - May 2020, Senior Client Programmer,<br>Jan 2014 - Apr 2017, Client Pr
 - 지표분석을 위한 개발 단계에서의 데이터 설계 및 데이터 수집 파이프라인 구축 가능
 - ASP.NET을 이용한 라이브 게임 서비스를 위한 API 서버 구축 및 배포 가능
 - Express/Typescript를 이용한 라이브 게임 서비스를 위한 API 서버 구축 및 배포 가능
+- React를 이용해 간단한 관리자 페이지 구축 가능
 - Terraform을 이용한 AWS 인프라 구축 및 관리 가능
 - Helm Chart를 이용한 AWS EKS에 배포 프로세스 구축 가능
 
