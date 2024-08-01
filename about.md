@@ -3,10 +3,6 @@ layout: page
 title: About
 permalink: /about/
 ---
-# 김효진
-# Resume
-
----
 
 # 김효진
 
@@ -24,16 +20,22 @@ https://github.com/rumaniel
 
 rumaniel@hotmail.com
 
-+82-10-6851-2148
-
 ## Professional Experiences
 
-**StudioZoo,** Jun 2020 - Current, Lead Client Programmer
+**SZCodeLab Inc** July 2023 - Current, Lead Programmer
+
+- Unity3D를 이용한 클라이언트 개발 및 배포 프로세스 전반 구축
+- Express/Typescript 를 이용한 API 서버 구축
+- Terraform을 이용한 AWS 인프라 구축 및 관리
+- Helm chart를 이용한 AWS EKS에 배포 프로세스 구축
+- Github Action을 이용한 백엔드 배포 자동화
+
+**StudioZoo** Jun 2020 - July 2023, Lead Client Programmer
 
 - 스타트업 초기 멤버로 개발 환경 셋팅
 - Unity3D를 이용한 클라이언트 개발 및 배포 프로세스 전반 구축
 - Google Analytics, Bigquery, DataStudio를 이용한 데이터 수집, 시각화 및 분석
-- ASP.NET, Mysql을 Dockerize 한 API 서버 구축 및 배포
+- ASP.NET를 이용한 API 서버 구축 및 Azure/Container App, AWS/ECS 에 배포.
 
 **Bagelcode**
 
@@ -61,23 +63,38 @@ May 2017 - May 2020, Senior Client Programmer,<br>Jan 2014 - Apr 2017, Client Pr
 - Unity3d를 이용한 신규 프로젝트 프로토타이핑 및 제품화를 위한 스펙 검증 이후 라이브를 고려한 설계 및 개발 가능
 - 최적화 및 기능구현 목적을 위한 쉐이더 코드 작성 가능
 - Java 및 Objc를 이용한 Unity3d Native 플러그인 제작 가능
-- ASP.NET를 이용한 라이브 게임 서비스를 위한 API 서버 구축 및 배포 가능
-- Jenkins를 이용한 빌드 및 배포 자동화 파이프라인 제작 가능
+- Jenkins, Fastlane, Github Action을 이용한 빌드 및 배포 자동화 파이프라인 제작 가능
 - 지표분석을 위한 개발 단계에서의 데이터 설계 및 데이터 수집 파이프라인 구축 가능
+- ASP.NET을 이용한 라이브 게임 서비스를 위한 API 서버 구축 및 배포 가능
+- Express/Typescript를 이용한 라이브 게임 서비스를 위한 API 서버 구축 및 배포 가능
+- Terraform을 이용한 AWS 인프라 구축 및 관리 가능
+- Helm Chart를 이용한 AWS EKS에 배포 프로세스 구축 가능
 
 ## Projects
+
+**Golden Mango Casino**, SZCodeLab, July 2024
+
+- Unity3d를 이용해 UI와 네트워크 및 Native 코드 부분 구현
+- Jenkins/Fastlane 을 이용한 빌드 및 배포 자동화
+- Express/Typescript 를 이용한 API 서버 구축
+- Terraform을 이용한 AWS 인프라 구축 및 관리
+- Helm Chart를 통한 AWS EKS에 배포 프로세스 구축
+- Github Action을 이용한 백엔드 배포 자동화
 
 **HeadsUp Poker**, StudioZoo, Apr 2023 
 
 - Unity3d를 이용해 UI와 네트워크 및 Native 코드 부분 구현
+- [Unitask](https://github.com/Cysharp/UniTask)를 적극적으로 활용한 비동기 구현
+- [Vcontainer](https://github.com/hadashiA/VContainer)를 이용한 DI 구현 및 테스트 코드 작성
+- Jenkins/Fastlane 을 이용한 빌드 및 배포 자동화
 - Photon Engine을 이용한 멀티플레이 구현
-- ASP.NET, mysql을 Dockerize한 API 서버 구축 및 배포
+- ASP.NET를 이용한 API 서버 구축 및 Azure/Container App, AWS/ECS 에 배포
 
 **Slot & Dragons**, StudioZoo, Apr 2021 
 
 - Unity3d를 이용해 게임 전체 개발
 - Jenkins를 이용한 빌드 자동화
-- Google Analytics를 통한 데이터 수집 및 통계 파이프라인 구축
+- Google Analytics, Bigquery, DataStudio를 통한 데이터 수집 및 통계 파이프라인 구축
 
 **Jackpotjoy Slots,** Bagelcode, Aug 2019
 
@@ -88,7 +105,7 @@ May 2017 - May 2020, Senior Client Programmer,<br>Jan 2014 - Apr 2017, Client Pr
 - Jenkins를 이용해 원 소스 멀티 앱 빌드 파이프라인 자동화
 - 서울 오피스 개발 팀장으로 해외 개발 및 운영 오피스와 협업 주도
 
-**Epic Diamond Slots,** Bigfish Games, ****Nov 2017
+**Epic Diamond Slots,** Bigfish Games, Nov 2017
 
 - 기존 Vegas Party Slots 개편 작업 및 라이브
 - 슬롯머신게임 및 UI, NGUI에서 UGUI로 포팅
@@ -101,7 +118,7 @@ May 2017 - May 2020, Senior Client Programmer,<br>Jan 2014 - Apr 2017, Client Pr
 - Typescript를 이용한 서버 컨텐츠 제작
 - Jenkins를 이용한 빌드 및 배포 자동화
 
-**Vegas Party Slots,** Bigfish Games, ****Jan 2016
+**Vegas Party Slots,** Bigfish Games, Jan 2016
 
 - Unity3d, NGUI를 이용한 슬롯머신 게임, UI 제작 및 라이브
 - Android/iOS 퍼블리셔 SDK 적용 및 유틸리티 코드 제작
@@ -115,7 +132,7 @@ May 2017 - May 2020, Senior Client Programmer,<br>Jan 2014 - Apr 2017, Client Pr
 ## Languages
 
 - Korean(Native)
-- English(intermediate) - 업무를 위한 회의 및 문서 작성 가능
+- English(intermediate) - 업무를 위한 커뮤니케이션 및 문서 작성 가능
 
 ## Activities
 
