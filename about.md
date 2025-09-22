@@ -3,51 +3,70 @@ layout: page
 title: About
 permalink: /about/
 ---
-
 # 김효진
 
-### General Game Programmer.
+### General Game Programmer
 
-Unity3D 엔진을 주력으로 쓰는 개발자로 게임 핵심 매카닉 구현, 개발 생산성을 높이는 아키텍쳐, 최적화를 위한 쉐이더 개발 뿐만 아니라, 타 직군과 협업을 위한 툴 개발 등에 관심을 갖고 있습니다.
+10년 이상의 게임 개발 경력을 보유한 리드 프로그래머입니다. 
 
-클라이언트 개발에만 국한되지 않고, 팀 전체의 생산성을 위해 남들이 기피하는 궂은 일을 찾아서 하고 또 안해본 것을 시도하는데 거부감이 없어서 팀이 필요하다면 언어에 관계없이 필요한 다양한 도구를 다룹니다.
+Unity3D 클라이언트 개발을 중심으로, Node.js/ASP.NET core를 활용한 백 엔드, AWS/Terraform 기반의 인프라 구축(IaC), Jenkins/Github Actions를 이용한 CI/CD 파이프라인 자동화까지 프로젝트의 전체 생명주기를 책임진 경험이 있습니다.
 
-10명도 안되는 작은 팀에서 100명이 넘어가는 글로벌 회사로 성장하는 과정을 겪으며 개발 및 팀 프로세스와 매니징에 많은 변화를 겪었고 그러면서 다양한 협업툴과 방법론을 각각 규모별 목적별 조직에 맞춰 도입 및 운영을 해본 경험이 있습니다.
+10명 미만의 스타트업이 100명 이상의 글로벌 기업으로 성장하는 과정에서 기술 리더십과 팀 매니지먼트 역량을 길렀으며, 데이터 기반의 문제 해결과 개발 생산성 최적화에 강점을 가지고 있습니다.
 
-https://rumaniel.github.io
+---
 
-https://github.com/rumaniel
+### Core Competencies
 
-rumaniel@hotmail.com
+- **Game Client:** Unity3D (C#), Native Plugin (Java/Obj-C/Cpp)
+- **Backend:** TypeScript/Node.js, ASP.NET Core
+- **Infrastructure & DevOps:** AWS, K8s, Terraform, Jenkins, Github Actions, Fastlane
+- **Data Engineering:** Google Analytics, BigQuery, Google Data Studio
 
-## Professional Experiences
+### Professional Experiences
 
-**SZCodeLab Inc** July 2023 - Current, Lead Programmer
+**SZ Code Lab**, June 2023 - Aug 2025, Lead Programmer
 
-- Unity3D를 이용한 클라이언트 개발 및 배포 프로세스 전반 구축
-- Express/Typescript 를 이용한 API 서버 구축
-- React를 이용한 관리자 페이지 구축
-- Terraform을 이용한 AWS 인프라 구축 및 관리
-- Helm chart를 이용한 AWS EKS에 배포 프로세스 구축
-- Github Action을 이용한 백엔드 배포 자동화
+- **게임 클라이언트/서버 총괄:** Unity3D 클라이언트 및 TypeScript/Node.js 백엔드 API 서버 개발을 리드.
+- **DevOps 환경 구축 및 자동화:**
+    - Terraform과 Helm을 활용하여 AWS EKS 환경의 인프라를 코드로 관리(IaC)하고, 배포 프로세스를 표준화.
+    - Github Actions 기반의 CI/CD 파이프라인을 구축.
+    - Jenkins, Fastlane, Firebase App Distribution을 연동하여 모바일 빌드 및 앱 배포 프로세스를 자동화.
+- **사내 운영 툴 개발:** React 기반의 어드민 툴을 개발.
+- **프로젝트: Golden Mango Casino(Jul 2024)**
+    - 게임 클라이언트 및 서버 전체 개발을 주도.
+    - k8s 기반의 고가용성 서버 아키텍쳐 적용.
 
-**StudioZoo** Jun 2020 - July 2023, Lead Client Programmer
+**StudioZoo,** Jun 2020 - Jun 2023, Lead Client Programmer
 
-- 스타트업 초기 멤버로 개발 환경 셋팅
-- Unity3D를 이용한 클라이언트 개발 및 배포 프로세스 전반 구축
-- Google Analytics, Bigquery, DataStudio를 이용한 데이터 수집, 시각화 및 분석
-- ASP.NET를 이용한 API 서버 구축 및 Azure/Container App, AWS/ECS 에 배포.
+- **초기 개발 환경 설계:** 스타트업 초기 멤버로서 클라이언트 개발, 배포, 인프라를 포함한 전체 개발 환경 설계 및 구축.
+- **프로젝트: City of Holdem(Apr 2023)**
+    - 게임 클라이언트 및 서버 전체 개발을 주도.
+    - Photon Engine Realtime을 이용한 실시간 멀티플레이 로직을 프로토타이핑, 이후 ASP.NET API 서버 재구축 및 Azure Container Apps를 통한 프로덕션 배포.
+- **프로젝트: Slot & Dragons (Apr 2021)**
+    - 게임 클라이언트 전체 개발을 주도.
+    - Google Analytics와 BigQuery를 연동한 데이터 파이프라인을 설계 및 구축.
+    - 주요 비즈니스 지표(KPI)를 시각화하고 데이터 기반 의사결정을 지원.
 
-**Bagelcode**
+**Bagelcode,** May 2017 - May 2020, Senior Client Programmer
 
-May 2017 - May 2020, Senior Client Programmer,<br>Jan 2014 - Apr 2017, Client Programmer
+- **개발팀 리딩:** 클라이언트 팀장 및 개발 팀장으로서 파트 매니징 및 해외 오피스와의 기술 협업 주도.
+- **빌드 파이프라인 고도화:** Jenkins를 활용하여 단일 소스 코드로 여러 앱을 빌드하고 배포하는 '원소스 멀티 프로덕트' 파이프라인을 구축, 신규 앱을 빠르게 멀티 런칭.
+- **프로젝트: Jackpotjoy Slots (Aug 2019) / Starspins Slots (May 2019)**
+    - 다양한 퍼블리셔의 Native SDK(결제, 광고 등)를 연동하고 자체 플러그인을 개발하여 안정적인 라이브 서비스 운영.
+- **프로젝트: Club Vegas (Apr 2017)**
+    - UGUI 기반의 UI 및 슬롯머신 콘텐츠 제작, TypeScript를 이용한 서버 콘텐츠 개발 참여.
 
-- Unity3d를 이용한 클라이언트 개발 전반
-- iOS, Android, webGL 기반 한 퍼블리셔 SDK 및 결재모듈 등 다양한 Native SDK 연동 및 자체 개발
-- Jenkins를 이용한 클라이언트 빌드 및 배포 파이프라인 자동화
-- 원소스 멀티 프로덕트를 위한 빌드 및 배포 파이프라인 구축
-- 해외 퍼블리셔 및 개발팀과 기술미팅담당
-- 클라이언트 팀장 및 개발 팀장으로 개발파트 매니징
+**Bagelcode,** Jan 2014 - Apr 2017, Client Programmer
+
+- **프로젝트: Epic Diamond Slots (Nov 2017)**
+    - 기존 프로젝트(Vegas Party Slots)의 UI 시스템을 NGUI에서 UGUI로 성공적으로 포팅하여 유지보수성을 향상.
+- **프로젝트: Vegas Party Slots (Jan 2016) / Party Slots (Apr 2014)**
+    - Unity3D(NGUI)를 이용한 슬롯 게임 클라이언트 핵심 로직 및 UI 개발.
+    - Android/iOS 플랫폼별 Native 유틸리티 코드 및 퍼블리셔 SDK 적용.
+
+---
+
+### Other Experience
 
 **Gaonsoft,** Dec 2012 - Jan 2013, Internship
 
@@ -59,96 +78,17 @@ May 2017 - May 2020, Senior Client Programmer,<br>Jan 2014 - Apr 2017, Client Pr
 - php, mysql 를 이용한 육군 인트라넷 및 인터넷 페이지 제작 및 유지보수
 - jsp, informix 를 이용한 육군 인트라넷 페이지 제작 및 유지보수
 
-## Skills
+---
 
-- Unity3d를 이용한 신규 프로젝트 프로토타이핑 및 제품화를 위한 스펙 검증 이후 라이브를 고려한 설계 및 개발 가능
-- 최적화 및 기능구현 목적을 위한 쉐이더 코드 작성 가능
-- Java 및 Objc를 이용한 Unity3d Native 플러그인 제작 가능
-- Jenkins, Fastlane, Github Action을 이용한 빌드 및 배포 자동화 파이프라인 제작 가능
-- 지표분석을 위한 개발 단계에서의 데이터 설계 및 데이터 수집 파이프라인 구축 가능
-- ASP.NET을 이용한 라이브 게임 서비스를 위한 API 서버 구축 및 배포 가능
-- Express/Typescript를 이용한 라이브 게임 서비스를 위한 API 서버 구축 및 배포 가능
-- React를 이용해 간단한 관리자 페이지 구축 가능
-- Terraform을 이용한 AWS 인프라 구축 및 관리 가능
-- Helm Chart를 이용한 AWS EKS에 배포 프로세스 구축 가능
-
-## Projects
-
-**Golden Mango Casino**, SZCodeLab, July 2024
-
-- Unity3d를 이용해 UI와 네트워크 및 Native 코드 부분 구현
-- Jenkins/Fastlane 을 이용한 빌드 및 배포 자동화
-- Express/Typescript 를 이용한 API 서버 구축
-- Terraform을 이용한 AWS 인프라 구축 및 관리
-- Helm Chart를 통한 AWS EKS에 배포 프로세스 구축
-- Github Action을 이용한 백엔드 배포 자동화
-
-**HeadsUp Poker**, StudioZoo, Apr 2023 
-
-- Unity3d를 이용해 UI와 네트워크 및 Native 코드 부분 구현
-- [Unitask](https://github.com/Cysharp/UniTask)를 적극적으로 활용한 비동기 구현
-- [Vcontainer](https://github.com/hadashiA/VContainer)를 이용한 DI 구현 및 테스트 코드 작성
-- Jenkins/Fastlane 을 이용한 빌드 및 배포 자동화
-- Photon Engine을 이용한 멀티플레이 구현
-- ASP.NET를 이용한 API 서버 구축 및 Azure/Container App, AWS/ECS 에 배포
-
-**Slot & Dragons**, StudioZoo, Apr 2021 
-
-- Unity3d를 이용해 게임 전체 개발
-- Jenkins를 이용한 빌드 자동화
-- Google Analytics, Bigquery, DataStudio를 통한 데이터 수집 및 통계 파이프라인 구축
-
-**Jackpotjoy Slots,** Bagelcode, Aug 2019
-
-**Starspins Slots,** Bagelcode, May 2019,
-
-- Unity3d, UGUI를 이용한 UI 제작 및 라이브
-- Android/iOS/webGL 코드 제작 및 3rd Party SDK 적용
-- Jenkins를 이용해 원 소스 멀티 앱 빌드 파이프라인 자동화
-- 서울 오피스 개발 팀장으로 해외 개발 및 운영 오피스와 협업 주도
-
-**Epic Diamond Slots,** Bigfish Games, Nov 2017
-
-- 기존 Vegas Party Slots 개편 작업 및 라이브
-- 슬롯머신게임 및 UI, NGUI에서 UGUI로 포팅
-- 라이브 개발팀 팀장으로 라이브 팀 운영 및 해외 퍼블리셔와 컨택포인트
-
-**Club Vegas,** Bagelcode, Apr 2017
-
-- Unity3d, UGUI를 이용한 슬롯머신 게임, UI 제작 및 라이브
-- Android/iOS/webGL 코드 제작 및 3rd Party SDK 적용
-- Typescript를 이용한 서버 컨텐츠 제작
-- Jenkins를 이용한 빌드 및 배포 자동화
-
-**Vegas Party Slots,** Bigfish Games, Jan 2016
-
-- Unity3d, NGUI를 이용한 슬롯머신 게임, UI 제작 및 라이브
-- Android/iOS 퍼블리셔 SDK 적용 및 유틸리티 코드 제작
-- Jenkins를 이용한 빌드 자동화
-
-**Party Slots,** Gamevil USA, Apr 2014
-
-- Unity3d, NGUI를 이용한 슬롯머신 게임, UI 제작 및 라이브
-- Android/iOS 퍼블리셔 SDK 적용 및 유틸리티 코드 제작
-
-## Languages
-
-- Korean(Native)
-- English(intermediate) - 업무를 위한 커뮤니케이션 및 문서 작성 가능
-
-## Activities
-
-- [Global Gamejam](https://globalgamejam.org/2022/games/yesno-machine-2), Jan 2022
-- [GMTK Gamejam](https://rumaniel.itch.io/gmtk2021-luciddream), Jun 2021
-- Smilegate Gamejam, Nov 2017
-- 게임개발동아리 학회 MIT 활동 및 회장직, Mar 2013 - Feb 2014
-
-## Education
+### Education
 
 **Bachelor of Science in Computer Engineering**
 
 Changwon National University, Mar 2007 - Feb 2014
 
-## Certificates
+---
 
-- 정보처리 기사, Nov 2012
+## Languages
+
+- Korean(Native)
+- English(intermediate) - 업무를 위한 회의 및 문서 작성 가능
