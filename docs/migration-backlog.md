@@ -12,11 +12,11 @@
 
 ## Epic 2. 의존성 정리
 
-- [ ] (TODO) Gemfile 전략 확정
+- [x] (DONE) Gemfile 전략 확정
   - 안1: `jekyll 4` 중심
   - 안2: `github-pages` gem 중심(로컬 호환 우선)
-- [ ] (TODO) 중복/불필요 gem 제거
-- [ ] (TODO) 로컬 실행 명령/버전 문서화
+- [x] (DONE) 중복/불필요 gem 제거
+- [x] (DONE) 로컬 실행 명령/버전 문서화
 
 ## Epic 3. 템플릿/디자인 개선
 
