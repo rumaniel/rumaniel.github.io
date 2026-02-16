@@ -29,6 +29,25 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
   - jekyll-gist
+  - jekyll-sitemap
+  - jekyll-archives
+
+# jekyll-archives configuration
+# Note: jekyll-archives is NOT on GitHub Pages whitelist
+# Requires Actions build environment (not standard Pages gem)
+jekyll-archives:
+  enabled:
+    - year
+    - month
+    - categories
+  layouts:
+    year: archive
+    month: archive
+    category: archive
+  permalinks:
+    year: /archives/:year/
+    month: /archives/:year/:month/
+    category: /archives/:name/
 
 # --- Misc --- #
 # Fill in your Disqus shortname (NOT the userid) if you want to support Disqus comments
@@ -40,11 +59,12 @@ words_per_minute: 180
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
-# exclude:
-#   - Gemfile
-#   - Gemfile.lock
-#   - node_modules
-#   - vendor/bundle/
-#   - vendor/cache/
-#   - vendor/gems/
-#   - vendor/ruby/
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - docs/  # Operational documentation (not part of public site)
