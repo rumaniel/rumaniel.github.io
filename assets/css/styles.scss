@@ -3,19 +3,21 @@
 @import "main";
 
 :root {
-	--ink: #1b1b1b;
-	--muted: #5a5a5a;
-	--accent: #0f766e;
+	--ink: #141414;
+	--muted: #606060;
+	--accent: #2f2f2f;
 	--card: #ffffff;
-	--card-border: #e6e4df;
-	--shadow: 0 18px 45px rgba(21, 28, 33, 0.12);
-	--radius: 16px;
+	--card-border: #e1e1e1;
+	--shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+	--radius: 14px;
+	--code-bg: #f5f5f5;
+	--code-border: #e4e4e4;
 }
 
 body {
-	font-family: "Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
+	font-family: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
 	color: var(--ink);
-	background: linear-gradient(180deg, #f7f4ee 0%, #ffffff 45%, #ffffff 100%);
+	background: linear-gradient(180deg, #f3f3f3 0%, #ffffff 48%, #ffffff 100%);
 }
 
 h1,
@@ -24,7 +26,7 @@ h3,
 h4,
 h5,
 h6 {
-	font-family: "Newsreader", "Times New Roman", serif;
+	font-family: "IBM Plex Serif", "Times New Roman", serif;
 	letter-spacing: -0.01em;
 }
 
@@ -37,7 +39,7 @@ a {
 	padding: 2.5rem 2.75rem;
 	border-radius: var(--radius);
 	border: 1px solid var(--card-border);
-	background: linear-gradient(140deg, #fef6e4, #ffffff 70%);
+	background: linear-gradient(140deg, #f8f8f8, #ffffff 70%);
 	box-shadow: var(--shadow);
 }
 
@@ -72,6 +74,13 @@ a {
 	flex-wrap: wrap;
 	color: var(--muted);
 	font-size: 0.95rem;
+}
+
+.post-categories {
+	padding: 0.1rem 0.6rem;
+	border-radius: 999px;
+	border: 1px solid var(--card-border);
+	background: #f7f7f7;
 }
 
 .post-title {
@@ -119,6 +128,63 @@ a {
 	line-height: 1.9;
 }
 
+.post-content pre,
+.post-content code {
+	font-family: "IBM Plex Mono", "Consolas", "Courier New", monospace;
+}
+
+.post-content pre {
+	padding: 1.25rem 1.5rem;
+	border-radius: 12px;
+	background: var(--code-bg);
+	border: 1px solid var(--code-border);
+	overflow-x: auto;
+}
+
+.post-content code {
+	padding: 0.15rem 0.35rem;
+	border-radius: 6px;
+	background: var(--code-bg);
+	border: 1px solid var(--code-border);
+}
+
+.post-content pre code {
+	padding: 0;
+	border: none;
+	background: transparent;
+}
+
+.post-content blockquote {
+	margin: 1.5rem 0;
+	padding: 1rem 1.5rem;
+	border-left: 4px solid #c9c9c9;
+	background: #f7f7f7;
+	color: var(--muted);
+}
+
+.post-content table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 1.5rem 0;
+}
+
+.post-content th,
+.post-content td {
+	padding: 0.75rem 0.9rem;
+	border: 1px solid var(--card-border);
+}
+
+.post-content th {
+	background: #f2f2f2;
+	text-align: left;
+}
+
+.post-content hr {
+	border: none;
+	border-top: 1px solid var(--card-border);
+	margin: 2.5rem 0;
+}
+
 .post-subtitle {
 	margin-top: 0.6rem;
 	color: var(--muted);
@@ -135,8 +201,8 @@ a {
 .post-tag {
 	padding: 0.25rem 0.7rem;
 	border-radius: 999px;
-	border: 1px solid #cbe5e1;
-	background: #eef9f7;
+	border: 1px solid var(--card-border);
+	background: #f3f3f3;
 	color: var(--accent);
 	font-size: 0.85rem;
 }
