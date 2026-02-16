@@ -27,9 +27,13 @@
 
 ## Epic 4. 확장성(플러그인)
 
-- [ ] (TODO) 플러그인 우선순위 목록 작성
-- [ ] (TODO) 1차 플러그인 도입 및 회귀 테스트
-- [ ] (TODO) 플러그인 도입 기준(보안/유지보수) 문서화
+- [x] (DONE) 플러그인 우선순위 목록 작성
+  - see: `docs/plugin-strategy.md`
+- [x] (DONE) jekyll-sitemap 도입 (1차 플러그인)
+  - gem 추가, _config.yml 반영, 빌드 검증 ✓
+- [ ] (TODO) jekyll-archives 도입 (2차 플러그인, 아카이브 페이지)
+- [x] (DONE) 플러그인 도입 기준(보안/유지보수) 문서화
+  - see: `docs/plugin-strategy.md` 도입 기준 섹션
 
 ## Epic 5. 운영 문서
 
