@@ -6,9 +6,9 @@
 
 - [x] (DONE) `pages.yml` 워크플로우 추가
   - checkout / configure-pages / jekyll-build-pages / upload-pages-artifact / deploy-pages
-- [ ] (BLOCKED) 저장소 Pages 설정을 `GitHub Actions`로 전환
-- [ ] (BLOCKED) `master` push 자동 배포 검증
-- [ ] (TODO) 실패 로그 체크 포인트 문서화
+- [x] (DONE) 저장소 Pages 설정을 `GitHub Actions`로 전환
+- [x] (DONE) `master` push 자동 배포 검증
+- [x] (DONE) 실패 로그 체크 포인트 문서화
 
 ## Epic 2. 의존성 정리
 
@@ -36,3 +36,11 @@
 - [ ] (TODO) 배포 런북 작성
 - [ ] (TODO) 포스트 작성 가이드(Frontmatter 템플릿) 작성
 - [ ] (TODO) 트러블슈팅 FAQ 작성
+
+## Epic 6. 공개 범위/노출 제어
+
+- [ ] (TODO) `docs/` 디렉터리가 사이트 본문에 노출되지 않도록 정책 확정
+  - 안1: `_config.yml` `exclude`에 `docs/` 추가
+  - 안2: 내부 문서를 `_data` 또는 별도 private 저장소로 분리
+- [ ] (TODO) 노출 제어 적용 후 URL 접근 회귀 검증 (`/docs/*` 차단 확인)
+
