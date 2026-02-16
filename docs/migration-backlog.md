@@ -4,10 +4,10 @@
 
 ## Epic 1. 배포 자동화 (GitHub Actions)
 
-- [ ] (DOING) `pages.yml` 워크플로우 추가
+- [x] (DONE) `pages.yml` 워크플로우 추가
   - checkout / configure-pages / jekyll-build-pages / upload-pages-artifact / deploy-pages
-- [ ] (DOING) 저장소 Pages 설정을 `GitHub Actions`로 전환
-- [ ] (DOING) `master` push 자동 배포 검증
+- [ ] (BLOCKED) 저장소 Pages 설정을 `GitHub Actions`로 전환
+- [ ] (BLOCKED) `master` push 자동 배포 검증
 - [ ] (TODO) 실패 로그 체크 포인트 문서화
 
 ## Epic 2. 의존성 정리
