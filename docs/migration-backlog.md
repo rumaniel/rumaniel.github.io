@@ -20,7 +20,7 @@
 
 ## Epic 3. 템플릿/디자인 개선
 
-- [ ] (TODO) `_includes/head.html` 메타 구조 정리(SEO/OG)
+- [x] (DONE) `_includes/head.html` 메타 구조 정리(SEO/OG)
 - [ ] (TODO) 홈/포스트 목록 가독성 개선
 - [ ] (TODO) 코드 블록/인용/표 스타일 개선
 - [ ] (TODO) 모바일 타이포/간격 튜닝
