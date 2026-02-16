@@ -128,6 +128,15 @@ a {
 	line-height: 1.9;
 }
 
+.post-content p {
+	margin: 0 0 1.4rem;
+}
+
+.post-content ul,
+.post-content ol {
+	margin: 0 0 1.6rem 1.2rem;
+}
+
 .post-content pre,
 .post-content code {
 	font-family: "IBM Plex Mono", "Consolas", "Courier New", monospace;
@@ -212,8 +221,29 @@ a {
 		padding: 1.75rem;
 	}
 
+	.home-title {
+		font-size: clamp(2rem, 8vw, 2.6rem);
+	}
+
+	.home-subtitle {
+		font-size: 1rem;
+	}
+
 	.post-card {
 		padding: 1.5rem;
+	}
+
+	.post-title {
+		font-size: 1.6rem;
+	}
+
+	.post-content {
+		font-size: 1rem;
+		line-height: 1.75;
+	}
+
+	.post-content pre {
+		padding: 1rem 1.1rem;
 	}
 
 	.post-footer {
