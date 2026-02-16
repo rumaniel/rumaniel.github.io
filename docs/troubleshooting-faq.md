@@ -194,7 +194,7 @@ ls -R _site/archives/
 
 **확인 체크리스트**:
 
-- [ ] **Sitemap 확인**: [yoursite.com/sitemap.xml](http://rumaniel.github.io/sitemap.xml) 포스트 포함 여부
+- [ ] **Sitemap 확인**: [rumaniel.github.io/sitemap.xml](http://rumaniel.github.io/sitemap.xml)에 포스트 포함 여부
   - jekyll-sitemap이 설치되어 있는가?
   - `_config.yml`에서 플러그인으로 활성화했는가?
 
