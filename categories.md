@@ -16,12 +16,14 @@ description: Browse articles by category
     {% for category in sorted_categories %}
       {% capture category_name %}{{ category[0] }}{% endcapture %}
       {% capture category_posts_count %}{{ category[1] | size }}{% endcapture %}
-      <a href="/archives/{{ category_name | slugify }}/" class="category-card">
+      {% assign category_slug = category_name | slugify %}
+      {% assign category_count_num = category_posts_count | plus: 0 %}
+      <a href="{{ '/archives/' | append: category_slug | append: '/' | relative_url }}" class="category-card">
         <div class="category-content">
           <h3 class="category-name">{{ category_name | capitalize }}</h3>
           <span class="category-count">
-            {{ category_posts_count }} 
-            {%- if category_posts_count == '1' %} article{% else %} articles{% endif -%}
+            {{ category_count_num }}
+            {%- if category_count_num == 1 -%} article{%- else -%} articles{%- endif -%}
           </span>
         </div>
         <div class="category-arrow">→</div>
