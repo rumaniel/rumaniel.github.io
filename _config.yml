@@ -37,16 +37,10 @@ plugins:
 # Requires Actions build environment (not standard Pages gem)
 jekyll-archives:
   enabled:
-    - year
-    - month
-    - categories
+    - categories  # Category-based archives only (cleaner than year/month)
   layouts:
-    year: archive
-    month: archive
     category: archive
   permalinks:
-    year: /archives/:year/
-    month: /archives/:year/:month/
     category: /archives/:name/
 
 # --- Misc --- #
