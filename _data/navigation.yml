@@ -1,0 +1,7 @@
+# Main navigation menu
+# Only explicitly listed items will appear in header
+- title: About
+  url: /about/
+
+- title: Categories
+  url: /categories/
