@@ -3,8 +3,8 @@ layout: post
 title: 2d game basics on the Unity3d
 image: /assets/coding.jpg
 date: 2020-05-21 22:24:34 +0900
-tags: [unity, art]
-categories: [unity, art]
+tags: [2d-graphics, sprites]
+categories: [unity]
 ---
 
 # 작성의도

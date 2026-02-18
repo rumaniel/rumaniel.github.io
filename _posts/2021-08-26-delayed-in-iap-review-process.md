@@ -4,7 +4,7 @@ title: Delayed in IAP Review Process
 image: /assets/applereview.webp
 date: 2021-08-26 22:53:34 +0900
 tags: [iap, appstore]
-categories: [iap, appstore]
+categories: [unity]
 ---
 <br>
 

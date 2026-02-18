@@ -3,7 +3,7 @@ layout: post
 title: Retrospect, first half of 2022
 image: /assets/coding.jpg
 date: 2022-06-26 22:24:34 +0900
-tags: [retrospect]
+tags: [2022-review, ops]
 categories: [retrospect]
 ---
 # 2022년 전반기 회고
