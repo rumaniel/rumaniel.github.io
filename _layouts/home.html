@@ -9,25 +9,32 @@ layout: default
 
 {{ content }}
 
-<div class="post-list">
-  {% for post in site.posts %}
-    <article class="post-card">
-      <div class="post-meta">
-        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
-        {% if post.categories and post.categories.size > 0 %}
-          <span class="post-categories">{{ post.categories | join: ", " }}</span>
+<section class="posts-section">
+  <div class="posts-header">
+    <h2 class="posts-title">Latest Articles</h2>
+    <p class="posts-count">{{ site.posts | size }} articles</p>
+  </div>
+  
+  <div class="post-list">
+    {% for post in site.posts %}
+      <article class="post-card">
+        <div class="post-meta">
+          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
+          {% if post.categories and post.categories.size > 0 %}
+            <span class="post-categories">{{ post.categories | join: ", " }}</span>
+          {% endif %}
+        </div>
+        <h3 class="post-title">
+          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+        </h3>
+        {% if post.excerpt %}
+          <p class="post-excerpt">{{ post.excerpt | strip_html | truncate: 220 }}</p>
         {% endif %}
-      </div>
-      <h2 class="post-title">
-        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-      </h2>
-      {% if post.excerpt %}
-        <p class="post-excerpt">{{ post.excerpt | strip_html | truncate: 220 }}</p>
-      {% endif %}
-      <div class="post-footer">
-        <span class="reading-time">{% include reading-time.html content=post.content %}</span>
-        <a class="post-readmore" href="{{ post.url | relative_url }}">Read</a>
-      </div>
-    </article>
-  {% endfor %}
-</div>
+        <div class="post-footer">
+          <span class="reading-time">{% include reading-time.html content=post.content %}</span>
+          <a class="post-readmore" href="{{ post.url | relative_url }}">Read</a>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
