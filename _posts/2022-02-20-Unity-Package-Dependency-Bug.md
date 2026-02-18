@@ -2,8 +2,8 @@
 layout: post
 title: Unity3d Package Dependency Bug
 image: /assets/2d.animation.mathematics.errors.png
-tags: [unity, c#]
-categories: [unity, c#]
+tags: [package-manager, debugging]
+categories: [unity]
 ---
 
 

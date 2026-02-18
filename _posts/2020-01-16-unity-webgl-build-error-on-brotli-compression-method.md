@@ -3,8 +3,8 @@ layout: post
 title: Unity 2018.3 버전에서 Brotli compress 옵션으로 WebGL 빌드 실패시 해결 방법
 image: /assets/196px-Brotli-logo.svg
 date: 2020-01-17 00:54:00 +0900
-tags: [unity, C#, webgl, brotli]
-categories: [unity, C#, webgl, brotli]
+tags: [webgl, brotli]
+categories: [unity]
 ---
 
 Unity3d 2018.3 버전에서 WebGL 빌드시 압축 옵션에 [Brotli compress](https://en.wikipedia.org/wiki/Brotli) 로 선택시 아래와 같은 에러를 확인 할 수 있습니다.

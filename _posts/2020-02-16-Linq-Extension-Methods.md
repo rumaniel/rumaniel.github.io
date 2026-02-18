@@ -3,8 +3,8 @@ layout: post
 title: LINQ extension methods
 image: /assets/sugar.jpg
 date: 2020-02-16 22:24:34 +0900
-tags: [unity, C#]
-categories: [unity, C#]
+tags: [linq, extension-methods]
+categories: [C#]
 ---
 
 LINQ 를 직접 코드에 쓸 수 있게 해주는 확장 메소드들을 정리해보았습니다.
