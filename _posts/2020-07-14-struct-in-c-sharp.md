@@ -50,6 +50,18 @@ public struct Vector2 {
         else
             this = zero;
     }
+
+    // Returns this vector with a ::ref::magnitude of 1 (RO).
+    public Vector2 normalized
+    {
+        [MethodImpl(MethodImplOptionsEx.AggressiveInlining)]
+        get
+        {
+            Vector2 v = new Vector2(x, y);
+            v.Normalize();
+            return v;
+        }
+    }
 }
 ```
 ### 포인트
@@ -136,3 +148,5 @@ Unity에서 Vector2를 다룰 때도 이러한 특성을 이해하고 있어야,
 - https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/struct
 - https://learn.microsoft.com/ko-kr/dotnet/standard/design-guidelines/choosing-between-class-and-struct
 - https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Math/Vector2.cs
+- https://stackoverflow.com/questions/1747654/error-cannot-modify-the-return-value-c-sharp
+- https://stackoverflow.com/questions/3742922/is-a-c-sharp-struct-ever-boxed-when-declared-as-the-return-value-of-a-function
