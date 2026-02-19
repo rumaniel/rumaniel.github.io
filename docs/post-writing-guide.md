@@ -172,7 +172,7 @@ bundle exec jekyll serve --drafts
 ## 게시 전 체크리스트
 
 - [ ] Frontmatter 모든 필드 확인 (layout, title, date, categories)
-- [ ] 제목 && description 없음 (54자, 160자 이내)
+- [ ] 제목 및 description 길이 확인 (54자, 160자 이내)
 - [ ] 마크다운 문법 오류 없음 (`code`, **bold**, [링크])
 - [ ] 이미지 모두 업로드 (경로 확인)
 - [ ] 내부 링크 3개 이상 연결 (관련 포스트)
