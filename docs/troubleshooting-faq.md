@@ -172,7 +172,7 @@ ls -R _site/archives/
 ```
 
 **파일 확인**:
-- [assets/css/styles.scss](assets/css/styles.scss) → 미디어 쿼리 섹션
+- [../assets/css/styles.scss](../assets/css/styles.scss) → 미디어 쿼리 섹션
 
 ### 8. 스타일이 배포 후 적용되지 않음
 
@@ -238,15 +238,16 @@ ls -R _site/archives/
 
 ### 11. 커밋/푸시 실패: "refusing to allow an OAuth App..."
 
-**원인**: Personal Access Token(PAT)에 필요한 스콥 누락
+**원인**: Personal Access Token(PAT)에 필요한 스코프 누락
 
 **해결**:
 
 1. 새 PAT 생성: [GitHub Settings → Developer settings → Personal access tokens](https://github.com/settings/tokens)
-2. 필수 스콕 포함: `workflow`, `repo`, `admin:org`
-3. 토큰 복사 후 git 설정:
+2. 최소 스코프만 포함: 보통 `repo`, 필요 시 `workflow`만 추가
+3. 토큰을 remote URL에 직접 넣지 말고 아래 방식 사용:
    ```bash
-   git remote set-url origin https://<TOKEN>@github.com/rumaniel/rumaniel.github.io.git
+  gh auth login
+  git push origin <branch>
    ```
 
 ### 12. 로컬 `bundle install` 실패

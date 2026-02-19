@@ -4,14 +4,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script>
     (function () {
+      function normalizeTheme(value) {
+        return value === "dark" || value === "light" ? value : null;
+      }
+
       try {
         var key = "theme-preference";
-        var stored = localStorage.getItem(key);
+        var stored = normalizeTheme(localStorage.getItem(key));
         var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
         var theme = stored || (prefersDark ? "dark" : "light");
         document.documentElement.setAttribute("data-theme", theme);
         document.documentElement.style.colorScheme = theme;
-      } catch (error) {}
+      } catch (_) {}
     })();
   </script>
   {%- seo -%}

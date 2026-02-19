@@ -91,7 +91,7 @@
 After reassignment:
 
 - [ ] `/archives/unity/` shows ~5 posts
-- [ ] `/archives/csharp/` shows ~3 posts  
+- [ ] `/archives/c/` shows ~3 posts (`C#` slugify 결과)  
 - [ ] `/archives/retrospect/` shows 2 posts
 - [ ] `/archives/art/` shows 1 post (or none if merged into Unity)
 - [ ] `/archives/math/` shows 1 post
