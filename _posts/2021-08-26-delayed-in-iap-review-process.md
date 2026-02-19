@@ -35,3 +35,8 @@ categories: [unity]
 결국 해결의 핵심은 **체계적인 체크리스트**와 **끈질긴 확인 과정**입니다.  
 개발 과정에서 이런 경험은 귀찮지만, 동시에 성장의 발판이 됩니다.
 애플은 죄가 없을거에요 아마도.
+
+---
+
+## 참고 사이트
+- [Apple Developer Support](https://developer.apple.com/forums/thread/90551)
