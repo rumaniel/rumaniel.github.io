@@ -2,7 +2,7 @@
 layout: post
 title: Struct in c#
 image: /assets/idewithnotebook.webp
-date: 2020-05-21 18:20:11 +0900
+date: 2020-07-14 18:20:11 +0900
 tags: [c#, struct, unity]
 categories: [unity]
 ---

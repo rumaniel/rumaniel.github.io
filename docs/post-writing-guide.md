@@ -26,7 +26,7 @@ layout: post
 title: "포스트 제목 (큰따옴표 권장)"
 description: "간단한 설명 (SEO에 노출됨, 120-160자 권장)"
 date: 2026-02-16 14:30:00 +0900
-categories: [주 카테고리, 부 카테고리]
+categories: [unity]
 tags: [태그1, 태그2, 태그3]
 author: rumaniel
 ---
@@ -40,7 +40,7 @@ author: rumaniel
 | title | ✓ | 포스트 제목 |
 | description | ✗ | OG/Meta description (150자 이내) |
 | date | ✓ | 발행 일시 (ISO 8601 형식: YYYY-MM-DD HH:MM:SS +09:00) |
-| categories | ✓ | 카테고리 (배열, 최대 2-3개 권장) |
+| categories | ✓ | 카테고리 (배열, 단일 major category 1개 권장) |
 | tags | ✗ | 태그 (배열) |
 | author | ✗ | 저자 (기본값: 설정 파일의 github_username) |
 
@@ -49,10 +49,11 @@ author: rumaniel
 기존 포스트를 참고하여 선택:
 - `unity` - Unity 게임 엔진
 - `c#` - C# 언어/개발
-- `web` - 웹 개발
 - `retrospect` - 회고/일상
 - `math` - 수학/이론
-- `art` - 아트/디자인
+
+카테고리는 navigation/archives 정합성을 위해 **1개만 사용**하고,
+세부 주제는 `tags`로 분리합니다.
 
 ---
 
@@ -172,7 +173,7 @@ bundle exec jekyll serve --drafts
 ## 게시 전 체크리스트
 
 - [ ] Frontmatter 모든 필드 확인 (layout, title, date, categories)
-- [ ] 제목 && description 없음 (54자, 160자 이내)
+- [ ] 제목 및 description 길이 확인 (54자, 160자 이내)
 - [ ] 마크다운 문법 오류 없음 (`code`, **bold**, [링크])
 - [ ] 이미지 모두 업로드 (경로 확인)
 - [ ] 내부 링크 3개 이상 연결 (관련 포스트)

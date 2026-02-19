@@ -26,7 +26,8 @@
 - `.github/workflows/pages.yml`의 액션 버전 점검
   - `actions/checkout@v5`
   - `actions/configure-pages@v5`
-  - `actions/jekyll-build-pages@v1`
+  - `ruby/setup-ruby@v1`
+  - `bundle exec jekyll build` 실행 단계 존재
   - `actions/upload-pages-artifact@v4`
   - `actions/deploy-pages@v4`
 
