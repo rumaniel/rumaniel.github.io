@@ -1,7 +1,8 @@
 ---
 layout: post
-title: Unity3d Package Dependency Bug
+title: Crashes after Update
 image: /assets/idewithnotebook.webp
+date: 2022-03-04 13:52:23 +0900
 tags: [macos, android]
 categories: [unity]
 ---
