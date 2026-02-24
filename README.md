@@ -102,3 +102,14 @@ If you add a new category in a post, it will appear automatically.
 
 - Restart `jekyll serve` after changing `_config.yml`.
 - Do not commit `_site/` (build output).
+
+## Google Analytics (GA4)
+
+1. Open `_config.yml` and set `google_analytics` to your GA4 measurement ID.
+
+```yml
+google_analytics: G-XXXXXXXXXX
+```
+
+2. Push to `master`.
+3. Verify in browser source that `gtag/js?id=G-...` is present on production pages.

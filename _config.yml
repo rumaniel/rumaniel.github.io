@@ -22,6 +22,10 @@ url: "http://rumaniel.github.io" # the base hostname & protocol for your site, e
 # twitter_username: rumaniel
 github_username: rumaniel
 
+# Google Analytics (GA4)
+# Set your measurement ID (e.g. G-XXXXXXXXXX)
+google_analytics: G-QTR1Q5ENCY
+
 # Build settings
 markdown: kramdown
 theme: minima
