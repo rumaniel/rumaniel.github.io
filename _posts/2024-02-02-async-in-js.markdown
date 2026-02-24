@@ -92,7 +92,7 @@ processData();
 
 ## 4. Async 라이브러리와 Async/Await
 
-Node.js 구버전에서는 `async` 라이브러리를 활용해 콜백 지옥을 완화했습니다. 최근에는 이 라이브러리도 `async/await`와 함께 사용할 수 있습니다.
+Node.js 구버전에서는 [async](https://www.npmjs.com/package/async) 라이브러리를 활용해 콜백 지옥을 완화했습니다. 최근에는 이 라이브러리도 `async/await`와 함께 사용할 수 있습니다.
 
 예를 들어, `async.map`을 `async/await`와 함께 쓰는 방식은 다음과 같습니다.
 
