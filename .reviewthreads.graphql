@@ -1,0 +1,18 @@
+﻿query {
+  repository(owner:"rumaniel", name:"rumaniel.github.io") {
+    pullRequest(number: 6) {
+      reviewThreads(first: 100) {
+        nodes {
+          id
+          isResolved
+          comments(first: 1) {
+            nodes {
+              id
+              url
+            }
+          }
+        }
+      }
+    }
+  }
+}

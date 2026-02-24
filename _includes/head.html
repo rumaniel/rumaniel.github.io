@@ -27,6 +27,35 @@
   <script src="{{ "/assets/js/theme-toggle.js" | relative_url }}" defer></script>
   <link rel="icon" href="{{ "/assets/favicon.ico" | relative_url }}">
 
+  {%- if site.languages and site.languages.size > 1 -%}
+    {%- for lang in site.languages -%}
+      {%- assign lang_href = '' -%}
+      {%- if page.permalink_lang and page.permalink_lang[lang] -%}
+        {%- capture lang_href -%}
+          {{ site.url }}{{ site.baseurl }}/{% if lang != site.default_lang %}{{ lang }}/{% endif %}{% if page.permalink_lang[lang] != '/' %}{{ page.permalink_lang[lang] | remove_first: '/' }}{% endif %}
+        {%- endcapture -%}
+      {%- else -%}
+        {%- capture lang_href -%}
+          {{ site.url }}{{ site.baseurl }}/{% if lang != site.default_lang %}{{ lang }}/{% endif %}{% if page.url != '/' %}{{ page.url | remove_first: '/' }}{% endif %}
+        {%- endcapture -%}
+      {%- endif -%}
+
+      <link rel="alternate" hreflang="{{ lang }}" href="{{ lang_href | strip }}">
+    {%- endfor -%}
+
+    {%- assign default_href = '' -%}
+    {%- if page.permalink_lang and page.permalink_lang[site.default_lang] -%}
+      {%- capture default_href -%}
+        {{ site.url }}{{ site.baseurl }}/{% if page.permalink_lang[site.default_lang] != '/' %}{{ page.permalink_lang[site.default_lang] | remove_first: '/' }}{% endif %}
+      {%- endcapture -%}
+    {%- else -%}
+      {%- capture default_href -%}
+        {{ site.url }}{{ site.baseurl }}{% if page.url != '/' %}{{ page.url }}{% endif %}
+      {%- endcapture -%}
+    {%- endif -%}
+    <link rel="alternate" hreflang="x-default" href="{{ default_href | strip }}">
+  {%- endif -%}
+
   {%- feed_meta -%}
   {%- if jekyll.environment == 'production' and site.google_analytics -%}
     {%- include google-analytics.html -%}

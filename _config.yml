@@ -35,6 +35,18 @@ plugins:
   - jekyll-gist
   - jekyll-sitemap
   - jekyll-archives
+  - jekyll-polyglot
+
+languages: ["ko", "en"]
+default_lang: "ko"
+parallel_localization: false
+exclude_from_localization:
+  - assets
+  - css
+  - js
+  - sitemap.xml
+  - robots.txt
+  - feed.xml
 
 # jekyll-archives configuration
 # Note: jekyll-archives is NOT on GitHub Pages whitelist
