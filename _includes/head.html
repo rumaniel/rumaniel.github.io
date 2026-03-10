@@ -19,6 +19,7 @@
     })();
   </script>
   {%- seo -%}
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Serif:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@500;700&display=swap">
@@ -26,6 +27,17 @@
   <link rel="stylesheet" href="{{ "/assets/css/styles.css" | relative_url }}">
   <script src="{{ "/assets/js/theme-toggle.js" | relative_url }}" defer></script>
   <link rel="icon" href="{{ "/assets/favicon.ico" | relative_url }}">
+
+  {%- if site.languages and site.languages.size > 1 -%}
+    {%- for lang in site.languages -%}
+      {%- capture lang_href -%}{%- include i18n-lang-href.html lang=lang absolute=true -%}{%- endcapture -%}
+
+      <link rel="alternate" hreflang="{{ lang }}" {% static_href %}href="{{ lang_href | strip }}"{% endstatic_href %}>
+    {%- endfor -%}
+
+    {%- capture x_default_href -%}{%- include i18n-lang-href.html lang=site.default_lang absolute=true -%}{%- endcapture -%}
+    <link rel="alternate" hreflang="x-default" {% static_href %}href="{{ x_default_href | strip }}"{% endstatic_href %}>
+  {%- endif -%}
 
   {%- feed_meta -%}
   {%- if jekyll.environment == 'production' and site.google_analytics -%}

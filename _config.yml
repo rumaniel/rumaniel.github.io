@@ -18,7 +18,7 @@ email: rumaniel@hotmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   A game developer from the bottom
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://rumaniel.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://rumaniel.github.io" # the base hostname & protocol for your site, e.g. https://example.com
 # twitter_username: rumaniel
 github_username: rumaniel
 
@@ -35,6 +35,18 @@ plugins:
   - jekyll-gist
   - jekyll-sitemap
   - jekyll-archives
+  - jekyll-polyglot
+
+languages: ["ko", "en"]
+default_lang: "ko"
+parallel_localization: false
+exclude_from_localization:
+  - assets
+  - css
+  - js
+  - sitemap.xml
+  - robots.txt
+  - feed.xml
 
 # jekyll-archives configuration
 # Note: jekyll-archives is NOT on GitHub Pages whitelist

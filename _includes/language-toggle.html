@@ -1,0 +1,16 @@
+{%- if site.languages and site.languages.size > 1 -%}
+  <nav class="language-toggle" aria-label="Language switcher">
+    {%- for lang in site.languages -%}
+      {%- capture lang_href -%}{%- include i18n-lang-href.html lang=lang -%}{%- endcapture -%}
+
+      <a
+        class="language-link{% if lang == site.active_lang %} is-active{% endif %}"
+        hreflang="{{ lang }}"
+        lang="{{ lang }}"
+        {% static_href %}href="{{ lang_href | strip }}"{% endstatic_href %}
+      >
+        {{ lang | upcase }}
+      </a>
+    {%- endfor -%}
+  </nav>
+{%- endif -%}

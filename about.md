@@ -2,6 +2,8 @@
 layout: page
 title: About
 permalink: /about/
+lang: ko
+page_id: about
 ---
 # 김효진
 
