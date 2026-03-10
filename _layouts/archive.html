@@ -12,7 +12,7 @@ layout: default
     {% elsif page.type == 'category' or page.type == 'categories' %}
       {{ page.category | default: page.title | capitalize }}
     {% elsif page.title %}
-      {{ page.title | capitalize }}
+      {{ page.title }}
     {% endif %}
     </h1>
   </div>

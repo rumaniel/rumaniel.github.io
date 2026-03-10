@@ -1,9 +1,22 @@
 {%- assign target_lang = include.lang | default: site.default_lang -%}
 {%- assign is_absolute = include.absolute | default: false -%}
 
-{%- capture localized_path -%}
-/{% if target_lang != site.default_lang %}{{ target_lang }}/{% endif %}{% if page.permalink_lang and page.permalink_lang[target_lang] and page.permalink_lang[target_lang] != '/' %}{{ page.permalink_lang[target_lang] | remove_first: '/' }}{% elsif page.url != '/' %}{{ page.url | remove_first: '/' }}{% endif %}
-{%- endcapture -%}
+{%- assign lang_prefix = '' -%}
+{%- if target_lang != site.default_lang -%}
+  {%- assign lang_prefix = '/' | append: target_lang -%}
+{%- endif -%}
+
+{%- assign resolved_path = '' -%}
+{%- if page.permalink_lang and page.permalink_lang[target_lang] and page.permalink_lang[target_lang] != '/' -%}
+  {%- assign resolved_path = page.permalink_lang[target_lang] | prepend: '/' -%}
+{%- elsif page.url and page.url != '/' -%}
+  {%- assign resolved_path = page.url | prepend: '/' -%}
+{%- endif -%}
+
+{%- assign localized_path = lang_prefix | append: resolved_path -%}
+{%- if localized_path == '' -%}
+  {%- assign localized_path = '/' -%}
+{%- endif -%}
 
 {%- assign normalized_path = localized_path | replace: '//', '/' -%}
 
