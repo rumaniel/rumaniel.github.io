@@ -1,0 +1,14 @@
+{%- assign target_lang = include.lang | default: site.default_lang -%}
+{%- assign is_absolute = include.absolute | default: false -%}
+
+{%- capture localized_path -%}
+/{% if target_lang != site.default_lang %}{{ target_lang }}/{% endif %}{% if page.permalink_lang and page.permalink_lang[target_lang] and page.permalink_lang[target_lang] != '/' %}{{ page.permalink_lang[target_lang] | remove_first: '/' }}{% elsif page.url != '/' %}{{ page.url | remove_first: '/' }}{% endif %}
+{%- endcapture -%}
+
+{%- assign normalized_path = localized_path | replace: '//', '/' -%}
+
+{%- if is_absolute -%}
+  {{ site.url }}{{ site.baseurl }}{{ normalized_path }}
+{%- else -%}
+  {{ site.baseurl }}{{ normalized_path }}
+{%- endif -%}

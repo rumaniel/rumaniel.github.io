@@ -1,16 +1,7 @@
 {%- if site.languages and site.languages.size > 1 -%}
   <nav class="language-toggle" aria-label="Language switcher">
     {%- for lang in site.languages -%}
-      {%- assign lang_href = '' -%}
-      {%- if page.permalink_lang and page.permalink_lang[lang] -%}
-        {%- capture lang_href -%}
-          {{ site.baseurl }}/{% if lang != site.default_lang %}{{ lang }}/{% endif %}{% if page.permalink_lang[lang] != '/' %}{{ page.permalink_lang[lang] | remove_first: '/' }}{% endif %}
-        {%- endcapture -%}
-      {%- else -%}
-        {%- capture lang_href -%}
-          {{ site.baseurl }}/{% if lang != site.default_lang %}{{ lang }}/{% endif %}{% if page.url != '/' %}{{ page.url | remove_first: '/' }}{% endif %}
-        {%- endcapture -%}
-      {%- endif -%}
+      {%- capture lang_href -%}{%- include i18n-lang-href.html lang=lang -%}{%- endcapture -%}
 
       <a
         class="language-link{% if lang == site.active_lang %} is-active{% endif %}"

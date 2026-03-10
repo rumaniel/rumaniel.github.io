@@ -20,20 +20,6 @@
   </script>
   {%- seo -%}
 
-  {%- assign canonical_href = '' -%}
-  {%- if site.languages and site.languages.size > 1 -%}
-    {%- if page.permalink_lang and page.permalink_lang[site.active_lang] -%}
-      {%- capture canonical_href -%}
-        {{ site.url }}{{ site.baseurl }}/{% if site.active_lang != site.default_lang %}{{ site.active_lang }}/{% endif %}{% if page.permalink_lang[site.active_lang] != '/' %}{{ page.permalink_lang[site.active_lang] | remove_first: '/' }}{% endif %}
-      {%- endcapture -%}
-    {%- else -%}
-      {%- capture canonical_href -%}
-        {{ site.url }}{{ site.baseurl }}/{% if site.active_lang != site.default_lang %}{{ site.active_lang }}/{% endif %}{% if page.url != '/' %}{{ page.url | remove_first: '/' }}{% endif %}
-      {%- endcapture -%}
-    {%- endif -%}
-    <link rel="canonical" href="{{ canonical_href | strip }}">
-  {%- endif -%}
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Serif:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@500;700&display=swap">
@@ -44,18 +30,9 @@
 
   {%- if site.languages and site.languages.size > 1 -%}
     {%- for lang in site.languages -%}
-      {%- assign lang_href = '' -%}
-      {%- if page.permalink_lang and page.permalink_lang[lang] -%}
-        {%- capture lang_href -%}
-          {{ site.url }}{{ site.baseurl }}/{% if lang != site.default_lang %}{{ lang }}/{% endif %}{% if page.permalink_lang[lang] != '/' %}{{ page.permalink_lang[lang] | remove_first: '/' }}{% endif %}
-        {%- endcapture -%}
-      {%- else -%}
-        {%- capture lang_href -%}
-          {{ site.url }}{{ site.baseurl }}/{% if lang != site.default_lang %}{{ lang }}/{% endif %}{% if page.url != '/' %}{{ page.url | remove_first: '/' }}{% endif %}
-        {%- endcapture -%}
-      {%- endif -%}
+      {%- capture lang_href -%}{%- include i18n-lang-href.html lang=lang absolute=true -%}{%- endcapture -%}
 
-      <link rel="alternate" hreflang="{{ lang }}" href="{{ lang_href | strip }}">
+      <link rel="alternate" hreflang="{{ lang }}" {% static_href %}href="{{ lang_href | strip }}"{% endstatic_href %}>
     {%- endfor -%}
 
     {%- capture x_default_href -%}{{ site.url }}/{%- endcapture -%}
