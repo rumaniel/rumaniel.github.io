@@ -35,7 +35,7 @@
       <link rel="alternate" hreflang="{{ lang }}" {% static_href %}href="{{ lang_href | strip }}"{% endstatic_href %}>
     {%- endfor -%}
 
-    {%- capture x_default_href -%}{{ site.url }}/{%- endcapture -%}
+    {%- capture x_default_href -%}{%- include i18n-lang-href.html lang=site.default_lang absolute=true -%}{%- endcapture -%}
     <link rel="alternate" hreflang="x-default" {% static_href %}href="{{ x_default_href | strip }}"{% endstatic_href %}>
   {%- endif -%}
 
