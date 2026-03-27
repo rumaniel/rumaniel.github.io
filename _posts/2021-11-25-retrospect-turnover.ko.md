@@ -1,17 +1,20 @@
 ---
 layout: post
-title: Retrospect turnover
+title: "이직 회고"
+description: 첫 직장 7년 후 이직 - 배경, 한 것, 잘한 것, 아쉬운 것
 image: /assets/coding.jpg
 date: 2021-11-25 22:24:34 +0900
 tags: [turnover, career-change]
 categories: [retrospect]
+lang: ko
+permalink: /retrospect-turnover/
 ---
 
 ![Intro](/assets/coding.jpg)
 
 # 배경
 - 첫 회사 7년간 다님. 
-- 10명 내외의 작은 회사에서 100명까지 성장한 모습을 봐옮.
+- 10명 내외의 작은 회사에서 100명까지 성장한 모습을 봐옴.
 - 그 과정에서 내 롤을 찾지 못함. 
 - [Expert Beginner](https://medium.com/@jwyeom63/%EB%8D%94-%EC%9D%B4%EC%83%81-%EB%B0%B0%EC%9A%B0%EB%A0%A4-%ED%95%98%EC%A7%80-%EC%95%8A%EB%8A%94-%EA%B0%9C%EB%B0%9C%EC%9E%90-expert-beginner%EC%9D%98-%EB%93%B1%EC%9E%A5-dd40c40aeedf) 에 크게 공감.
 - [변화를 위해서 3가지를 바꿔야 한다고 함](https://brunch.co.kr/@hopesoodo/16).
@@ -75,7 +78,6 @@ categories: [retrospect]
 - Hip한 설계 도입
 - 테스트 테스트 테스트
 
-
 ## 한것
 - 클라이언트 사이드 전반 개발
 - 데이터 수집 및 분석 계획 및 개발
@@ -88,4 +90,3 @@ categories: [retrospect]
 ## 아쉬운것
 - 여러 프로세스 도입 못함(Linter, 자동화 테스트, dockerize build)
 - 좋은 협업체계를 가지지 못함
-

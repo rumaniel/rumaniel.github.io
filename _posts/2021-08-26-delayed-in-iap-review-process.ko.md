@@ -1,17 +1,22 @@
 ---
 layout: post
-title: Delayed in IAP Review Process
+title: "인앱 결제 리뷰 지연 문제"
+description: iTunes Connect에서 인앱 결제가 Waiting for Review 상태에서 멈춘 문제 해결
 image: /assets/applereview.webp
 date: 2021-08-26 22:53:34 +0900
 tags: [iap, appstore]
 categories: [unity]
+lang: ko
+permalink: /delayed-in-iap-review-process/
 ---
+
 <br>
 
 # 인앱 결제 리뷰 지연 문제
 
 신규 개발을 하다 보면 예상치 못한 **시스템 버그**나 **리뷰 지연** 문제를 마주하게 됩니다.  
-최근 iTunes Connect에서 인앱 결제가 *“Waiting for Review”* 상태에서 멈춘채로 리뷰가 진행되지 않는 문제를 겪었습니다.
+최근 iTunes Connect에서 인앱 결제가 *"Waiting for Review"* 상태에서 멈춘채로 리뷰가 진행되지 않는 문제를 겪었습니다.
+
 ---
 
 ## 인앱 결제 리뷰 문제 해결 체크리스트

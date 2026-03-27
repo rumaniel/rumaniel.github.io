@@ -1,11 +1,13 @@
 ---
 layout: post
-title: Async in JavaScript
-description: A brief introduction to asynchronous programming in JavaScript.
+title: "JavaScript 비동기 처리의 진화"
+description: JavaScript 비동기 처리의 진화 과정 - Callback에서 Promise, async/await까지
 image: /assets/callback-hell.webp
 date: 2024-02-02 11:11:24 +0900
 tags: [javascript, async]
 categories: [backend]
+lang: ko
+permalink: /async-in-javascript/
 ---
 
 # JavaScript 비동기 처리의 진화
@@ -112,7 +114,4 @@ async function run() {
 run();
 ```
 
-이렇게 하면 레거시 코드와의 호환성을 유지하면서도 최신 문법의 장점을 살릴 수 있습니다. 
-
----
-
+이렇게 하면 레거시 코드와의 호환성을 유지하면서도 최신 문법의 장점을 살릴 수 있습니다.

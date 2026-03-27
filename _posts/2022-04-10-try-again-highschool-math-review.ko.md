@@ -1,11 +1,15 @@
 ---
 layout: post
-title: Try again highschool math review
+title: "다시 고등 수학 리뷰"
+description: 다시 고등 수학 - 프로그래머를 위한 고등 수학 재발견
 image: /assets/tryagainhighschollmath/book_cover.jpg
 date: 2022-04-10 22:24:34 +0900
 tags: [education, algebra]
 categories: [math]
+lang: ko
+permalink: /try-again-highschool-math-review/
 ---
+
 <br>
 
 현재 개발자로 밥빌어 먹고 있지만, 고등학교 수포자 출신의 문과생이였습니다. 덕분에 대학에서 공업수학이나 미적분 그리고 선형대수를 하며 고생을 하였습니다.
@@ -35,6 +39,3 @@ categories: [math]
 책을 완독하고 나니 머리속에 안개처럼 가려져 있던 수학적 지식들이 조금 더 밝혀 져있고 점들로 보였던 부분들이 다시금 선으로 연결되어 무엇을 더 할 수 있을지 무엇을 더 심화 해서 봐야할지가 그려집니다.
 
 이런 리마인더 기회를 가지며 과거 가졌던 수학적인 사고를 다시 통통 할 수 있는 느낌이 들어 기분이 좋습니다.
-
-
- 

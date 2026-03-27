@@ -1,10 +1,13 @@
 ---
 layout: post
-title: Crashes after Update
+title: "Unity/OSX 업데이트 후 자주 발생하는 빌드 에러 모음"
+description: Unity 또는 macOS 업데이트 후 발생하는 빌드 에러 해결 가이드
 image: /assets/idewithnotebook.webp
 date: 2022-03-04 13:52:23 +0900
 tags: [macos, android]
 categories: [unity]
+lang: ko
+permalink: /crashes-after-update/
 ---
 
 # Unity/OSX 업데이트 후 자주 발생하는 빌드 에러 모음
@@ -55,4 +58,4 @@ unexpected element <queries> found in <manifest>
 
 ---
 
-todo
+*todo*
