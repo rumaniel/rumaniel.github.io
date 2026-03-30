@@ -1,24 +1,26 @@
 ---
 layout: post
-title: "TypeScript Union Type 25 Limit: Problem and Solutions"
-description: Understanding TypeScript's 25 union member limit error and modern refactoring approaches using Classes
+title: "TypeScript Union 타입 25개 제한과 해결 방법"
+description: TypeScript에서 Union 타입이 25개 이상일 때 발생하는 컴파일 에러와 Class를 활용한 모던한 리팩토링 방법
 image: /assets/coding.jpg
-date: 2026-03-30 12:00:00 +0900
+date: 2025-03-30 12:00:00 +0900
 tags: [typescript, refactoring, design-pattern]
 categories: [frontend]
-lang: en
+lang: ko
 permalink: /typescript-union-type-25-limit-solution/
 ---
 
-# TypeScript Union Type 25 Limit: Problem and Solutions
+# TypeScript Union 타입 25개 제한과 해결 방법
 
-When working with TypeScript projects, we often use **Union Types** to represent various states or types. However, putting too many types in a Union can lead to the error: **"Expression produces a variable with 25 union members. This component cannot be compiled due to performance degradation."**
+TypeScript로 프로젝트를 진행하다 보면, 다양한 상태나 타입을 표현하기 위해 **Union 타입**을 자주 사용한다. 하지만 Union에 너무 많은 타입을 넣으면 **Expression produces a variable with 25 union members. The component cannot be compiled due to performance degradation.**라는 에러를 만나게 된다.
 
-In this article, we'll explore the cause of this problem and its solutions.
+)
+
+이 글에서는 이 문제의 원인과 해결 방법을 정리해본다.
 
 ---
 
-## The Problem
+## 문제 상황
 
 ```typescript
 type Status = 
@@ -46,46 +48,46 @@ type Status =
   | 'locked'
   | 'unlocked'
   | 'hidden'
-  | 'visible';  // 26!
+  | 'visible';  // 26개!
 
 function getStatusLabel(status: Status): string {
   // ...
 }
 ```
 
-**Error Message:**
+**에러 메시지:**
 ```
 Expression produces a variable with 25 union members. 
-This component cannot be compiled due to performance degradation.
+The component cannot be compiled due to performance degradation.
 ```
 
 ---
 
-## Why the 25 Limit?
+## 왜 25개 제한이 있을까?
 
-When the TypeScript compiler processes Union types, it **checks each member individually** to verify type compatibility. As Union members increase:
+TypeScript 컴파일러는 Union 타입을 처리할 때 **각 멤버를 하나씩 체크**하며 타입 호환성을 검증한다. Union 멤버가 많아지면:
 
-1. **Increased Compilation Time** - Type checking costs increase geometrically
-2. **Increased Memory Usage** - The compiler keeps all combinations in memory
-3. **IDE Performance Degradation** - Slower autocomplete and type inference
+1. **컴파일 시간 증가** - 타입 체크 비용이 기하급수적으로 증가
+2. **메모리 사용량 증가** - 컴파일러가 모든 조합을 메모리에 유지
+3. **IDE 성능 저하** - 자동완성, 타입 추론 속도 감소
 
-The TypeScript team set the default limit to 25 for **performance protection**.
-
----
-
-## GitHub Issue Reference
-
-This is tracked in [Microsoft/TypeScript#43246](https://github.com/microsoft/TypeScript/issues/43246), with many developers experiencing the same issue.
-
-> **Note:** TypeScript 5.0+ allows more Unions with `--noErrorTruncation` option, but this is not a fundamental solution.
+TypeScript 팀은 이를 **성능 보호**를 위해 기본 제한을 25개로 설정했다.
 
 ---
 
-## Solution 1: Refactor to Class
+## GitHub Issue 확인
 
-The most recommended approach is to **convert Union to Class**.
+실제로 [Microsoft/TypeScript#43246](https://github.com/microsoft/TypeScript/issues/43246) 이슈가 등록되어 있으며, 많은 개발자들이 같은 문제를 겪고 있다.
 
-### Before (Union Type)
+> **Note:** TypeScript 5.0부터 `--noErrorTruncation` 옵션으로 더 많은 Union을 허용할 수 있지만, 근본적인 해결책은 아니다.
+
+---
+
+## 해결 방법 1: Class로 리팩토링
+
+가장 권장하는 방법은 **Union을 Class로 변환**하는 것이다.
+
+### Before (Union 타입)
 
 ```typescript
 type ActionType = 
@@ -115,31 +117,31 @@ type ActionType =
   | 'upload'
   | 'download'
   | 'copy'
-  | 'move';  // 26!
+  | 'move';  // 26개!
 
 function executeAction(action: ActionType): void {
   switch (action) {
     case 'create':
-      // create logic
+      // create 로직
       break;
     case 'read':
-      // read logic
+      // read 로직
       break;
-    // ... 26 cases continue
+    // ... 26개 case 계속
   }
 }
 ```
 
-### After (Class-based)
+### After (Class 기반)
 
 ```typescript
-// Base Action class
+// 기본 Action 클래스
 abstract class Action {
   abstract execute(): void;
   abstract getDescription(): string;
 }
 
-// Concrete Actions
+// 구체적인 Action들
 class CreateAction extends Action {
   constructor(public resource: string) {
     super();
@@ -200,13 +202,13 @@ class DeleteAction extends Action {
   }
 }
 
-// Usage
+// 사용 예시
 function executeAction(action: Action): void {
   console.log(`Action: ${action.getDescription()}`);
   action.execute();
 }
 
-// Type-safe usage
+// 타입 안전한 사용
 const createAction = new CreateAction('user');
 const readAction = new ReadAction('user', '123');
 const updateAction = new UpdateAction('user', '123', { name: 'Kim' });
@@ -218,9 +220,9 @@ executeAction(updateAction);
 
 ---
 
-## Solution 2: Use Enum
+## 해결 방법 2: Enum 사용
 
-For simple value collections, **Enum** might be more appropriate.
+단순한 값들의 집합이라면 **Enum**을 사용하는 것이 더 적절할 수 있다.
 
 ```typescript
 enum Status {
@@ -256,35 +258,35 @@ function getStatusLabel(status: Status): string {
 }
 ```
 
-Unlike Union types, the compiler can **optimize Enums**, so there's no limit.
+Enum은 Union 타입과 달리 **컴파일러가 최적화**할 수 있어 제한이 없다.
 
 ---
 
-## Solution 3: Grouping and Hierarchy
+## 해결 방법 3: 그룹화 및 계층 구조
 
-Group related types into **sub-Union** groups.
+관련 있는 타입들을 **하위 Union**으로 그룹화한다.
 
 ```typescript
-// Group related types
+// 관련 있는 타입들을 그룹화
 type FileAction = 'create' | 'read' | 'update' | 'delete';
 type QueryAction = 'list' | 'search' | 'filter' | 'sort';
 type ExportAction = 'export' | 'import' | 'backup' | 'restore';
 type TransformAction = 'validate' | 'transform' | 'parse' | 'format';
 
-// Top-level Union (4 each = 16 total)
+// 상위 Union (각각 4개씩 = 16개)
 type ActionType = FileAction | QueryAction | ExportAction | TransformAction;
 
-// Type guard
+// 타입 가드
 function isFileAction(action: string): action is FileAction {
   return ['create', 'read', 'update', 'delete'].includes(action);
 }
 
 function executeAction(action: ActionType): void {
   if (isFileAction(action)) {
-    // Handle FileAction
+    // FileAction 처리
     console.log(`File action: ${action}`);
   } else if (action === 'list' || action === 'search') {
-    // Handle QueryAction
+    // QueryAction 처리
     console.log(`Query action: ${action}`);
   }
   // ...
@@ -293,31 +295,31 @@ function executeAction(action: ActionType): void {
 
 ---
 
-## Recommendations
+## 권장사항
 
-| Situation | Recommended Method |
-|-----------|-------------------|
-| Simple value list | **Enum** |
-| Complex behavior/data | **Class** refactoring |
-| Related types | **Grouping** with hierarchical structure |
-| Temporary workaround | `--noErrorTruncation` (not recommended) |
-
----
-
-## Summary
-
-- TypeScript Union types are **limited to 25 members** by default
-- This is for **compiler performance protection**
-- Solutions:
-  1. **Refactor to Class** - Most modern and extensible approach
-  2. **Use Enum** - Suitable for simple value lists
-  3. **Grouping** - Separate related types into sub-Unions
-
-> 💡 **TL;DR**: If your Union exceeds 25, refactor to Class. It's more extensible and maintainable.
+| 상황 | 권장 방법 |
+|------|----------|
+| 단순한 값 목록 | **Enum** 사용 |
+| 복잡한 동작/데이터 | **Class**로 리팩토링 |
+| 관련 있는 타입들 | **그룹화** 후 계층 구조 |
+| 임시 해결 | `--noErrorTruncation` (권장하지 않음) |
 
 ---
 
-## References
+## 요약
+
+- TypeScript Union 타입은 **기본적으로 25개 멤버**로 제한된다
+- 이는 **컴파일러 성능 보호**를 위한 것이다
+- 해결책:
+  1. **Class로 리팩토링** - 가장 모던하고 확장 가능한 방법
+  2. **Enum 사용** - 단순한 값 목록에 적합
+  3. **그룹화** - 관련 타입들을 하위 Union으로 분리
+
+> 💡 **TL;DR**: Union이 25개를 넘어간다면 Class로 리팩토링하자. 더 확장 가능하고 유지보수하기 좋다.
+
+---
+
+## 참고 자료
 - [Microsoft/TypeScript #43246 - Union types that exceed 25 elements break the TypeScript compiler](https://github.com/microsoft/TypeScript/issues/43246)
 - [TypeScript Error: Expression produces a variable with 25 union members](https://github.com/microsoft/TypeScript/issues/38766)
 - [Stack Overflow - TypeScript Union Type Limit](https://stackoverflow.com/questions/76091608/typescript-union-type-limit)

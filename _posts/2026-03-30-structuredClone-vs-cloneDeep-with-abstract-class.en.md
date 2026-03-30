@@ -3,7 +3,7 @@ layout: post
 title: "structuredClone vs lodash.cloneDeep: What Happens with Abstract Class Instances"
 description: Analysis of behavioral differences between structuredClone and lodash.cloneDeep when deep copying TypeScript abstract class instances
 image: /assets/coding.jpg
-date: 2026-03-30 11:00:00 +0900
+date: 2025-03-30 11:00:00 +0900
 tags: [typescript, javascript, lodash, web-api]
 categories: [frontend]
 lang: en
