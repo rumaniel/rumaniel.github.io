@@ -166,3 +166,11 @@ console.log(copied instanceof User); // true ✅
 - 안전하게 가려면 **copy constructor** 패턴을 고려하자.
 
 > 💡 **TL;DR**: Class 인스턴스 deep copy가 필요하면 `lodash.cloneDeep`을 쓰자. `structuredClone`은 prototype을 잃어버린다.
+
+---
+
+## 참고 자료
+- [MDN - structuredClone()](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone)
+- [MDN - Structured Clone Algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm)
+- [Lodash - cloneDeep](https://lodash.com/docs/4.17.15#cloneDeep)
+- [Stack Overflow - Why does structuredClone lose class prototype?](https://stackoverflow.com/questions/73953087/why-does-structuredclone-lose-class-prototype)

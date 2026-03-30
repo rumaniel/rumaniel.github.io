@@ -166,3 +166,11 @@ This approach is explicit and safe, but requires implementation in every class.
 - Consider the **copy constructor pattern** for safety.
 
 > 💡 **TL;DR**: Use `lodash.cloneDeep` when you need to deep copy class instances. `structuredClone` loses the prototype.
+
+---
+
+## References
+- [MDN - structuredClone()](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone)
+- [MDN - Structured Clone Algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm)
+- [Lodash - cloneDeep](https://lodash.com/docs/4.17.15#cloneDeep)
+- [Stack Overflow - Why does structuredClone lose class prototype?](https://stackoverflow.com/questions/73953087/why-does-structuredclone-lose-class-prototype)
