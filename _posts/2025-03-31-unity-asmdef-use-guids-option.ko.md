@@ -2,7 +2,7 @@
 layout: post
 title: "Unity Assembly Definition (asmdef) Use GUIDs 옵션 이해하기"
 description: Unity asmdef의 Use GUIDs 옵션 차이점과 GUID vs 기명 참조의 장단점 정리
-image: /assets/coding.jpg
+image: /assets/asmdef-inspector.png
 date: 2025-03-31 16:00:00 +0900
 tags: [unity, asmdef, assembly-definition]
 categories: [unity]
@@ -31,6 +31,8 @@ asmdef 인스펙터에서 다른 어셈블리를 참조할 때:
 
 asmdef 인스펙터 상단에 **Use GUIDs** 체크박스가 있다.
 
+![인스펙터 스크린샷 - Use GUIDs 옵션 위치](/assets/asmdef-inspector.png)
+
 ### Use GUIDs 체크 ON (권장)
 ```json
 {
@@ -46,6 +48,14 @@ asmdef 인스펙터 상단에 **Use GUIDs** 체크박스가 있다.
 ```
 
 **새로 만든 asmdef 파일은 기본적으로 Use GUIDs가 체크되어 있지만, 기존 파일은 그렇지 않을 수 있다.**
+
+---
+
+## 실제 파일 비교
+
+![GUID vs 기명 참조 차이](/assets/asmdef-code-diff.png)
+
+왼쪽 파일(`Tests.EditMode.asmdef`)은 **이름으로 참조**하고, 오른쪽 파일(`App.asmdef`)은 **GUID로 참조**한다.
 
 ---
 
@@ -82,131 +92,36 @@ asmdef 인스펙터 상단에 **Use GUIDs** 체크박스가 있다.
 
 ---
 
-## 실제 파일 비교
+## 마이그레이션 권장사항
 
-### Use GUIDs ON
+### 기존 프로젝트 업데이트
 
-```json
-// App.asmdef
-{
-  "name": "App",
-  "rootNamespace": "",
-  "references": [
-    "GUID:861626f26602c48888a26b..."
-  ],
-  "includePlatforms": [],
-  "excludePlatforms": [],
-  "allowUnsafeCode": false,
-  "overrideReferences": false,
-  "precompiledReferences": [],
-  "autoReferenced": true,
-  "defineConstraints": [],
-  "versionDefines": [],
-  "noEngineReferences": false
-}
-```
+1. **모든 asmdef 파일 열기**
+2. **Use GUIDs 체크박스 활성화**
+3. **Unity가 자동으로 기명 참조를 GUID로 변환**
+4. **커밋 후 팀원과 공유**
 
-### Use GUIDs OFF
+### 주의사항
 
-```json
-// Tests.EditMode.asmdef
-{
-  "name": "Tests.EditMode",
-  "rootNamespace": "",
-  "references": [
-    "Model",
-    "Service"
-  ],
-  "includePlatforms": [],
-  "excludePlatforms": [],
-  "allowUnsafeCode": false,
-  "overrideReferences": false,
-  "precompiledReferences": [],
-  "autoReferenced": true,
-  "defineConstraints": [],
-  "versionDefines": [],
-  "noEngineReferences": false
-}
-```
-
----
-
-## 권장사항
-
-### ✅ Use GUIDs 사용 권장
-
-Unity 공식 문서에서는 **유지보수와 안정성**을 위해 Use GUIDs를 켜두는 것을 권장한다.
-
-**장점:**
-- 어셈블리 이름 변경 시 참조 유지
-- 팀 프로젝트에서 충돌 감소
-- 리팩토링 안전성 증가
-
-**단점:**
-- 텍스트 에디터에서 직접 편집 어려움
-- JSON 파일 가독성 감소
-
-### 📝 기존 파일 수정 방법
-
-기존 asmdef 파일을 GUID 방식으로 변경하려면:
-
-1. asmdef 파일 선택
-2. 인스펙터에서 **Use GUIDs** 체크
-3. Apply
-
-이후 새로 추가하는 참조는 모두 GUID로 저장된다.
-
----
-
-## 마이그레이션 팁
-
-### 대량 변환 스크립트
-
-```csharp
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEditor.Compilation;
-using System.IO;
-
-public class AsmdefGuidMigration
-{
-    [MenuItem("Tools/Migrate asmdef to GUIDs")]
-    static void MigrateToGuids()
-    {
-        var asmdefs = AssetDatabase.FindAssets("t:AssemblyDefinitionAsset");
-        
-        foreach (var guid in asmdefs)
-        {
-            var path = AssetDatabase.GUIDToAssetPath(guid);
-            var asmdef = AssetDatabase.LoadAssetAtPath<AssemblyDefinitionAsset>(path);
-            
-            // 인스펙터에서 Use GUIDs 활성화
-            // (실제로는 내부 API 필요)
-            Debug.Log($"Processing: {path}");
-        }
-        
-        AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
-    }
-}
-#endif
-```
+- **버전 관리**: Use GUIDs는 Unity 2019.1 이상에서만 지원
+- **패키지 배포**: 에셋 스토어 패키지는 기본적으로 GUID 사용 권장
+- **자동 변환**: Unity가 기존 기명 참조를 자동으로 GUID로 변환
 
 ---
 
 ## 요약
 
-- **Use GUIDs ON**: GUID로 참조 저장, 리네이밍 안전
-- **Use GUIDs OFF**: 이름으로 참조 저장, 가독성 좋지만 위험
-- **Unity 2019.1+** 에서 도입된 기능
-- **새 asmdef 파일은 기본 ON**
-- **기존 파일은 수동으로 체크 필요**
+- `Use GUIDs` 체크 시: GUID로 저장 → **리네이밍 안전**
+- `Use GUIDs` 해제 시: 이름으로 저장 → **읽기 쉽지만 위험**
+- **Unity 2019.1+** 기능
+- **새 asmdef 파일**은 기본적으로 Use GUIDs 활성화
+- **기존 파일**은 수동으로 활성화 필요
 
-> 💡 **TL;DR**: asmdef 참조는 Use GUIDs를 켜두자. 이름 변경 시 참조가 깨지는 것을 방지할 수 있다.
+> 💡 **TL;DR**: Use GUIDs를 켜면 어셈블리 이름이 바뀌어도 참조가 깨지지 않는다. Unity 2019.1+ 기능.
 
 ---
 
 ## 참고 자료
 - [Unity 2019.1.0b4 Release Notes](https://unity.com/releases/editor/beta/2019.1.0b4)
-- [Unity 2019.1 릴리즈 노트 (일본어)](https://shibuya24.info/entry/unity_releasenote2019_1_0b2)
-- [Unity Documentation - Assembly Definitions](https://docs.unity3d.com/Manual/ScriptCompilationAssemblyDefinitionFiles.html)
+- [Unity 2019.1 Release Notes (Japanese)](https://shibuya24.info/entry/unity_releasenote2019_1_0b2)
+- [Unity Manual - Assembly Definitions](https://docs.unity3d.com/Manual/ScriptCompilationAssemblyDefinitionFiles.html)
