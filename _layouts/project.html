@@ -1,0 +1,40 @@
+---
+layout: page
+---
+<article class="project-detail">
+  <header class="project-hero">
+    {% if page.image %}
+      <div class="project-hero__image">
+        <img src="{{ page.image | relative_url }}" alt="{{ page.image_alt | default: page.title }}">
+      </div>
+    {% endif %}
+    <div class="project-hero__meta">
+      <h1 class="project-hero__title">{{ page.title }}</h1>
+      {% if page.subtitle %}<p class="project-hero__subtitle">{{ page.subtitle }}</p>{% endif %}
+      {% if page.status %}
+        <p class="project-hero__status"><span class="status-dot"></span>{{ page.status }}</p>
+      {% endif %}
+      {% if page.links %}
+        <div class="project-ctas">
+          {% for link in page.links %}
+            <a class="project-cta" href="{{ link.url }}" target="_blank" rel="noopener">{{ link.label }}</a>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </header>
+
+  <div class="project-content">
+    {{ content }}
+  </div>
+
+  {% if page.tech %}
+    <ul class="project-card__tech project-detail__tech">
+      {% for t in page.tech %}<li>{{ t }}</li>{% endfor %}
+    </ul>
+  {% endif %}
+
+  <p class="project-detail__back">
+    <a href="{{ '/portfolio/' | relative_url }}">{% if page.lang == 'en' %}&larr; Back to portfolio{% else %}&larr; 포트폴리오로 돌아가기{% endif %}</a>
+  </p>
+</article>

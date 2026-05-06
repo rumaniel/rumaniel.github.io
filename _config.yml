@@ -29,6 +29,12 @@ google_analytics: G-QTR1Q5ENCY
 # Build settings
 markdown: kramdown
 theme: minima
+
+# Custom collections
+collections:
+  projects:
+    output: true
+    permalink: /portfolio/:path/
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
