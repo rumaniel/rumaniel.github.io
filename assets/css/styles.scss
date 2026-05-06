@@ -606,7 +606,113 @@ html[data-theme="dark"] .category-count {
 	margin-bottom: 2rem;
 }
 
+.portfolio-grid {
+	list-style: none;
+	margin: 2rem 0 0;
+	padding: 0;
+	display: grid;
+	gap: 1.75rem;
+	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
 
+.project-card {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid var(--card-border);
+	border-radius: var(--radius);
+	overflow: hidden;
+	background: var(--card);
+	transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.project-card:hover {
+	border-color: var(--accent);
+	box-shadow: var(--shadow);
+	transform: translateY(-2px);
+}
+
+.project-card__image img {
+	width: 100%;
+	height: auto;
+	display: block;
+}
+
+.project-card__body {
+	padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.project-card__title {
+	margin: 0 0 0.5rem;
+	font-size: 1.3rem;
+	font-family: "IBM Plex Serif", "Times New Roman", serif;
+	color: var(--ink);
+	letter-spacing: -0.01em;
+}
+
+.project-card__subtitle {
+	display: block;
+	margin-top: 0.2rem;
+	font-size: 0.9rem;
+	font-weight: normal;
+	color: var(--muted);
+	font-family: "Noto Sans KR", "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+}
+
+.project-card__status {
+	margin: 0 0 0.75rem;
+	font-size: 0.85rem;
+	color: var(--muted);
+}
+
+.status-dot {
+	display: inline-block;
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 50%;
+	background: #4caf50;
+	margin-right: 0.45rem;
+	vertical-align: middle;
+}
+
+.project-card__desc {
+	margin: 0 0 0.75rem;
+	font-size: 0.95rem;
+	line-height: 1.6;
+	color: var(--ink);
+	white-space: pre-line;
+}
+
+.project-card__tech {
+	list-style: none;
+	padding: 0;
+	margin: 0.75rem 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+}
+
+.project-card__tech li {
+	font-size: 0.75rem;
+	padding: 0.2rem 0.65rem;
+	border-radius: 999px;
+	border: 1px solid var(--card-border);
+	background: var(--chip-bg);
+	color: var(--muted);
+}
+
+.project-card__links {
+	margin: 0.75rem 0 0;
+	font-size: 0.9rem;
+}
+
+.project-card__links a {
+	color: var(--accent);
+	text-decoration: none;
+}
+
+.project-card__links a:hover {
+	text-decoration: underline;
+}
 
 @media (max-width: 720px) {
 	.home-hero {
@@ -711,5 +817,14 @@ html[data-theme="dark"] .category-count {
 
 	.category-arrow {
 		margin-left: 0.5rem;
+	}
+
+	.portfolio-grid {
+		grid-template-columns: 1fr;
+		gap: 1.25rem;
+	}
+
+	.project-card__body {
+		padding: 1rem 1.2rem 1.25rem;
 	}
 }
