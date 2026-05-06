@@ -1,11 +1,11 @@
 - slug: solitaire
   title: Solitaire
-  subtitle_ko: Unity로 개발 중인 카드 게임
-  subtitle_en: A Unity card game in development
-  status_ko: 개발 중
-  status_en: In development
+  subtitle_ko: Unity로 만든 클래식 카드 게임
+  subtitle_en: A classic card game made with Unity
+  status_ko: 서비스 중
+  status_en: Live
   description_ko: |
-    Clean Architecture 기반으로 설계 중인 솔리테어(클론다이크/이스트헤이븐) 카드 게임.
+    Clean Architecture 기반으로 설계한 솔리테어(클론다이크/이스트헤이븐) 카드 게임.
     도메인 모델은 Unity 의존을 배제했고, VContainer로 DI를, R3 + UniTask로 반응형/비동기 흐름을 다룬다.
     힌트, 자동승, 언두/리두, 세션·라이프타임 통계, 한/영 로컬라이즈, GitHub Actions 기반 빌드/테스트 파이프라인을 갖췄다.
   description_en: |
@@ -17,5 +17,9 @@
   image: /assets/portfolio/solitaire/feature-graphic.png
   image_alt: Solitaire feature graphic
   links:
+    - label: Google Play
+      url: https://play.google.com/store/apps/details?id=com.mangru.solitaire
+    - label: itch.io
+      url: https://rumaniel.itch.io/solitaire-tower
     - label: GitHub
       url: https://github.com/rumaniel/solitaire
