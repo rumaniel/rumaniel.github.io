@@ -963,3 +963,75 @@ html[data-theme="dark"] .category-count {
 		text-align: center;
 	}
 }
+
+/* Mobile nav: override Minima defaults so the hamburger and dropdown
+   respect the theme variables and don't overlap other header controls. */
+@media (max-width: 600px) {
+	.site-header-inner {
+		position: relative;
+	}
+
+	.site-nav {
+		position: static;
+		top: auto;
+		right: auto;
+		float: none;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		height: 36px;
+		line-height: 1;
+		background-color: transparent;
+		border: 0;
+		text-align: right;
+	}
+
+	.site-nav label[for="nav-trigger"] {
+		float: none;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
+		margin: 0;
+	}
+
+	.site-nav .menu-icon {
+		float: none;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding-top: 0;
+		line-height: 0;
+	}
+
+	.site-nav .menu-icon > svg path {
+		fill: var(--ink);
+	}
+
+	.site-nav input:checked ~ .trigger {
+		position: absolute;
+		top: calc(100% + 6px);
+		right: 0.75rem;
+		min-width: 168px;
+		padding: 0.4rem 0;
+		background: var(--card);
+		border: 1px solid var(--card-border);
+		border-radius: var(--radius);
+		box-shadow: var(--shadow);
+		z-index: 50;
+	}
+
+	.site-nav .page-link {
+		display: block;
+		margin-left: 0;
+		padding: 0.55rem 1.1rem;
+		color: var(--ink);
+		text-decoration: none;
+	}
+
+	.site-nav .page-link:hover {
+		background: var(--chip-bg);
+		color: var(--accent);
+	}
+}
