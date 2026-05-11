@@ -32,6 +32,7 @@ Before reading this document, it's helpful to understand a basic overview of Uni
 
 - **Code Point**
 An abstract number assigned by Unicode to each character. Represented as U+0041, with 16-digit notation after U+. The current assignment range is U+0000 ~ U+10FFFF (total of 1,114,112).
+
 ```
 U+0041  →  'A'
 U+AC00  →  '가'
@@ -41,6 +42,7 @@ U+0000  →  NULL (U+0000 is a valid CP)
 
 - **Code Unit**
 The unit that an encoding writes to actual memory. The size varies by encoding, and a single code point can be represented by multiple code units.
+
 ```
 UTF-8  : 1 code unit = 1 byte
 UTF-16 : 1 code unit = 2 bytes
