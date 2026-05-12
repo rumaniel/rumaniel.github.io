@@ -7,7 +7,7 @@ status: 서비스 중
 order: 1
 image: /assets/portfolio/solitaire/feature-graphic.png
 image_alt: Solitaire feature graphic
-tech: [Unity 2022.3 LTS, C#, VContainer, R3, UniTask, MemoryPack, Addressables, GitHub Actions]
+tech: [Unity 6.3 LTS, C#, VContainer, R3, UniTask, MemoryPack, Addressables, GitHub Actions]
 links:
   - label: Google Play
     url: https://play.google.com/store/apps/details?id=com.mangru.solitaire
