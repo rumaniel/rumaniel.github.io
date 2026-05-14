@@ -1469,6 +1469,56 @@ html[data-theme="dark"] .category-count {
 	margin: 0 auto;
 }
 
+.onion-architecture .onion-ring {
+	stroke: var(--card-border);
+	stroke-width: 1;
+}
+
+.onion-architecture .onion-ring--framework { fill: var(--ring-framework); }
+.onion-architecture .onion-ring--infra     { fill: var(--ring-infra); }
+.onion-architecture .onion-ring--app       { fill: var(--ring-app); }
+.onion-architecture .onion-ring--domain    { fill: var(--ring-domain); }
+
+.onion-architecture .onion-label {
+	fill: var(--ring-text);
+}
+
+.onion-architecture .onion-label--asmdef {
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.onion-architecture .onion-label--asmdef.onion-label--app {
+	font-size: 18px;
+}
+
+.onion-architecture .onion-label--asmdef.onion-label--domain {
+	font-size: 20px;
+}
+
+.onion-architecture .onion-label--role {
+	font-size: 12px;
+	font-style: italic;
+	opacity: 0.7;
+}
+
+.onion-architecture .onion-side {
+	fill: var(--ring-text);
+	font-size: 13px;
+	font-weight: 500;
+	font-family: 'IBM Plex Sans', 'Noto Sans KR', system-ui, sans-serif;
+}
+
+.onion-architecture .onion-arrow-line {
+	stroke: var(--ring-text);
+	stroke-width: 2.5;
+	stroke-linecap: round;
+}
+
+.onion-architecture .onion-arrow-head {
+	fill: var(--ring-text);
+}
+
 .onion-architecture figcaption {
 	margin-top: 1rem;
 	font-size: 0.9rem;
