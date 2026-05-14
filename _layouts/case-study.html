@@ -1,0 +1,85 @@
+---
+layout: page
+---
+<article class="case-study">
+  <header class="case-study__hero">
+    <div class="case-study__hero-text">
+      <p class="case-study__kicker">
+        {% if page.lang == 'en' %}Professional case study{% else %}업무 사례{% endif %}
+      </p>
+      <h1 class="case-study__title">{{ page.title }}</h1>
+      {% if page.subtitle %}<p class="case-study__subtitle">{{ page.subtitle }}</p>{% endif %}
+
+      {% if page.companies %}
+        <ul class="case-study__companies">
+          {% for c in page.companies %}<li>{{ c }}</li>{% endfor %}
+        </ul>
+      {% endif %}
+
+      {% if page.tech %}
+        <ul class="project-card__tech case-study__tech">
+          {% for t in page.tech %}<li>{{ t }}</li>{% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+
+    {% if page.metrics %}
+      <dl class="case-study__metrics">
+        {% for m in page.metrics %}
+          <div class="case-study__metric">
+            <dt>{{ m.label }}</dt>
+            <dd>{{ m.value }}</dd>
+          </div>
+        {% endfor %}
+      </dl>
+    {% endif %}
+  </header>
+
+  <div class="page-content project-content case-study__content">
+    {{ content }}
+
+    {% if page.videos %}
+      <h2>{% if page.lang == 'en' %}Shipped games{% else %}출시된 게임들{% endif %}</h2>
+      <ul class="video-grid">
+        {% for v in page.videos %}
+          <li class="video-card">
+            <a href="{{ v.url }}" target="_blank" rel="noopener">
+              {% if v.provider == 'youtube' and v.id %}
+                <span class="video-card__thumb">
+                  <img src="https://img.youtube.com/vi/{{ v.id }}/hqdefault.jpg" alt="{{ v.title }}" loading="lazy">
+                  <span class="video-card__play" aria-hidden="true">▶</span>
+                </span>
+              {% else %}
+                <span class="video-card__thumb video-card__thumb--placeholder" aria-hidden="true">
+                  <span class="video-card__play">▶</span>
+                </span>
+              {% endif %}
+              <span class="video-card__meta">
+                <span class="video-card__title">{{ v.title }}</span>
+                {% if v.company %}<span class="video-card__company">{{ v.company }}</span>{% endif %}
+              </span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if page.gists %}
+      <h2>{% if page.lang == 'en' %}Public code excerpts{% else %}공개 코드 스니펫{% endif %}</h2>
+      <ul class="case-study__gists">
+        {% for g in page.gists %}
+          <li>
+            <a href="https://gist.github.com/rumaniel/{{ g.id }}" target="_blank" rel="noopener">
+              <strong>{{ g.label }}</strong>
+              <span>gist.github.com/rumaniel/{{ g.id | truncate: 12, '…' }}</span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+
+  <p class="project-detail__back">
+    <a href="{{ '/portfolio/' | relative_url }}">{% if page.lang == 'en' %}&larr; Back to portfolio{% else %}&larr; 포트폴리오로 돌아가기{% endif %}</a>
+  </p>
+</article>

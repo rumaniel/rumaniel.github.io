@@ -5,4 +5,4 @@ permalink: /portfolio/
 lang: en
 page_id: portfolio
 ---
-A collection of games and tools I'm currently building.
+Side projects I shipped on my own time alongside themed case studies of professional work across multiple companies and live titles.

@@ -4,35 +4,93 @@ layout: page
 {{ content }}
 
 {% assign projects = site.projects | sort: 'order' %}
-<ul class="portfolio-grid">
-{% for project in projects %}
-  <li>
-    <a class="project-card" href="{{ project.url | relative_url }}">
-      {% if project.image %}
-        <div class="project-card__image">
-          <img src="{{ project.image | relative_url }}" alt="{{ project.image_alt | default: project.title }}" loading="lazy">
-        </div>
-      {% endif %}
-      <div class="project-card__body">
-        <h3 class="project-card__title">
-          {{ project.title }}
-          {% if project.subtitle %}<span class="project-card__subtitle">{{ project.subtitle }}</span>{% endif %}
-        </h3>
-        {% if project.status %}
-          <p class="project-card__status">
-            <span class="status-dot"></span>{{ project.status }}
-          </p>
-        {% endif %}
-        {% if project.excerpt %}
-          <p class="project-card__desc">{{ project.excerpt | strip_html | truncate: 180 }}</p>
-        {% endif %}
-        {% if project.tech %}
-          <ul class="project-card__tech">
-            {% for t in project.tech %}<li>{{ t }}</li>{% endfor %}
-          </ul>
-        {% endif %}
-      </div>
-    </a>
-  </li>
-{% endfor %}
-</ul>
+{% if projects.size > 0 %}
+  <section class="portfolio-section">
+    <h2 class="portfolio-section__title">
+      {% if page.lang == 'en' %}Side Projects{% else %}사이드 프로젝트{% endif %}
+    </h2>
+    <p class="portfolio-section__intro">
+      {% if page.lang == 'en' %}Shipped products I built end-to-end on my own time.{% else %}직접 출시까지 끌고 간 개인 프로덕트입니다.{% endif %}
+    </p>
+    <ul class="portfolio-grid">
+    {% for project in projects %}
+      <li>
+        <a class="project-card" href="{{ project.url | relative_url }}">
+          {% if project.image %}
+            <div class="project-card__image">
+              <img src="{{ project.image | relative_url }}" alt="{{ project.image_alt | default: project.title }}" loading="lazy">
+            </div>
+          {% endif %}
+          <div class="project-card__body">
+            <h3 class="project-card__title">
+              {{ project.title }}
+              {% if project.subtitle %}<span class="project-card__subtitle">{{ project.subtitle }}</span>{% endif %}
+            </h3>
+            {% if project.status %}
+              <p class="project-card__status">
+                <span class="status-dot"></span>{{ project.status }}
+              </p>
+            {% endif %}
+            {% if project.excerpt %}
+              <p class="project-card__desc">{{ project.excerpt | strip_html | truncate: 180 }}</p>
+            {% endif %}
+            {% if project.tech %}
+              <ul class="project-card__tech">
+                {% for t in project.tech %}<li>{{ t }}</li>{% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+        </a>
+      </li>
+    {% endfor %}
+    </ul>
+  </section>
+{% endif %}
+
+{% assign cases = site.case_studies | sort: 'order' %}
+{% if cases.size > 0 %}
+  <section class="portfolio-section portfolio-section--cases">
+    <h2 class="portfolio-section__title">
+      {% if page.lang == 'en' %}Professional Case Studies{% else %}업무 사례{% endif %}
+    </h2>
+    <p class="portfolio-section__intro">
+      {% if page.lang == 'en' %}Themed engineering work that spans multiple companies and shipped titles.{% else %}여러 회사·여러 라이브 타이틀에 걸쳐 누적한 엔지니어링 사례입니다.{% endif %}
+    </p>
+    <ul class="case-study-grid">
+    {% for c in cases %}
+      <li>
+        <a class="case-study-card" href="{{ c.url | relative_url }}">
+          <h3 class="case-study-card__title">
+            {{ c.title }}
+            {% if c.subtitle %}<span class="case-study-card__subtitle">{{ c.subtitle }}</span>{% endif %}
+          </h3>
+
+          {% if c.companies %}
+            <ul class="case-study-card__companies">
+              {% for co in c.companies %}<li>{{ co }}</li>{% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if c.metrics %}
+            <dl class="case-study-card__metrics">
+              {% for m in c.metrics limit: 2 %}
+                <div>
+                  <dt>{{ m.label }}</dt>
+                  <dd>{{ m.value }}</dd>
+                </div>
+              {% endfor %}
+            </dl>
+          {% endif %}
+
+          {% if c.tech %}
+            <ul class="project-card__tech case-study-card__tech">
+              {% for t in c.tech limit: 6 %}<li>{{ t }}</li>{% endfor %}
+              {% if c.tech.size > 6 %}<li class="case-study-card__tech-more">+{{ c.tech.size | minus: 6 }}</li>{% endif %}
+            </ul>
+          {% endif %}
+        </a>
+      </li>
+    {% endfor %}
+    </ul>
+  </section>
+{% endif %}

@@ -35,6 +35,9 @@ collections:
   projects:
     output: true
     permalink: /portfolio/:path/
+  case_studies:
+    output: true
+    permalink: /portfolio/:path/
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
