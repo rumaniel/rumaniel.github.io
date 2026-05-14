@@ -27,6 +27,14 @@
 	--table-grid: #d9d9d9;
 	--code-inline-text: #262626;
 	--code-block-text: #202020;
+
+	/* Onion architecture rings (kept consistent across themes;
+	   text inside rings always uses dark --ring-text for contrast). */
+	--ring-domain: #fff9c4;
+	--ring-app: #ffcdd2;
+	--ring-infra: #c8e6c9;
+	--ring-framework: #bbdefb;
+	--ring-text: #1a1a1a;
 }
 
 html[data-theme="dark"] {
@@ -1438,4 +1446,32 @@ html[data-theme="dark"] .category-count {
 	.video-grid {
 		grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
 	}
+}
+
+/* ----------------------------------------------------------------
+   Onion architecture diagram (inline SVG figure)
+   ---------------------------------------------------------------- */
+.onion-architecture {
+	margin: 1.75rem auto 2rem;
+	padding: 1.25rem;
+	border: 1px solid var(--card-border);
+	border-radius: var(--radius);
+	background: var(--surface-panel);
+	text-align: center;
+	max-width: 720px;
+}
+
+.onion-architecture svg {
+	display: block;
+	width: 100%;
+	height: auto;
+	max-width: 640px;
+	margin: 0 auto;
+}
+
+.onion-architecture figcaption {
+	margin-top: 1rem;
+	font-size: 0.9rem;
+	color: var(--muted);
+	line-height: 1.55;
 }

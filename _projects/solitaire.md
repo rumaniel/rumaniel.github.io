@@ -8,7 +8,6 @@ order: 1
 image: /assets/portfolio/solitaire/feature-graphic.png
 image_alt: Solitaire feature graphic
 tech: [Unity 6.3 LTS, C#, VContainer, R3, UniTask, MemoryPack, Addressables, GitHub Actions]
-mermaid: true
 links:
   - label: Google Play
     url: https://play.google.com/store/apps/details?id=com.mangru.solitaire
@@ -38,37 +37,7 @@ page_id: project-solitaire
 
 asmdef 9개를 레이어로 묶어 의존 방향을 한 방향으로 못 박았습니다. **Model은 Unity 어셈블리를 일절 참조하지 않으며**, 그 덕분에 도메인 로직이 NUnit 한 줄로 검증됩니다. 모든 외부 I/O(저장소, Firebase, Play Games)는 Gateway에서 끝나고, 비즈니스 로직은 Service에서 끝나며, MonoBehaviour는 Component/Scene 레이어에만 존재합니다.
 
-<div class="mermaid" markdown="0">
-graph TD
-  App["<b>App</b><br/>Composition Root<br/>VContainer LifetimeScope"]
-  Scene["<b>Scene</b><br/>MVP Presenters<br/>(Login · Lobby · Ingame)"]
-  Component["<b>Component</b><br/>UI · MonoBehaviour Views"]
-  Service["<b>Service</b><br/>9개 비즈니스 서비스"]
-  Gateway["<b>Gateway</b><br/>외부 I/O · 영속 계층"]
-  Core["<b>Core</b><br/>Base Classes"]
-  Data["<b>Data</b><br/>ScriptableObject Configs"]
-  Model["<b>Model</b><br/>순수 도메인 — Unity 의존 0"]
-  Shared["<b>Shared</b><br/>Utilities"]
-
-  App --> Scene
-  App --> Service
-  App --> Gateway
-  App --> Component
-  Scene --> Component
-  Scene --> Service
-  Scene --> Gateway
-  Component --> Service
-  Component --> Gateway
-  Component --> Core
-  Service --> Gateway
-  Service --> Data
-  Service --> Model
-  Service --> Core
-  Gateway --> Model
-  Gateway --> Data
-  Data --> Model
-  Core --> Shared
-</div>
+{% include architecture-onion.html lang="ko" %}
 
 ### 레이어별 책임
 

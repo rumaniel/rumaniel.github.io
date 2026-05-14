@@ -1,0 +1,80 @@
+{%- assign lang = include.lang | default: "ko" -%}
+{%- if lang == "en" -%}
+  {%- assign label_framework = "Framework" -%}
+  {%- assign label_infra     = "Infrastructure" -%}
+  {%- assign label_app       = "Application" -%}
+  {%- assign label_domain    = "Domain" -%}
+  {%- assign label_side_left = "Unity Engine" -%}
+  {%- assign caption = "Dependencies flow inward only — Model never imports Unity; Service never imports Component or App." -%}
+{%- else -%}
+  {%- assign label_framework = "Framework" -%}
+  {%- assign label_infra     = "Infrastructure" -%}
+  {%- assign label_app       = "Application" -%}
+  {%- assign label_domain    = "Domain" -%}
+  {%- assign label_side_left = "Unity Engine" -%}
+  {%- assign caption = "의존은 안쪽으로만 흐릅니다 — Model은 Unity를 모르고, Service는 Component·App을 모릅니다." -%}
+{%- endif -%}
+
+<figure class="onion-architecture" markdown="0">
+  <svg viewBox="0 0 720 700" role="img"
+       aria-label="Clean Architecture (Onion) diagram for Solitaire"
+       xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="onion-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" style="fill: var(--ring-text);"/>
+      </marker>
+    </defs>
+
+    <!-- Concentric rings: outermost to innermost -->
+    <circle cx="360" cy="350" r="295"
+            style="fill: var(--ring-framework); stroke: var(--card-border); stroke-width: 1;"/>
+    <circle cx="360" cy="350" r="220"
+            style="fill: var(--ring-infra); stroke: var(--card-border); stroke-width: 1;"/>
+    <circle cx="360" cy="350" r="145"
+            style="fill: var(--ring-app); stroke: var(--card-border); stroke-width: 1;"/>
+    <circle cx="360" cy="350" r="70"
+            style="fill: var(--ring-domain); stroke: var(--card-border); stroke-width: 1;"/>
+
+    <!-- Top arc labels: project assembly names (bold) + architecture role (italic) -->
+    <g text-anchor="middle"
+       font-family="'IBM Plex Sans', 'Noto Sans KR', system-ui, sans-serif">
+      <text x="360" y="93"
+            style="fill: var(--ring-text); font-size: 16px; font-weight: 700;">Component · Scene · App · Core · Shared</text>
+      <text x="360" y="116"
+            style="fill: var(--ring-text); font-size: 12px; font-style: italic; opacity: 0.7;">{{ label_framework }}</text>
+
+      <text x="360" y="160"
+            style="fill: var(--ring-text); font-size: 17px; font-weight: 700;">Gateway · Data</text>
+      <text x="360" y="183"
+            style="fill: var(--ring-text); font-size: 12px; font-style: italic; opacity: 0.7;">{{ label_infra }}</text>
+
+      <text x="360" y="235"
+            style="fill: var(--ring-text); font-size: 18px; font-weight: 700;">Service</text>
+      <text x="360" y="258"
+            style="fill: var(--ring-text); font-size: 12px; font-style: italic; opacity: 0.7;">{{ label_app }}</text>
+
+      <text x="360" y="346"
+            style="fill: var(--ring-text); font-size: 20px; font-weight: 700;">Model</text>
+      <text x="360" y="370"
+            style="fill: var(--ring-text); font-size: 12px; font-style: italic; opacity: 0.7;">{{ label_domain }}</text>
+    </g>
+
+    <!-- Side annotations (concrete external systems inside outer ring) -->
+    <text x="105" y="355" text-anchor="middle"
+          style="fill: var(--ring-text); font-size: 13px; font-weight: 500;
+                 font-family: 'IBM Plex Sans', 'Noto Sans KR', system-ui, sans-serif;">{{ label_side_left }}</text>
+    <text x="617" y="345" text-anchor="middle"
+          style="fill: var(--ring-text); font-size: 13px; font-weight: 500;
+                 font-family: 'IBM Plex Sans', 'Noto Sans KR', system-ui, sans-serif;">Firebase</text>
+    <text x="617" y="362" text-anchor="middle"
+          style="fill: var(--ring-text); font-size: 13px; font-weight: 500;
+                 font-family: 'IBM Plex Sans', 'Noto Sans KR', system-ui, sans-serif;">Play Games</text>
+
+    <!-- Inward dependency arrow: crosses outer → infra → app, points just outside Domain -->
+    <line x1="90" y1="475" x2="305" y2="395"
+          style="stroke: var(--ring-text); stroke-width: 2.5; stroke-linecap: round;"
+          marker-end="url(#onion-arrow)"/>
+  </svg>
+  <figcaption>{{ caption }}</figcaption>
+</figure>

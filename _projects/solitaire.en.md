@@ -8,7 +8,6 @@ order: 1
 image: /assets/portfolio/solitaire/feature-graphic.png
 image_alt: Solitaire feature graphic
 tech: [Unity 6.3 LTS, C#, VContainer, R3, UniTask, MemoryPack, Addressables, GitHub Actions]
-mermaid: true
 links:
   - label: Google Play
     url: https://play.google.com/store/apps/details?id=com.mangru.solitaire
@@ -38,37 +37,7 @@ A mobile solitaire game supporting Klondike and Easthaven rule sets. The core de
 
 The 9 asmdefs are stacked into layers with a single direction of dependency. **The `Model` assembly references no Unity assemblies at all**, which keeps domain logic verifiable with a one-liner NUnit test. All external I/O (persistence, Firebase, Play Games) terminates in `Gateway`; business rules terminate in `Service`; MonoBehaviours only live in `Component` / `Scene`.
 
-<div class="mermaid" markdown="0">
-graph TD
-  App["<b>App</b><br/>Composition Root<br/>VContainer LifetimeScope"]
-  Scene["<b>Scene</b><br/>MVP Presenters<br/>(Login · Lobby · Ingame)"]
-  Component["<b>Component</b><br/>UI · MonoBehaviour Views"]
-  Service["<b>Service</b><br/>9 business services"]
-  Gateway["<b>Gateway</b><br/>External I/O · persistence"]
-  Core["<b>Core</b><br/>Base Classes"]
-  Data["<b>Data</b><br/>ScriptableObject Configs"]
-  Model["<b>Model</b><br/>Pure Domain — no Unity refs"]
-  Shared["<b>Shared</b><br/>Utilities"]
-
-  App --> Scene
-  App --> Service
-  App --> Gateway
-  App --> Component
-  Scene --> Component
-  Scene --> Service
-  Scene --> Gateway
-  Component --> Service
-  Component --> Gateway
-  Component --> Core
-  Service --> Gateway
-  Service --> Data
-  Service --> Model
-  Service --> Core
-  Gateway --> Model
-  Gateway --> Data
-  Data --> Model
-  Core --> Shared
-</div>
+{% include architecture-onion.html lang="en" %}
 
 ### Layer responsibilities
 
