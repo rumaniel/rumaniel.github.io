@@ -834,6 +834,28 @@ html[data-theme="dark"] .category-count {
 	color: var(--accent);
 }
 
+/* Mermaid diagram container */
+.project-content .mermaid {
+	margin: 1.75rem 0;
+	padding: 1.25rem;
+	border: 1px solid var(--card-border);
+	border-radius: var(--radius);
+	background: var(--surface-panel);
+	text-align: center;
+	overflow-x: auto;
+}
+
+.project-content .mermaid svg {
+	max-width: 100%;
+	height: auto;
+}
+
+/* Hide raw mermaid source until the library swaps it for an SVG */
+.project-content .mermaid:not([data-processed="true"]) {
+	color: transparent;
+	min-height: 2rem;
+}
+
 @media (max-width: 720px) {
 	.home-hero {
 		padding: 1.75rem;

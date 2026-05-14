@@ -28,6 +28,37 @@
   <script src="{{ "/assets/js/theme-toggle.js" | relative_url }}" defer></script>
   <link rel="icon" href="{{ "/assets/favicon.ico" | relative_url }}">
 
+  {%- if page.mermaid -%}
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+
+    const themeFor = () =>
+      document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default';
+
+    mermaid.initialize({ startOnLoad: false, theme: themeFor(), securityLevel: 'loose' });
+
+    function render() {
+      document.querySelectorAll('.mermaid').forEach((el) => {
+        if (!el.dataset.src) el.dataset.src = el.textContent.trim();
+        else el.innerHTML = el.dataset.src;
+        el.removeAttribute('data-processed');
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', render);
+    } else {
+      render();
+    }
+
+    new MutationObserver(() => {
+      mermaid.initialize({ startOnLoad: false, theme: themeFor(), securityLevel: 'loose' });
+      render();
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  </script>
+  {%- endif -%}
+
   {%- if site.languages and site.languages.size > 1 -%}
     {%- for lang in site.languages -%}
       {%- capture lang_href -%}{%- include i18n-lang-href.html lang=lang absolute=true -%}{%- endcapture -%}
