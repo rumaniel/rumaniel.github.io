@@ -5,7 +5,7 @@ title: chzzk_songs
 subtitle: 치지직 스트리머 노래 클립 아카이브
 status: 운영 중 / Self-hosted
 order: 2
-tech: [TypeScript, Hono, Drizzle ORM, SQLite, React 19, TanStack Router, TanStack Query, Tailwind v4, Vite, Docker, Kubernetes (k3s), Helm, GitHub Actions, Prometheus]
+tech: [TypeScript, Hono, Drizzle ORM, SQLite, React 19, TanStack Router, TanStack Query, Tailwind v4, Vite, Docker, Kubernetes (k3s), Helm, GitHub Actions, Cloudflare Access, Prometheus]
 mermaid: true
 links:
   - label: Live
@@ -23,12 +23,11 @@ page_id: project-chzzk-songs
 
 | 항목 | 값 |
 | --- | --- |
-| 코드 규모 | ~9,800 LoC TypeScript (백엔드 + 프런트) |
 | 백엔드 | Hono 4 + Drizzle ORM + better-sqlite3 + node-cron |
 | 프런트엔드 | React 19 + Vite 8 + TanStack Router/Query + Tailwind v4 |
 | 데이터 모델 | SQLite WAL, 10개 테이블 (streamers / clips / songs / clipSongs / tags / clipTags / syncLogs / songKeywords / songCandidates / reports) |
 | 외부 API | Chzzk · Naver Open API · Spotify Web API · YouTube Data v3 |
-| 인증 | JWT (관리자 단일) + 부팅 단계 시크릿 강도 검증 |
+| 인증 | 앞단 Cloudflare Access (zero-trust 게이트) + 앱 내부 JWT (관리자) + 부팅 단계 시크릿 강도 검증 |
 | 배포 | 멀티스테이지 Docker → 자체 registry → k3s + Helm (GitHub Actions가 helm upgrade까지) |
 | 관측 | Prometheus 메트릭 + ServiceMonitor + Grafana 대시보드 ConfigMap |
 
@@ -110,9 +109,11 @@ for (let i = 0; i < newUIDs.length; i++) {
 
 배치 사이에 150ms를 끼워 넣고 동시성 4로 묶은 건 단순한 매너 코드이기도 하고, Chzzk public API가 갑자기 차단되지 않게 하는 보호선이기도 합니다.
 
-## 보안: 부팅을 일부러 실패시키는 환경변수 검증
+## 보안: 두 층의 게이트 + 부팅 실패로 약한 시크릿 차단
 
-이전 코드에는 `process.env.JWT_SECRET || "dev-secret-change-in-production"` 같은 패턴이 있었습니다. .env 한 줄을 빼먹으면 누구나 코드만 보고 `dev-secret-...`로 admin 토큰을 위조할 수 있는 구조였죠. **import 시점에 throw**해서 pod를 CrashLoop 시키는 헬퍼로 바꿨습니다 — silent degradation을 사고로 만드는 패턴입니다.
+관리자 라우트 앞단에는 **Cloudflare Access (zero-trust)** 를 둬서 IdP 인증을 통과하지 못한 요청은 애초에 앱까지 도달하지 못합니다. 그 안쪽에서 **JWT 관리자 토큰**으로 한 번 더 게이트하는 두 층 구조입니다. 외곽에서 신원을 확인하고, 내부에서 권한을 확인하는 역할 분담입니다.
+
+여기에 더해, 약한 시크릿이 운영에 흘러들어가는 사고를 막기 위해 환경변수 자체를 부팅 단계에서 검증합니다. 이전 코드에는 `process.env.JWT_SECRET || "dev-secret-change-in-production"` 같은 패턴이 있었습니다. .env 한 줄을 빼먹으면 누구나 코드만 보고 `dev-secret-...`로 admin 토큰을 위조할 수 있는 구조였죠. **import 시점에 throw**해서 pod를 CrashLoop 시키는 헬퍼로 바꿨습니다 — silent degradation을 사고로 만드는 패턴입니다.
 
 ```ts
 // packages/backend/src/lib/env.ts (요지)

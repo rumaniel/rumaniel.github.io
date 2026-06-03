@@ -5,7 +5,7 @@ title: chzzk_songs
 subtitle: Song-clip archive for Chzzk streamers
 status: Live / Self-hosted
 order: 2
-tech: [TypeScript, Hono, Drizzle ORM, SQLite, React 19, TanStack Router, TanStack Query, Tailwind v4, Vite, Docker, Kubernetes (k3s), Helm, GitHub Actions, Prometheus]
+tech: [TypeScript, Hono, Drizzle ORM, SQLite, React 19, TanStack Router, TanStack Query, Tailwind v4, Vite, Docker, Kubernetes (k3s), Helm, GitHub Actions, Cloudflare Access, Prometheus]
 mermaid: true
 links:
   - label: Live
@@ -23,12 +23,11 @@ A self-hosted SPA that aggregates song clips from Chzzk streamers (a Korean stre
 
 | Property | Value |
 | --- | --- |
-| Code size | ~9,800 LoC TypeScript (backend + frontend) |
 | Backend | Hono 4 + Drizzle ORM + better-sqlite3 + node-cron |
 | Frontend | React 19 + Vite 8 + TanStack Router/Query + Tailwind v4 |
 | Data model | SQLite WAL, 10 tables (streamers / clips / songs / clipSongs / tags / clipTags / syncLogs / songKeywords / songCandidates / reports) |
 | External APIs | Chzzk · Naver Open API · Spotify Web API · YouTube Data v3 |
-| Auth | JWT (admin only) + boot-time secret strength validation |
+| Auth | Cloudflare Access (zero-trust gate) in front + in-app JWT (admin) + boot-time secret strength validation |
 | Deployment | Multi-stage Docker → private registry → k3s + Helm (GitHub Actions all the way through `helm upgrade`) |
 | Observability | Prometheus metrics + ServiceMonitor + Grafana dashboard ConfigMap |
 
@@ -111,9 +110,11 @@ for (let i = 0; i < newUIDs.length; i++) {
 
 Batching with a 150 ms gap and a concurrency of 4 is partly good manners and partly a guardrail — it keeps the harvest off the radar of Chzzk's public API.
 
-## Security: a boot that *fails* on weak secrets
+## Security: two gates in front, plus a boot that fails on weak secrets
 
-An earlier version had things like `process.env.JWT_SECRET || "dev-secret-change-in-production"`. If `.env` were missing, anyone reading the source could forge an admin token with the known fallback. The fix: a helper that **throws at import time** so the pod CrashLoops — silent degradation becomes an incident.
+Admin routes sit behind a **Cloudflare Access (zero-trust)** gate, so requests that don't pass the IdP check never reach the app at all. Inside, the **JWT admin token** gates them once more. The outer layer verifies *identity*; the inner layer verifies *authorization*.
+
+On top of that, weak secrets are caught before they can leak into production. An earlier version had things like `process.env.JWT_SECRET || "dev-secret-change-in-production"`. If `.env` were missing, anyone reading the source could forge an admin token with the known fallback. The fix: a helper that **throws at import time** so the pod CrashLoops — silent degradation becomes an incident.
 
 ```ts
 // packages/backend/src/lib/env.ts (essence)
