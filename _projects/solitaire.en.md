@@ -180,6 +180,77 @@ private static bool IsUselessKingMove(PileState source, int sourceIndex, PileSta
 
 The enumerator is also written cheap-checks-first, so the common "can the player do *anything*?" query short-circuits on the first viable move.
 
+## Addressables: optional assets behind a Gateway
+
+Card skins and per-language string tables are **optional and language-specific** — there's no reason to hold them in memory from launch. Addressables (2.4) splits them into per-domain groups, and game code only sees a thin Gateway over the top.
+
+### Asset groups
+
+Splitting by domain means a player who picks one skin never loads the other, and a Korean user doesn't ship the English string tables into RAM.
+
+- **Skins** — card sprite sets (`skin/classic`, `skin/plain`), labelled `skin`
+- **Localization-Locales** — English · Korean · Pseudo
+- **Localization-String-Tables-English / -Korean** — UI · Achievements · Share. The startup-critical ones carry the `Preload` label so they come in with the locale.
+- **Localization-Assets-Shared** — fonts and textures shared across locales
+- **Default Local Group** — fallback
+
+### Game code only sees the Gateway
+
+`AssetReferenceT<CardSpriteSet>` lives in the inspector, and **the gateway absorbs every Addressables call**. The Service layer only sees `LoadAsync(reference) / Release(reference)`.
+
+```csharp
+// Gateway/Skin/AddressableSkinAssetGateway.cs
+public class AddressableSkinAssetGateway : ISkinAssetGateway
+{
+    private readonly Dictionary<CardSpriteSetReference,
+        AsyncOperationHandle<CardSpriteSet>> handles = new();
+
+    public async UniTask<CardSpriteSet> LoadAsync(CardSpriteSetReference reference)
+    {
+        // A second call for the same reference awaits the in-flight handle.
+        // This both avoids LoadAssetAsync's "already loaded" error
+        // and prevents reference.Asset from being read as null mid-load.
+        if (handles.TryGetValue(reference, out var existing))
+            return await existing.ToUniTask();
+
+        var handle = reference.LoadAssetAsync<CardSpriteSet>();
+        handles[reference] = handle;
+        try
+        {
+            return await handle.ToUniTask();
+        }
+        catch
+        {
+            // On failure, drop the cache entry and release the internal handle
+            // so a retry can issue a fresh LoadAssetAsync from a clean state.
+            handles.Remove(reference);
+            reference.ReleaseAsset();
+            throw;
+        }
+    }
+
+    public void Release(CardSpriteSetReference reference)
+    {
+        if (!handles.Remove(reference)) return;
+        reference.ReleaseAsset();
+    }
+}
+```
+
+Three details worth pointing out:
+
+- **In-flight handle sharing** — concurrent requests for the same asset all await one handle. No second `LoadAssetAsync`, no leak, no "already loaded" error.
+- **Self-cleanup on failure** — the `catch` clears the cache entry *and* the underlying handle, so retries don't get stuck in a half-loaded state.
+- **Explicit Release** — when the Service swaps to a new skin, it has to release the previous one. Addressables is reference-counted; forgetting this is a leak you ship to production.
+
+### Localization rides the same path
+
+`com.unity.localization` is configured to load string tables through Addressables, so they inherit the same lifecycle. Only tables tagged `Preload` come in at startup; secondary screens like Achievements load their tables on first entry, which keeps both initial memory and cold-start time down.
+
+### Local bundles today, remote ready by interface
+
+Today everything ships as **local bundles inside the app**. Splitting to a remote CDN is parked until the content cadence justifies the operational tax. The point is that game code talks to the Gateway, not to Addressables, so the switch lands behind one implementation.
+
 ## Screenshots
 
 ![Lobby](/assets/portfolio/solitaire/screenshots/01-lobby.png)

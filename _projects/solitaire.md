@@ -180,6 +180,77 @@ private static bool IsUselessKingMove(PileState source, int sourceIndex, PileSta
 
 탐색 자체도 “먼저 가장 싼 검사부터”라는 원칙으로 짜여 있어서, 평균적으로 첫 번째 유효 수가 발견되는 즉시 단락(short-circuit) 됩니다.
 
+## Addressables: 선택 자산을 Gateway 뒤로 숨기기
+
+카드 스킨과 다국어 문자열 테이블처럼 **선택적·언어별로만 필요한 자산**은 처음부터 메모리에 들고 있을 이유가 없습니다. Addressables(2.4)로 자산 그룹을 도메인 단위로 쪼개고, 게임 코드는 그 위에 얇은 Gateway 인터페이스만 쓰게 했습니다.
+
+### 자산 그룹 분리
+
+도메인이 다른 자산을 한 번들에 묶지 않은 덕에, 사용자가 한 가지 스킨만 적용할 때 다른 스킨을 로드하지 않습니다. 로케일도 같은 방식 — 한국어 사용자가 영어 테이블을 메모리에 들고 있을 이유가 없습니다.
+
+- **Skins** — 카드 스프라이트 셋(`skin/classic`, `skin/plain`) · 라벨 `skin`
+- **Localization-Locales** — 영어 · 한국어 · Pseudo
+- **Localization-String-Tables-English / -Korean** — UI · Achievements · Share 테이블. 부팅 직후 필요한 것에는 `Preload` 라벨로 동시 선로드
+- **Localization-Assets-Shared** — 전 언어 공유 폰트 · 텍스처
+- **Default Local Group** — 폴백
+
+### 게임 코드는 Gateway만 본다
+
+`AssetReferenceT<CardSpriteSet>`를 인스펙터에서 지정해 두고, **Addressables의 모든 API를 게이트웨이가 흡수**합니다. Service 레이어는 `LoadAsync(reference) / Release(reference)` 두 개만 봅니다.
+
+```csharp
+// Gateway/Skin/AddressableSkinAssetGateway.cs
+public class AddressableSkinAssetGateway : ISkinAssetGateway
+{
+    private readonly Dictionary<CardSpriteSetReference,
+        AsyncOperationHandle<CardSpriteSet>> handles = new();
+
+    public async UniTask<CardSpriteSet> LoadAsync(CardSpriteSetReference reference)
+    {
+        // 같은 reference에 대한 중복 호출은 진행 중인 핸들을 공유한다.
+        // LoadAssetAsync의 "already loaded" 에러도 막고,
+        // 미완료 시점에 reference.Asset(null)이 노출되는 사고도 막는다.
+        if (handles.TryGetValue(reference, out var existing))
+            return await existing.ToUniTask();
+
+        var handle = reference.LoadAssetAsync<CardSpriteSet>();
+        handles[reference] = handle;
+        try
+        {
+            return await handle.ToUniTask();
+        }
+        catch
+        {
+            // 실패 시엔 캐시 항목과 내부 핸들을 같이 푼다.
+            // 그래야 재시도가 반쯤 로드된 상태에 막히지 않는다.
+            handles.Remove(reference);
+            reference.ReleaseAsset();
+            throw;
+        }
+    }
+
+    public void Release(CardSpriteSetReference reference)
+    {
+        if (!handles.Remove(reference)) return;
+        reference.ReleaseAsset();
+    }
+}
+```
+
+세 가지 디테일이 들어 있습니다:
+
+- **In-flight 핸들 공유** — 같은 자산에 대한 동시 요청이 와도 하나의 핸들만 발급. 두 번 `LoadAssetAsync`로 메모리 누수나 "already loaded" 에러를 만들지 않습니다.
+- **실패 시 자체 정리** — `catch`에서 캐시와 내부 핸들을 같이 풀어, 재시도가 깨끗한 상태에서 다시 시작합니다.
+- **명시적 Release** — Service 레이어가 스킨을 바꿀 때 이전 스킨을 명시적으로 풀어야 자산이 GC됩니다. Addressables는 참조 카운트 기반이라 이걸 잊으면 그대로 누수입니다.
+
+### 로컬라이즈도 같은 길로
+
+`com.unity.localization`이 내부적으로 String Table을 Addressables로 가져오도록 설정돼 있어, 같은 라이프사이클을 공유합니다. `Preload` 라벨이 붙은 테이블만 부팅 시 함께 로드되고, Achievements 같은 보조 화면용 테이블은 처음 진입할 때 비로소 가져오는 구조라 초기 메모리와 시작 시간 둘 다 줄어듭니다.
+
+### 지금은 로컬 번들, 인터페이스는 원격 전환에 열려 있음
+
+현재는 **앱에 함께 들고 가는 로컬 번들**만 운영합니다. 원격 CDN 분리는 콘텐츠 업데이트 주기가 그 비용을 넘어설 때로 미뤄둔 상태입니다. 다만 게임 코드가 보는 인터페이스가 Gateway이지 Addressables가 아니라, 전환 시에도 호출부 변경 없이 가능합니다.
+
 ## 스크린샷
 
 ![로비 화면](/assets/portfolio/solitaire/screenshots/01-lobby.png)
