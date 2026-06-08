@@ -5,7 +5,7 @@ title: chzzk_songs
 subtitle: Song-clip archive for Chzzk streamers
 status: Live / Self-hosted
 order: 2
-tech: [TypeScript, Hono, Drizzle ORM, SQLite, React 19, TanStack Router, TanStack Query, Tailwind v4, Vite, Docker, Kubernetes (k3s), Helm, GitHub Actions, Cloudflare Access, Prometheus]
+tech: [TypeScript, Hono, Drizzle ORM, SQLite, React 19, TanStack Router, TanStack Query, Tailwind v4, Vite, Docker, Kubernetes (k3s), Helm, GitHub Actions, Cloudflare Access, Prometheus, Grafana, AlertManager, Cloudflare Web Analytics]
 mermaid: true
 links:
   - label: Live
@@ -29,7 +29,8 @@ A self-hosted SPA that aggregates song clips from Chzzk streamers (a Korean stre
 | External APIs | Chzzk · Naver Open API · Spotify Web API · YouTube Data v3 |
 | Auth | Cloudflare Access (zero-trust gate) in front + in-app JWT (admin) + boot-time secret strength validation |
 | Deployment | Multi-stage Docker → private registry → k3s + Helm (GitHub Actions all the way through `helm upgrade`) |
-| Observability | Prometheus metrics + ServiceMonitor + Grafana dashboard ConfigMap |
+| Observability | Prometheus + ServiceMonitor + Grafana dashboard · PrometheusRule alerts → AlertManager → Discord · blackbox-exporter endpoint probes |
+| Analytics | Cloudflare Web Analytics (cookie-less beacon) |
 
 ## System shape
 
@@ -60,7 +61,15 @@ flowchart LR
   end
 
   K3s["k3s + Helm<br/>GitHub Actions deploy"]
-  Grafana["Grafana<br/>dashboard"]
+
+  subgraph OBS["Observability"]
+    Prom["Prometheus"]
+    Grafana["Grafana<br/>dashboard"]
+    Alert["AlertManager<br/>→ Discord"]
+    Blackbox["blackbox-exporter<br/>endpoint probes"]
+  end
+
+  CFA["Cloudflare<br/>Web Analytics"]
 
   Cron --> Chzzk
   Cron --> Harvest
@@ -73,7 +82,11 @@ flowchart LR
   Routes --> Query
   Query -->|/api| API
   Routes --> Bookmark
-  Metrics -.->|/metrics| Grafana
+  Routes -.->|beacon| CFA
+  Metrics -.->|/metrics| Prom
+  Prom --> Grafana
+  Prom --> Alert
+  Blackbox --> Prom
   K3s -.->|deploys| API
 </div>
 
@@ -160,7 +173,46 @@ export const httpDuration = new Histogram({
 const SKIP_PATHS = new Set(["/metrics", "/api/health"]);
 ```
 
-The Helm chart ships a `ServiceMonitor` so Prometheus Operator picks up new pods on its own, and the Grafana dashboard is loaded automatically via a ConfigMap sidecar.
+The Helm chart ships a `ServiceMonitor` so Prometheus Operator picks up new pods on its own, and the Grafana dashboard (7 panels: request rate, p50/p95/p99 latency, status-code breakdown, error rate, top routes, heap/RSS, event-loop lag) loads automatically via a ConfigMap sidecar.
+
+### Don't let metrics go silent
+
+Operating this bit me once: CI's `helm upgrade` was pruning the `ServiceMonitor` on every deploy, so metrics quietly stopped flowing. The dashboard still rendered — just with no data, which is the most dangerous observability state there is. The fix pins `monitoring.enabled=true` in CI, with a post-mortem written up under `docs/ops-issues/`.
+
+### Alerts: watch even for "the target disappearing"
+
+Endpoint availability is watched with **blackbox-exporter probes + PrometheusRule**, and anything over threshold fires **AlertManager → Discord**.
+
+- `EndpointDown` — `probe_success == 0`
+- `EndpointSlow` — `probe_duration_seconds > 3`
+- `CertExpiringSoon` / `CertExpired` — TLS cert nearing/past expiry
+- `ChzzkSongsTargetMissing` — `absent(up{namespace="chzzk-songs"})`. This fires on **the absence of metrics itself**. The incident above taught me that "no signal" is more dangerous than "bad signal."
+
+```yaml
+# ops/monitoring/alerts.yaml (essence)
+- alert: ChzzkSongsTargetMissing
+  # absent() returns 1 when zero series match → fires when the target is gone
+  expr: absent(up{namespace="chzzk-songs"})
+  for: 10m
+  labels: { severity: critical }
+```
+
+## Analytics: cookie-less Cloudflare Web Analytics
+
+Visitor stats come from the **Cloudflare Web Analytics beacon** — no npm dependency, just one beacon line in `index.html`. It's **cookie-less**, so it measures site traffic rather than tracking individual users, which keeps it consent-banner-free. Because the beacon POSTs to an external domain, the backend CSP (`script-src` / `connect-src`) allow-lists exactly the Cloudflare domains and nothing else.
+
+```html
+<!-- packages/frontend/index.html -->
+<script defer
+  src="https://static.cloudflareinsights.com/beacon.min.js"
+  data-cf-beacon='{"token": "..."}'></script>
+```
+
+```ts
+// packages/backend/src/app.ts — CSP allow-list (essence)
+scriptSrc:  ["'self'", "https://static.cloudflareinsights.com"],
+connectSrc: ["'self'", "https://cloudflareinsights.com"],
+```
 
 ## Frontend: IndexedDB bookmarks with cross-tab sync
 
@@ -202,7 +254,7 @@ Merge equals deploy — no operator step in the middle.
 
 - **SQLite + WAL, not Postgres.** Single-node ops, read-heavy access pattern. I didn't want to run a separate database just to feel grown-up.
 - **External APIs degrade gracefully.** Missing Spotify / YouTube / Naver keys disable the matching helpers; the Chzzk core keeps working.
-- **Metrics from day one.** Dashboard + ServiceMonitor shipped together with Phase 1 backend metrics. Latency questions are unanswerable if you wait to add instrumentation.
+- **Metrics from day one — and watch for their absence too.** Dashboard + ServiceMonitor shipped with the first backend metrics; after a real incident where metrics silently stopped, I added an `absent()`-based target-missing alert and pinned the CI setting. Latency questions are unanswerable if you wait to instrument; "since when has it been blind?" is unanswerable if you never watch for silence.
 
 ## Try it
 

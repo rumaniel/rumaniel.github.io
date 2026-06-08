@@ -5,7 +5,7 @@ title: chzzk_songs
 subtitle: 치지직 스트리머 노래 클립 아카이브
 status: 운영 중 / Self-hosted
 order: 2
-tech: [TypeScript, Hono, Drizzle ORM, SQLite, React 19, TanStack Router, TanStack Query, Tailwind v4, Vite, Docker, Kubernetes (k3s), Helm, GitHub Actions, Cloudflare Access, Prometheus]
+tech: [TypeScript, Hono, Drizzle ORM, SQLite, React 19, TanStack Router, TanStack Query, Tailwind v4, Vite, Docker, Kubernetes (k3s), Helm, GitHub Actions, Cloudflare Access, Prometheus, Grafana, AlertManager, Cloudflare Web Analytics]
 mermaid: true
 links:
   - label: Live
@@ -29,7 +29,8 @@ page_id: project-chzzk-songs
 | 외부 API | Chzzk · Naver Open API · Spotify Web API · YouTube Data v3 |
 | 인증 | 앞단 Cloudflare Access (zero-trust 게이트) + 앱 내부 JWT (관리자) + 부팅 단계 시크릿 강도 검증 |
 | 배포 | 멀티스테이지 Docker → 자체 registry → k3s + Helm (GitHub Actions가 helm upgrade까지) |
-| 관측 | Prometheus 메트릭 + ServiceMonitor + Grafana 대시보드 ConfigMap |
+| 관측 | Prometheus + ServiceMonitor + Grafana 대시보드 · PrometheusRule 알림 → AlertManager → Discord · blackbox-exporter 엔드포인트 프로브 |
+| 분석 | Cloudflare Web Analytics (쿠키리스 비콘) |
 
 ## 시스템 구성
 
@@ -60,7 +61,15 @@ flowchart LR
   end
 
   K3s["k3s + Helm<br/>GitHub Actions deploy"]
-  Grafana["Grafana<br/>dashboard"]
+
+  subgraph OBS["Observability"]
+    Prom["Prometheus"]
+    Grafana["Grafana<br/>dashboard"]
+    Alert["AlertManager<br/>→ Discord"]
+    Blackbox["blackbox-exporter<br/>endpoint probes"]
+  end
+
+  CFA["Cloudflare<br/>Web Analytics"]
 
   Cron --> Chzzk
   Cron --> Harvest
@@ -73,7 +82,11 @@ flowchart LR
   Routes --> Query
   Query -->|/api| API
   Routes --> Bookmark
-  Metrics -.->|/metrics| Grafana
+  Routes -.->|beacon| CFA
+  Metrics -.->|/metrics| Prom
+  Prom --> Grafana
+  Prom --> Alert
+  Blackbox --> Prom
   K3s -.->|deploys| API
 </div>
 
@@ -159,7 +172,46 @@ export const httpDuration = new Histogram({
 const SKIP_PATHS = new Set(["/metrics", "/api/health"]);
 ```
 
-Helm 차트에 `ServiceMonitor`를 함께 넣어서, Prometheus Operator가 새 pod를 알아서 잡아가고, Grafana 대시보드는 ConfigMap sidecar로 자동 로드됩니다.
+Helm 차트에 `ServiceMonitor`를 함께 넣어서, Prometheus Operator가 새 pod를 알아서 잡아가고, Grafana 대시보드(요청률·p50/p95/p99 레이턴시·상태코드 분포·에러율·상위 라우트·힙/RSS·이벤트 루프 랙 7패널)는 ConfigMap sidecar로 자동 로드됩니다.
+
+### 메트릭이 조용히 사라지지 않게 만들기
+
+운영하면서 한 번 데인 적이 있습니다 — CI의 `helm upgrade`가 매 배포마다 `ServiceMonitor`를 prune해버려서, 어느 순간부터 메트릭이 조용히 끊겼습니다. 대시보드는 멀쩡해 보이는데 데이터만 비는, 관측에서 가장 위험한 상태죠. CI가 `monitoring.enabled=true`를 명시적으로 고정하도록 고쳤고, 사후 분석을 `docs/ops-issues/`에 남겼습니다.
+
+### 알림: "타깃이 사라지는 것"까지 감시
+
+엔드포인트 가용성은 **blackbox-exporter 프로브 + PrometheusRule**로 감시합니다. 임계치를 넘으면 **AlertManager → Discord** 로 알림이 갑니다.
+
+- `EndpointDown` — `probe_success == 0`
+- `EndpointSlow` — `probe_duration_seconds > 3`
+- `CertExpiringSoon` / `CertExpired` — TLS 인증서 만료 임박/만료
+- `ChzzkSongsTargetMissing` — `absent(up{namespace="chzzk-songs"})`. **메트릭이 들어오지 않는 상태 자체**를 발화 조건으로 잡습니다. "지표가 나쁜 것"이 아니라 "지표가 없는 것"이 더 위험하다는 걸 위 사고에서 배웠기 때문입니다.
+
+```yaml
+# ops/monitoring/alerts.yaml (요지)
+- alert: ChzzkSongsTargetMissing
+  # absent()는 매칭 시리즈가 0개일 때 1을 반환 → 타깃이 없으면 발화
+  expr: absent(up{namespace="chzzk-songs"})
+  for: 10m
+  labels: { severity: critical }
+```
+
+## 분석: 쿠키리스 Cloudflare Web Analytics
+
+방문 통계는 **Cloudflare Web Analytics 비콘**으로 수집합니다. npm 의존성 없이 `index.html`에 비콘 스크립트 한 줄이 전부고, **쿠키를 쓰지 않아** 개별 사용자 추적이 아니라 사이트 트래픽만 봅니다 — 동의 배너가 필요 없는 가벼운 선택입니다. 비콘이 외부 도메인으로 POST하기 때문에, 백엔드 CSP(`script-src` / `connect-src`)에 Cloudflare 도메인만 정확히 허용 목록으로 열어 두었습니다.
+
+```html
+<!-- packages/frontend/index.html -->
+<script defer
+  src="https://static.cloudflareinsights.com/beacon.min.js"
+  data-cf-beacon='{"token": "..."}'></script>
+```
+
+```ts
+// packages/backend/src/app.ts — CSP 화이트리스트 (요지)
+scriptSrc:  ["'self'", "https://static.cloudflareinsights.com"],
+connectSrc: ["'self'", "https://cloudflareinsights.com"],
+```
 
 ## 프런트: IndexedDB 북마크 + 탭 간 동기화
 
@@ -201,7 +253,7 @@ export function onBookmarksChanged(cb: () => void): () => void {
 
 - **DB는 SQLite + WAL** — 단일 노드에서 운영 중이고 데이터가 압도적으로 read-heavy. Postgres 추가 운영 부담을 굳이 떠안지 않았습니다.
 - **외부 API는 graceful degradation** — Spotify·YouTube·Naver 키가 없어도 Chzzk 코어 기능은 계속 동작합니다. 보조 매칭만 비활성화되는 형태.
-- **메트릭은 운영 첫날부터** — Phase 1에서 메트릭·대시보드·ServiceMonitor를 같이 넣었습니다. 늦게 붙이면 "왜 느려졌지"의 답을 못 찾습니다.
+- **메트릭은 운영 첫날부터, 그리고 "없을 때"까지 감시** — 메트릭·대시보드·ServiceMonitor를 처음부터 같이 넣었고, 실제 운영에서 메트릭이 조용히 끊긴 사고를 겪은 뒤 `absent()` 기반 타깃 소실 알림과 CI 설정 고정으로 보강했습니다. 늦게 붙이면 "왜 느려졌지"의 답을 못 찾고, 감시를 안 하면 "언제부터 안 보였지"의 답을 못 찾습니다.
 
 ## 직접 사용해보기
 
