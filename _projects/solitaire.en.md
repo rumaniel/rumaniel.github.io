@@ -7,7 +7,7 @@ status: Live
 order: 1
 image: /assets/portfolio/solitaire/feature-graphic.png
 image_alt: Solitaire feature graphic
-tech: [Unity 6.3 LTS, C#, VContainer, R3, UniTask, MemoryPack, Addressables, GitHub Actions]
+tech: [Unity 6.3 LTS, C#, VContainer, R3, UniTask, MemoryPack, Addressables, Google Play Games, Firebase, Unity Adaptive Performance, GitHub Actions]
 links:
   - label: Google Play
     url: https://play.google.com/store/apps/details?id=com.mangru.solitaire
@@ -20,22 +20,23 @@ lang: en
 page_id: project-solitaire
 ---
 
-A mobile solitaire game supporting Klondike and Easthaven rule sets. The core design decision is to **enforce Clean Architecture at the assembly (asmdef) boundary** so that domain logic is fully decoupled from Unity. The game is live on Google Play and itch.io. Core mechanics — shuffle seeding, hint ordering, auto-win detection — are pure C# and unit-tested with NUnit.
+A mobile solitaire game with five game modes (Klondike · Easthaven · Spider · Pyramid · TriPeaks). The core design decision is to **enforce Clean Architecture at the assembly (asmdef) boundary** so that domain logic is fully decoupled from Unity. What started as a single solitaire grew into a multi-variant platform spanning both pile games (Klondike/Easthaven/Spider) and board games (Pyramid/TriPeaks). The game is live on Google Play and itch.io. Core mechanics — shuffle seeding, hint ordering, auto-win detection, solvers — are pure C# and unit-tested with NUnit.
 
 ## At a glance
 
 | Property | Value |
 | --- | --- |
-| Runtime assemblies | 9 (App · Scene · Component · Service · Gateway · Core · Data · Model · Shared) |
-| Business services | 9 (Game / Card / Hint / Audio / Route / User / Stats / Snapshot, etc.) |
-| EditMode tests | 41 files across domain · service · gateway layers |
-| Rule sets | Klondike, Easthaven |
+| Game modes | 5 (Klondike · Easthaven · Spider · Pyramid · TriPeaks) |
+| Runtime assemblies | 11 own-code + Firebase · Play Games vendor plugins |
+| Business services | 16 (Game / Board / Card / Hint / Audio / Route / User / Stats / Snapshot / Skin / Layout / Daily / Achievement / Consent / Haptic / Localization) |
+| EditMode tests | 60+ files across domain · service · gateway · solver layers |
+| Platform integrations | Google Play Games (achievements), Firebase, Unity Adaptive Performance |
 | Platforms | Android (Google Play), Web (itch.io) |
-| CI/CD | GitHub Actions (self-hosted macOS) → EditMode tests → AAB signing → Play Console upload |
+| CI/CD | GitHub Actions (self-hosted macOS) → EditMode tests → AAB signing → Play Console / itch.io upload · Gemini automation |
 
 ## Architecture
 
-The 9 asmdefs are stacked into layers with a single direction of dependency. **The `Model` assembly references no Unity assemblies at all**, which keeps domain logic verifiable with a one-liner NUnit test. All external I/O (persistence, Firebase, Play Games) terminates in `Gateway`; business rules terminate in `Service`; MonoBehaviours only live in `Component` / `Scene`.
+The asmdefs are stacked into layers with a single direction of dependency. **The `Model` assembly references no Unity assemblies at all**, which keeps domain logic verifiable with a one-liner NUnit test. All external I/O (persistence, Firebase, Play Games) terminates in `Gateway`; business rules terminate in `Service`; MonoBehaviours only live in `Component` / `Scene`. Growing to five game modes didn't blur those boundaries — one Ingame scene hosts every mode, and each mode's rules branch off as a Strategy implementation in `Service`.
 
 {% include architecture-onion.html lang="en" %}
 
@@ -44,7 +45,7 @@ The 9 asmdefs are stacked into layers with a single direction of dependency. **T
 - **App** — A single VContainer `LifetimeScope` composes the whole dependency graph. No logic beyond bootstrap.
 - **Scene** — Login / Lobby / Ingame as MVP. Presenters issue commands to services and subscribe to model changes via R3.
 - **Component** — Visual concerns only: card drag, anchors, effects. No domain decisions live here.
-- **Service** — Game rules, hints, auto-win, stats, audio, etc. When external I/O is needed, services depend on `Gateway` interfaces, not implementations.
+- **Service** — Game rules, hints, auto-win, stats, audio, achievements, consent, haptics, localization — 16 services. When external I/O is needed, services depend on `Gateway` interfaces, not implementations.
 - **Gateway** — The boundary for everything that touches the outside: Firebase, Play Games, local snapshots.
 - **Model** — `PlayingCard`, `PileState`, `TableState`, and friends. **Zero `UnityEngine` references.**
 - **Data** — Rule sets, score tables expressed as ScriptableObjects, so content can be tuned without a code build.
@@ -180,6 +181,12 @@ private static bool IsUselessKingMove(PileState source, int sourceIndex, PileSta
 
 The enumerator is also written cheap-checks-first, so the common "can the player do *anything*?" query short-circuits on the first viable move.
 
+## Five modes + solvers: shipping only winnable deals
+
+Growing from one mode to five kept a single rule: **each mode's logic lives only as an independent Strategy in `Service`, while the board representation stays a shared pure type in `Model`**. That's why pile games (Klondike/Easthaven/Spider) and board games (Pyramid/TriPeaks) coexist in one codebase without knowing each other's rules.
+
+Each mode ships with a **solver** that verifies a seed is actually winnable. To avoid handing players an unwinnable deal, Daily-challenge seeds are frozen only after passing the solver. Solvers, scorers, layout factories, and match rules are all covered by per-mode NUnit suites (e.g. `TriPeaksSolverTests`, `PyramidScorerTests`, `SpiderGameServiceTests`).
+
 ## Addressables: optional assets behind a Gateway
 
 Card skins and per-language string tables are **optional and language-specific** — there's no reason to hold them in memory from launch. Addressables (2.4) splits them into per-domain groups, and game code only sees a thin Gateway over the top.
@@ -265,9 +272,10 @@ Today everything ships as **local bundles inside the app**. Splitting to a remot
 
 ## Testing & CI/CD
 
-- **41 EditMode test files** — NUnit suites cover shuffle distribution, legal-move validation, hint ordering, auto-win detection, scoring, and lifetime stats accumulation across the domain and service layers.
-- **GitHub Actions (self-hosted macOS)** — Every PR is gated on EditMode tests + Android build validation; merges to main trigger AAB signing and a Play Console draft upload.
-- **Release notes generated from PR titles** — Changelog is assembled from merged PRs and uploaded with each Play Console draft, so build numbers track the source of every change.
+- **60+ EditMode test files** — beyond shuffle distribution, legal-move validation, hint ordering, auto-win, scoring, and lifetime stats, the suites now cover per-mode solvers, scorers, layout factories, and match rules across the domain and service layers.
+- **GitHub Actions (self-hosted macOS)** — `test.yml` gates every PR on EditMode tests + Android build validation; `release.yml` handles AAB signing, Play Console internal upload, and an itch.io (WebGL) butler push on merge to main.
+- **Release notes generated from PRs** — the Play Console API looks up the version code, and the changelog is assembled from merged PRs, so build numbers track the source of every change.
+- **Gemini-based automation** — five Gemini workflows assist with PR review and issue triage in CI, cutting down repetitive review/classification work.
 
 ## Decisions worth calling out
 
