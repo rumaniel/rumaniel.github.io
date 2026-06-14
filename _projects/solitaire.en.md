@@ -14,7 +14,7 @@ links:
   - label: itch.io
     url: https://rumaniel.itch.io/solitaire-tower
   - label: GitHub
-    url: https://github.com/rumaniel/solitaire
+    url: https://github.com/rumaniel/solitaire-portfolio
 permalink: /portfolio/solitaire/
 lang: en
 page_id: project-solitaire
