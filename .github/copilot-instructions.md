@@ -2,36 +2,31 @@
 
 ## Mission
 
-이 저장소를 **GitHub Pages 최신 권장 방식(2026 기준)**으로 현대화한다.
-핵심 목표:
-
-1. 배포 자동화 단순화 (`GitHub Actions` 기반)
-2. 구식 템플릿/스타일 개선
-3. 플러그인/기능 확장성 확보
-4. 운영 피로도(배포/리소스 정리) 감소
+Jekyll 기반 한/영 개인 블로그 + 포트폴리오(`_posts`, `_projects`, `_case_studies`)를 GitHub Actions로 GitHub Pages에 배포한다.
+유지 목표: 배포 자동화 단순성, 플러그인/기능 확장성, 낮은 운영 피로도.
 
 ---
 
-## Current Baseline (Do not assume otherwise)
+## Current Baseline
 
 - Static site generator: Jekyll
 - Current config: `_config.yml` with `theme: minima`
-- Current dependencies: old Jekyll/Gemfile stack (3.x 기반)
-- Pages workflow: 없음 (`.github/workflows` 미구성)
+- Current dependencies: Jekyll 4 + 플러그인 (`Gemfile`, `_config.yml`의 `plugins:`)
+- i18n: `jekyll-polyglot` — `ko`(기본) / `en`. 작성 규칙은 `docs/jekyll-polyglot-adoption-guide.md`
+- Pages workflow: `.github/workflows/pages.yml` — `master` push 시 빌드·배포
 - Branch: `master` (default)
 - Generated output `_site`는 커밋하지 않음 (`.gitignore` 포함)
 
 ---
 
-## Source of Truth Files
+## Planning Docs
 
-항상 작업 시작 시 아래 문서를 우선 확인:
+작업 계획 시 참고:
 
-1. `docs/github-pages-modernization-plan.md`
-2. `docs/migration-backlog.md`
-3. 이 파일 `.github/copilot-instructions.md`
+1. `docs/migration-backlog.md` — 남은 작업 목록
+2. `docs/github-pages-modernization-plan.md` — 현대화 착수 당시 계획 (기록용)
 
-문서 간 충돌 시 우선순위는 위 순서.
+문서와 저장소가 다르면 저장소 파일(`Gemfile`, `_config.yml`, `.github/workflows/`)이 기준이다.
 
 ---
 
@@ -45,28 +40,21 @@
 
 ---
 
-## Preferred Deployment Architecture
-
-기본 방향은 다음을 따른다:
+## Deployment Architecture
 
 - GitHub Pages Source: `GitHub Actions`
-- Workflow: build + deploy jobs
+- Workflow: `.github/workflows/pages.yml` — build + deploy jobs
   - `actions/checkout`
   - `actions/configure-pages`
-  - `actions/jekyll-build-pages` (or equivalent build)
+  - `ruby/setup-ruby` + `bundle exec jekyll build` — `jekyll-polyglot`, `jekyll-archives`는 GitHub Pages 허용 목록 밖이라 `actions/jekyll-build-pages`에선 무시된다
   - `actions/upload-pages-artifact`
   - `actions/deploy-pages`
 
 ---
 
-## Session Start Checklist (for future Copilot sessions)
+## Backlog Upkeep
 
-세션 시작 시 반드시 수행:
-
-1. 백로그에서 `TODO` 중 최우선 1~3개를 `DOING`으로 전환
-2. 이번 세션의 완료 기준(acceptance criteria) 명시
-3. 변경 파일 최소화 원칙 적용
-4. 작업 종료 시 백로그 상태 업데이트 (`DONE/BLOCKED`)
+백로그 항목을 끝내거나 막히면 같은 변경에서 상태를 `DONE`/`BLOCKED`로 갱신한다. 백로그가 실제 남은 작업과 맞아야 다음 세션이 끝난 일을 반복하지 않는다.
 
 ---
 
@@ -87,17 +75,6 @@
 - 한 번에 하나의 의도를 가진 변경 세트를 만든다.
 - 새로운 의존성 추가 시 `왜 필요한지`를 문서에 한 줄로 남긴다.
 - 문제가 생기면 임시 우회보다 원인 해결을 우선한다.
-
----
-
-## Suggested Next Milestone
-
-다음 실작업 우선순위:
-
-1. `.github/workflows/pages.yml` 추가
-2. Pages 설정을 Actions 기반으로 전환
-3. 첫 자동 배포 성공 확인
-4. 이후 테마/스타일 개선 착수
 
 ---
 

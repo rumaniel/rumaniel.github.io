@@ -5,18 +5,18 @@
 ## Epic 1. 배포 자동화 (GitHub Actions)
 
 - [x] (DONE) `pages.yml` 워크플로우 추가
-  - checkout / configure-pages / jekyll-build-pages / upload-pages-artifact / deploy-pages
-- [ ] (BLOCKED) 저장소 Pages 설정을 `GitHub Actions`로 전환
-- [ ] (BLOCKED) `master` push 자동 배포 검증
+  - checkout / configure-pages / setup-ruby + `bundle exec jekyll build` / upload-pages-artifact / deploy-pages
+- [x] (DONE) 저장소 Pages 설정을 `GitHub Actions`로 전환
+- [x] (DONE) `master` push 자동 배포 검증
 - [ ] (TODO) 실패 로그 체크 포인트 문서화
 
 ## Epic 2. 의존성 정리
 
-- [ ] (TODO) Gemfile 전략 확정
+- [x] (DONE) Gemfile 전략 확정 — 안1 `jekyll 4`
   - 안1: `jekyll 4` 중심
   - 안2: `github-pages` gem 중심(로컬 호환 우선)
 - [ ] (TODO) 중복/불필요 gem 제거
-- [ ] (TODO) 로컬 실행 명령/버전 문서화
+- [x] (DONE) 로컬 실행 명령/버전 문서화 (`docs/local-development.md`)
 
 ## Epic 3. 템플릿/디자인 개선
 
@@ -33,6 +33,6 @@
 
 ## Epic 5. 운영 문서
 
-- [ ] (TODO) 배포 런북 작성
-- [ ] (TODO) 포스트 작성 가이드(Frontmatter 템플릿) 작성
-- [ ] (TODO) 트러블슈팅 FAQ 작성
+- [x] (DONE) 배포 런북 작성 (`docs/deployment-runbook.md`)
+- [x] (DONE) 포스트 작성 가이드(Frontmatter 템플릿) 작성 (`docs/post-writing-guide.md`)
+- [x] (DONE) 트러블슈팅 FAQ 작성 (`docs/troubleshooting-faq.md`)
