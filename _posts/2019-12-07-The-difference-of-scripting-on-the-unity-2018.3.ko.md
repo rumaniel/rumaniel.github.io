@@ -19,17 +19,73 @@ permalink: /the-difference-of-scripting-on-the-unity-2018-3/
 
 그간 유니티에서 최신 C#언어의 기능을 사용하는것은 제한적이었습니다. 그래서 이제 사용 가능한 C#기능들을 정리해 보았습니다.
 * [C#4](#c4)
+  * [Dynamic binding](#dynamic-binding)
+  * [Named/optional arguments](#namedoptional-arguments)
+  * [Generic covariant and contravariant](#generic-covariant-and-contravariant)
+  * [Embedded interop types](#embedded-interop-types)
 * [C#5](#c5)
+  * [New keyword async await](#new-keyword-async-await)
+    * [유니티에서 비동기 프로그래밍을 시작하기 위한 참고사항](#async-await-in-unity)
+    * [코루틴과 async-await 중요 차이점](#coroutine-vs-async-await)
+  * [Caller info attributes](#caller-info-attributes)
 * [C#6](#c6)
+  * [Read-only auto-properties](#read-only-auto-properties)
+  * [Auto-property initializers](#auto-property-initializers)
+  * [Index initializers](#index-initializers)
+  * [String interpolation](#string-interpolation)
+  * [Expression-bodied function members](#expression-bodied-function-members)
+  * [using static](#using-static)
+  * [Null-conditional operators](#null-conditional-operators)
+  * [Extension Add methods in collection initializers](#extension-add-methods-in-collection-initializers)
 * [C#7.0](#c70)
+  * [out variables](#out-variables)
+  * [Tuples](#tuples)
+  * [Discards](#discards)
+  * [Pattern Matching](#pattern-matching)
+  * [ref locals and returns](#ref-locals-and-returns)
+  * [Local Functions](#local-functions)
+  * [More expression-bodied members](#more-expression-bodied-members)
+  * [throw Expressions](#throw-expressions)
+  * [Generalized async return types](#generalized-async-return-types)
+  * [Numeric literal syntax improvements](#numeric-literal-syntax-improvements)
 * [C#7.1](#c71)
+  * [async Main method](#async-main-method)
+  * [default literal expressions](#default-literal-expressions)
+  * [Inferred tuple element names](#inferred-tuple-element-names)
+  * [Pattern matching on generic type parameters](#pattern-matching-on-generic-type-parameters)
 * [C#7.2](#c72)
+  * [Techniques for writing safe efficient code](#techniques-for-writing-safe-efficient-code)
+  * [Non-trailing named arguments](#non-trailing-named-arguments)
+  * [Leading underscores in numeric literals](#leading-underscores-in-numeric-literals)
+  * [private protected access modifier](#private-protected-access-modifier)
+  * [Conditional ref expressions](#conditional-ref-expressions)
 * [C#7.3](#c73)
+  * [Indexing fixed fields without pinning](#indexing-fixed-fields-without-pinning)
+  * [Reassigning ref local variables](#reassigning-ref-local-variables)
+  * [stackalloc array initializers](#stackalloc-array-initializers)
+  * [More types support the fixed statement](#more-types-support-the-fixed-statement)
+  * [Enhanced generic constraints](#enhanced-generic-constraints)
+  * [Tuple equality](#tuple-equality)
+  * [Attributes on backing fields of auto-properties](#attributes-on-backing-fields-of-auto-properties)
+  * [Expression variables in initializers](#expression-variables-in-initializers)
+  * [Improved overload candidates](#improved-overload-candidates)
+  * [in method overload tiebreaker](#in-method-overload-tiebreaker)
 
 ---
 # C#4
 ## Dynamic binding
 `dynamic` 은 `object`와 비슷하지만, 타입이 런타임에서 결정됩니다.
+
+{% highlight c# %}
+
+dynamic value = 10;
+value = value + 5;      // 런타임에 int 연산으로 결정
+value = "Hello";
+Debug.Log(value.Length); // 런타임에 string.Length 로 결정, 없는 멤버면 런타임 에러
+
+{% endhighlight %}
+
+`dynamic`은 내부적으로 런타임 코드 생성(Reflection.Emit)을 사용하기 때문에, IL2CPP 같은 AOT 플랫폼(iOS, 콘솔, WebGL 등)에서는 사용할 수 없습니다.
 
 ## Named/optional arguments
 Parameters의 포지션이 아닌 Parameters의 이름을 명시해 arguments를 넘길 수 있게 해줍니다.
@@ -59,7 +115,32 @@ void Start()
 {% endhighlight %}
 
 ## Generic covariant and contravariant
+제네릭 인터페이스와 델리게이트의 타입 파라미터에 `out`(공변성), `in`(반공변성) 키워드를 붙여 더 유연한 타입 변환을 허용합니다.
+
+{% highlight c# %}
+
+// 공변성(out) : 더 구체적인 타입 -> 더 일반적인 타입
+// IEnumerable<out T> 로 선언되어 있습니다.
+IEnumerable<string> strings = new List<string> { "a", "b" };
+IEnumerable<object> objects = strings;
+
+// 반공변성(in) : 더 일반적인 타입 -> 더 구체적인 타입
+// Action<in T> 로 선언되어 있습니다.
+Action<Component> logName = component => Debug.Log(component.name);
+Action<Transform> logTransform = logName;
+
+// 직접 선언하기
+public interface ISpawner<out T> where T : Component
+{
+    T Spawn();
+}
+
+{% endhighlight %}
+
+`out`은 리턴 타입에만, `in`은 파라미터 타입에만 쓸 수 있습니다. 또 클래스가 아닌 인터페이스와 델리게이트에만 적용되고, `int` 같은 밸류 타입에는 동작하지 않습니다.
+
 ## Embedded interop types
+COM interop 어셈블리(PIA)의 타입 정보를 호출하는 어셈블리에 직접 포함시켜, 배포 시 별도의 interop 어셈블리가 없어도 되게 해줍니다. 주로 Office 자동화 같은 Windows COM 작업에 사용되며, 유니티 게임 개발에서 쓸 일은 거의 없습니다.
 
 ---
 # C#5
@@ -110,7 +191,7 @@ public class AsyncAwaitExample : MonoBehaviour
 {% endhighlight %}
 
 
-### 유니티에서 비동기 프로그래밍을 시작하기 위한 참고사항
+### 유니티에서 비동기 프로그래밍을 시작하기 위한 참고사항 {#async-await-in-unity}
 * 비동기 함수는 `Task` 나 `Task<TResult>`의 리턴값을 가져야 합니다.
 * task를 리턴하는 비동기 함수는 언제나 `async` 키워드를 붙여야 합니다.
 * 동기식 코드에서 비동기 함수를 실행 할 때만 `async void` 형이여야 합니다.
@@ -118,7 +199,7 @@ public class AsyncAwaitExample : MonoBehaviour
 * unity API 는 메인 스레드 외부에서 접근 불가능합니다.
 * 현재 Unity WebGL 에서는 스레드를 사용하는 작업을 지원 하지 않습니다.
 
-### 코루틴과 async-await 중요 차이점
+### 코루틴과 async-await 중요 차이점 {#coroutine-vs-async-await}
 * 코루틴은 값을 리턴 할 수 없지만, `Task<TResult>` 는 가능합니다.
 * try-catch 문에 `yield` 를 넣을 수 없어서 코루틴에서 에러 찾기는 어렵습니다. 하지만 async-await 에서는 try-catch 문이 가능합니다.
 * 코루틴은 MonoBehaviour 에서 파생되지 않는 클래스에서는 사용 불가능합니다.
@@ -564,10 +645,51 @@ public string PlayerHealthUiText => $"Player health: {Health}";
 
 
 ## throw Expressions
-생성자에서 `throw` 구문을 사용 할 수 있습니다.
+`throw`를 구문(statement)이 아닌 식(expression)으로 사용 할 수 있습니다. 조건 연산자 `?:`, null 병합 연산자 `??`, 그리고 식 본문 멤버 `=>` 에서 사용 가능합니다.
+
+{% highlight c# %}
+
+private string name;
+
+// ?? 연산자와 함께
+public string Name
+{
+    get => name;
+    set => name = value ?? throw new ArgumentNullException(nameof(value));
+}
+
+// ?: 연산자와 함께
+public NPC(int health)
+    => this.health = health > 0 ? health : throw new ArgumentOutOfRangeException(nameof(health));
+
+// 식 본문 멤버에서
+public void Attack() => throw new NotImplementedException();
+
+{% endhighlight %}
 
 ## Generalized async return types
-async의 리턴 타입으로 `Task`와 `Task<T>`를 사용가능합니다.
+이전에는 async 메서드의 리턴 타입이 `Task`, `Task<T>`, `void`로 한정되었지만, 이제 `GetAwaiter` 패턴을 만족하는 타입이면 리턴 타입으로 사용 할 수 있습니다.
+
+대표적인 예가 `ValueTask<T>` 입니다. `ValueTask<T>`는 구조체라서, 결과가 이미 준비되어 있어 동기적으로 끝나는 경우가 많을 때 `Task` 객체의 힙 할당을 줄여 줍니다.
+
+{% highlight c# %}
+
+private readonly Dictionary<string, Texture2D> cache = new Dictionary<string, Texture2D>();
+
+public async ValueTask<Texture2D> LoadTextureAsync(string key)
+{
+    // 캐시에 있으면 할당 없이 바로 반환
+    if (cache.TryGetValue(key, out var texture))
+        return texture;
+
+    texture = await DownloadTextureAsync(key);
+    cache[key] = texture;
+    return texture;
+}
+
+{% endhighlight %}
+
+유니티 2018.3 기본 환경에는 `ValueTask`가 포함되어 있지 않아 `System.Threading.Tasks.Extensions` 어셈블리를 따로 추가해야 합니다. 유니티에 최적화된 할당 없는 async 라이브러리인 [UniTask](https://github.com/Cysharp/UniTask)도 이 기능을 기반으로 만들어졌습니다.
 
 ## Numeric literal syntax improvements
 새 토큰들로 상수를 읽는 가독성을 좋아집니다.
@@ -599,9 +721,30 @@ public const decimal GoldenRatio = 1.618_033_988_749_894_848_204_586_834_365_638
 {% endhighlight %}
 
 숫자 상수를 더욱 가독성 좋게 선언 할 수 있습니다.
+
 ---
 # C#7.1
 ## async Main method
+프로그램 진입점인 `Main` 메서드에 `async` 키워드를 붙일 수 있습니다.
+
+{% highlight c# %}
+
+// C#7.0
+static int Main()
+{
+    return DoAsyncWork().GetAwaiter().GetResult();
+}
+
+// C#7.1
+static async Task<int> Main()
+{
+    return await DoAsyncWork();
+}
+
+{% endhighlight %}
+
+유니티 스크립트에는 `Main` 메서드가 없으므로 직접 쓸 일은 없지만, 에셋 변환이나 빌드 자동화처럼 유니티와 별도로 동작하는 콘솔 툴을 만들 때 유용합니다.
+
 ## default literal expressions
 대상의 타입이 유추 가능한 경우 `default` 값 식에서 [리터럴](https://ko.wikipedia.org/wiki/%EB%A6%AC%ED%84%B0%EB%9F%B4) 식을 사용 할 수 있습니다.
 
@@ -634,6 +777,28 @@ var pair = (count, label); // element names are "count" and "label"
 
 
 ## Pattern matching on generic type parameters
+C#7.0 에서는 제네릭 타입 파라미터 `T` 의 값에 타입 패턴을 사용하면 컴파일 에러가 나는 경우가 있었습니다. C#7.1 부터는 `is` 와 `switch` 의 패턴 매칭을 제네릭 타입 파라미터에도 사용 할 수 있습니다.
+
+{% highlight c# %}
+
+public void Apply<T>(T value)
+{
+    switch (value)
+    {
+        case int number:
+            Debug.Log($"int : {number}");
+            break;
+        case string text:
+            Debug.Log($"string : {text}");
+            break;
+    }
+
+    if (value is Component component)
+        Debug.Log($"component : {component.name}");
+}
+
+{% endhighlight %}
+
 ---
 # C#7.2
 ## Techniques for writing safe efficient code
@@ -676,10 +841,205 @@ ref var r = ref (arr != null ? ref arr[0] : ref otherArr[0]);
 ---
 
 # C#7.3
-TODO
+C#7.3 은 안전하고 효율적인 코드 작성을 위한 기능과 기존 기능의 개선에 집중한 버전입니다. 유니티 2018.3 부터 사용 가능합니다.
+
+아래 예제 중 `unsafe` 코드는 Player Settings 의 **Allow 'unsafe' Code** 옵션을 켜야 컴파일됩니다.
+
+## Indexing fixed fields without pinning
+`fixed` 크기 버퍼 필드에 접근할 때 별도의 `fixed` 문으로 고정(pinning)하지 않아도 인덱싱 할 수 있습니다.
+
+{% highlight c# %}
+
+unsafe struct Packet
+{
+    public fixed byte data[16];
+}
+
+class PacketReader
+{
+    static Packet packet = new Packet();
+
+    // C#7.2
+    unsafe byte ReadOld()
+    {
+        fixed (byte* ptr = packet.data)
+        {
+            return ptr[5];
+        }
+    }
+
+    // C#7.3
+    unsafe byte ReadNew() => packet.data[5];
+}
+
+{% endhighlight %}
+
+## Reassigning ref local variables
+`ref` 지역 변수를 초기화한 이후에도 다른 변수를 참조하도록 다시 할당 할 수 있습니다.
+
+{% highlight c# %}
+
+int a = 1, b = 5;
+
+ref int larger = ref a;
+if (b > a)
+    larger = ref b; // C#7.3 부터 가능
+
+larger = 10;
+Debug.Log(b); // 10
+
+{% endhighlight %}
+
+## stackalloc array initializers
+`stackalloc` 으로 스택에 할당한 배열을 선언과 동시에 초기화 할 수 있습니다. 일반 배열처럼 힙에 할당되지 않아 GC 부담이 없습니다.
+
+{% highlight c# %}
+
+unsafe
+{
+    int* a = stackalloc int[3] { 1, 2, 3 };
+    int* b = stackalloc int[] { 1, 2, 3 };
+}
+
+{% endhighlight %}
+
+.NET Core 에서는 `Span<int> span = stackalloc int[] { 1, 2, 3 };` 처럼 `unsafe` 없이 사용 할 수 있지만, 유니티 2018.3 기본 환경에는 `Span<T>`(`System.Memory`)이 없기 때문에 포인터로 받아야 합니다.
+
+## More types support the fixed statement
+`fixed` 문은 이전에는 배열, `string`, 고정 크기 버퍼, 관리되지 않는 변수에만 사용 가능했습니다. 이제 `ref T GetPinnableReference()` 메서드를 가진 타입이라면 `fixed` 문에 사용 할 수 있습니다.
+
+{% highlight c# %}
+
+class PixelBuffer
+{
+    private readonly int[] pixels = new int[256];
+
+    public ref int GetPinnableReference() => ref pixels[0];
+}
+
+unsafe
+{
+    var buffer = new PixelBuffer();
+    fixed (int* ptr = buffer)
+    {
+        ptr[0] = 0xFF;
+    }
+}
+
+{% endhighlight %}
+
+## Enhanced generic constraints
+제네릭 타입 제약으로 `unmanaged`, `System.Enum`, `System.Delegate` 를 사용 할 수 있습니다.
+
+* `unmanaged` : 참조 타입 필드가 없는 구조체(`int`, `float`, `Vector3` 등)만 허용합니다. 포인터나 `sizeof` 를 제네릭에서 사용 할 수 있습니다.
+* `System.Enum` : enum 타입만 허용합니다.
+* `System.Delegate` : 델리게이트 타입만 허용합니다.
+
+{% highlight c# %}
+
+// unmanaged
+public static unsafe int SizeOf<T>() where T : unmanaged => sizeof(T);
+
+Debug.Log(SizeOf<Vector3>()); // 12
+
+// System.Enum
+public static Dictionary<int, string> EnumNamedValues<T>() where T : System.Enum
+{
+    var result = new Dictionary<int, string>();
+    foreach (int item in Enum.GetValues(typeof(T)))
+        result.Add(item, Enum.GetName(typeof(T), item));
+    return result;
+}
+
+// System.Delegate
+public static TDelegate Combine<TDelegate>(TDelegate source, TDelegate target)
+    where TDelegate : System.Delegate
+    => Delegate.Combine(source, target) as TDelegate;
+
+{% endhighlight %}
+
+## Tuple equality
+튜플 타입에서 `==` 와 `!=` 연산자를 사용 할 수 있습니다. 각 요소를 순서대로 비교하며, 요소의 이름은 비교에 영향을 주지 않습니다.
+
+{% highlight c# %}
+
+var left = (a: 5, b: 10);
+var right = (a: 5, b: 10);
+Debug.Log(left == right); // true
+
+// C#7.2 까지는 이렇게 비교해야 했습니다.
+Debug.Log(left.a == right.a && left.b == right.b);
+
+// 이름이 달라도 값이 같으면 true
+(int x, int y) point = (5, 10);
+Debug.Log(left == point); // true
+
+{% endhighlight %}
+
+## Attributes on backing fields of auto-properties
+자동 구현 프로퍼티의 컴파일러가 생성한 backing field 에 `field:` 를 붙여 어트리뷰트를 적용 할 수 있습니다. 유니티에서는 `SerializeField` 와 함께 쓰면 특히 유용합니다.
+
+{% highlight c# %}
+
+// C#7.2
+[SerializeField] private int health;
+public int Health => health;
+
+// C#7.3
+[field: SerializeField]
+public int Health { get; private set; }
+
+{% endhighlight %}
+
+주의할 점은 실제로 직렬화되는 필드 이름이 `<Health>k__BackingField` 가 된다는 것입니다. 나중에 일반 필드로 바꾸면 기존 데이터가 사라지므로 `[FormerlySerializedAs("<Health>k__BackingField")]` 를 붙여야 합니다.
+
+## Expression variables in initializers
+`out var` 와 패턴 변수를 필드 이니셜라이저, 프로퍼티 이니셜라이저, 생성자 이니셜라이저, 그리고 LINQ 쿼리 절에서 사용 할 수 있습니다.
+
+{% highlight c# %}
+
+public class Base
+{
+    public Base(int i, out int j)
+    {
+        j = i;
+    }
+}
+
+public class Derived : Base
+{
+    // 생성자 이니셜라이저에서 out var 사용
+    public Derived(int i) : base(i, out var j)
+    {
+        Debug.Log($"The value of 'j' is {j}");
+    }
+}
+
+{% endhighlight %}
+
+## Improved overload candidates
+오버로드된 메서드 중 호출할 메서드를 고를 때, 명백히 맞지 않는 후보를 먼저 제외해서 불필요한 모호성(ambiguous) 컴파일 에러가 줄었습니다.
+
+* 타입 인자가 제네릭 제약 조건을 만족하지 않는 후보는 제외됩니다.
+* 인스턴스 없이 호출할 때 인스턴스 멤버는, 인스턴스로 호출할 때 static 멤버는 제외됩니다.
+* 메서드 그룹을 넘길 때 리턴 타입이 델리게이트와 맞지 않는 후보는 제외됩니다.
+
+## in method overload tiebreaker
+값으로 넘기는 파라미터와 `in` 파라미터만 다른 오버로드가 있으면, C#7.2 에서는 호출이 모호하다는 에러가 났습니다. C#7.3 부터는 호출하는 쪽에서 `in` 을 쓰지 않으면 값 버전이 선택됩니다.
+
+{% highlight c# %}
+
+static void Move(Vector3 position) { }
+static void Move(in Vector3 position) { }
+
+Move(position);    // 값으로 넘기는 버전 호출
+Move(in position); // in 버전 호출
+
+{% endhighlight %}
 
 ---
 참고사이트
 * https://blogs.unity3d.com/2018/07/11/scripting-runtime-improvements-in-unity-2018-2/
 * https://docs.microsoft.com/en-us/visualstudio/cross-platform/unity-scripting-upgrade?view=vs-2019
 * https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-version-history
+* https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-7-3
