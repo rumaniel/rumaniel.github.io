@@ -460,6 +460,34 @@ html[data-theme="dark"] .post-readmore:hover {
 	background: var(--table-row-alt-bg);
 }
 
+/* Wiki-style table of contents: `{: .toc-table}` on a markdown table */
+.post-content table.toc-table {
+	width: auto;
+	max-width: 100%;
+	font-size: 0.86em;
+	line-height: 1.7;
+	background: var(--table-head-bg);
+}
+
+.post-content table.toc-table th,
+.post-content table.toc-table td {
+	padding: 0.4rem 0.7rem;
+}
+
+.post-content table.toc-table tbody tr:nth-child(even) {
+	background: transparent;
+}
+
+.post-content table.toc-table td:first-child {
+	white-space: nowrap;
+}
+
+.post-content table.toc-table .toc-num {
+	color: var(--muted);
+	font-variant-numeric: tabular-nums;
+	margin-right: 0.15em;
+}
+
 html[data-theme="dark"] .post-content .highlight,
 html[data-theme="dark"] .page-content .highlight,
 html[data-theme="dark"] .post-content pre.highlight,

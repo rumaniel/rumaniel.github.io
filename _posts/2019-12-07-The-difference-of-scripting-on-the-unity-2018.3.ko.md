@@ -13,63 +13,22 @@ permalink: /the-difference-of-scripting-on-the-unity-2018-3/
 유니티 2017.1 버전부터 [로즐린 컴파일러](https://github.com/dotnet/roslyn)가 실험적으로 적용 되 .NET 4.x, C#6와 호환되는 스크립팅이 사용 가능합니다. 2018.1 부터는 .NET 3.5 런타임이 레거시가 되고, 2018.3 부터는 C#7.3 버전이 사용 가능합니다.
 
 * 2017.1 .NET 4.6, C#6 Compatible version
-* 2018.1 .NET 4.x Equivalent runtime is no longer considered experimental,
+* 2018.1 .NET 4.x Equivalent runtime is no longer considered experimental
 * 2018.3 Support C#7.3
 * 2019.2 Removed .NET 3.5 Equivalent
 
 그간 유니티에서 최신 C#언어의 기능을 사용하는것은 제한적이었습니다. 그래서 이제 사용 가능한 C#기능들을 정리해 보았습니다.
-* [C#4](#c4)
-  * [Dynamic binding](#dynamic-binding)
-  * [Named/optional arguments](#namedoptional-arguments)
-  * [Generic covariant and contravariant](#generic-covariant-and-contravariant)
-  * [Embedded interop types](#embedded-interop-types)
-* [C#5](#c5)
-  * [New keyword async await](#new-keyword-async-await)
-    * [유니티에서 비동기 프로그래밍을 시작하기 위한 참고사항](#async-await-in-unity)
-    * [코루틴과 async-await 중요 차이점](#coroutine-vs-async-await)
-  * [Caller info attributes](#caller-info-attributes)
-* [C#6](#c6)
-  * [Read-only auto-properties](#read-only-auto-properties)
-  * [Auto-property initializers](#auto-property-initializers)
-  * [Index initializers](#index-initializers)
-  * [String interpolation](#string-interpolation)
-  * [Expression-bodied function members](#expression-bodied-function-members)
-  * [using static](#using-static)
-  * [Null-conditional operators](#null-conditional-operators)
-  * [Extension Add methods in collection initializers](#extension-add-methods-in-collection-initializers)
-* [C#7.0](#c70)
-  * [out variables](#out-variables)
-  * [Tuples](#tuples)
-  * [Discards](#discards)
-  * [Pattern Matching](#pattern-matching)
-  * [ref locals and returns](#ref-locals-and-returns)
-  * [Local Functions](#local-functions)
-  * [More expression-bodied members](#more-expression-bodied-members)
-  * [throw Expressions](#throw-expressions)
-  * [Generalized async return types](#generalized-async-return-types)
-  * [Numeric literal syntax improvements](#numeric-literal-syntax-improvements)
-* [C#7.1](#c71)
-  * [async Main method](#async-main-method)
-  * [default literal expressions](#default-literal-expressions)
-  * [Inferred tuple element names](#inferred-tuple-element-names)
-  * [Pattern matching on generic type parameters](#pattern-matching-on-generic-type-parameters)
-* [C#7.2](#c72)
-  * [Techniques for writing safe efficient code](#techniques-for-writing-safe-efficient-code)
-  * [Non-trailing named arguments](#non-trailing-named-arguments)
-  * [Leading underscores in numeric literals](#leading-underscores-in-numeric-literals)
-  * [private protected access modifier](#private-protected-access-modifier)
-  * [Conditional ref expressions](#conditional-ref-expressions)
-* [C#7.3](#c73)
-  * [Indexing fixed fields without pinning](#indexing-fixed-fields-without-pinning)
-  * [Reassigning ref local variables](#reassigning-ref-local-variables)
-  * [stackalloc array initializers](#stackalloc-array-initializers)
-  * [More types support the fixed statement](#more-types-support-the-fixed-statement)
-  * [Enhanced generic constraints](#enhanced-generic-constraints)
-  * [Tuple equality](#tuple-equality)
-  * [Attributes on backing fields of auto-properties](#attributes-on-backing-fields-of-auto-properties)
-  * [Expression variables in initializers](#expression-variables-in-initializers)
-  * [Improved overload candidates](#improved-overload-candidates)
-  * [in method overload tiebreaker](#in-method-overload-tiebreaker)
+
+| 버전 | 목차 |
+|---|---|
+| <span class="toc-num">1</span>&nbsp;**[C#4](#c4)** | <span class="toc-num">1.1</span>&nbsp;[Dynamic binding](#dynamic-binding)<br><span class="toc-num">1.2</span>&nbsp;[Named/optional arguments](#namedoptional-arguments)<br><span class="toc-num">1.3</span>&nbsp;[Generic covariant and contravariant](#generic-covariant-and-contravariant)<br><span class="toc-num">1.4</span>&nbsp;[Embedded interop types](#embedded-interop-types) |
+| <span class="toc-num">2</span>&nbsp;**[C#5](#c5)** | <span class="toc-num">2.1</span>&nbsp;[New keyword async await](#new-keyword-async-await)<br>&emsp;<span class="toc-num">2.1.1</span>&nbsp;[유니티에서 비동기 프로그래밍을 시작하기 위한 참고사항](#async-await-in-unity)<br>&emsp;<span class="toc-num">2.1.2</span>&nbsp;[코루틴과 async-await 중요 차이점](#coroutine-vs-async-await)<br><span class="toc-num">2.2</span>&nbsp;[Caller info attributes](#caller-info-attributes) |
+| <span class="toc-num">3</span>&nbsp;**[C#6](#c6)** | <span class="toc-num">3.1</span>&nbsp;[Read-only auto-properties](#read-only-auto-properties)<br><span class="toc-num">3.2</span>&nbsp;[Auto-property initializers](#auto-property-initializers)<br><span class="toc-num">3.3</span>&nbsp;[Index initializers](#index-initializers)<br><span class="toc-num">3.4</span>&nbsp;[String interpolation](#string-interpolation)<br><span class="toc-num">3.5</span>&nbsp;[Expression-bodied function members](#expression-bodied-function-members)<br><span class="toc-num">3.6</span>&nbsp;[using static](#using-static)<br><span class="toc-num">3.7</span>&nbsp;[Null-conditional operators](#null-conditional-operators)<br><span class="toc-num">3.8</span>&nbsp;[nameof expressions](#nameof-expressions)<br><span class="toc-num">3.9</span>&nbsp;[Exception filters](#exception-filters)<br><span class="toc-num">3.10</span>&nbsp;[Await in catch and finally blocks](#await-in-catch-and-finally-blocks)<br><span class="toc-num">3.11</span>&nbsp;[Extension Add methods in collection initializers](#extension-add-methods-in-collection-initializers) |
+| <span class="toc-num">4</span>&nbsp;**[C#7.0](#c70)** | <span class="toc-num">4.1</span>&nbsp;[out variables](#out-variables)<br><span class="toc-num">4.2</span>&nbsp;[Tuples](#tuples)<br><span class="toc-num">4.3</span>&nbsp;[Discards](#discards)<br><span class="toc-num">4.4</span>&nbsp;[Pattern Matching](#pattern-matching)<br><span class="toc-num">4.5</span>&nbsp;[ref locals and returns](#ref-locals-and-returns)<br><span class="toc-num">4.6</span>&nbsp;[Local Functions](#local-functions)<br><span class="toc-num">4.7</span>&nbsp;[More expression-bodied members](#more-expression-bodied-members)<br><span class="toc-num">4.8</span>&nbsp;[throw Expressions](#throw-expressions)<br><span class="toc-num">4.9</span>&nbsp;[Generalized async return types](#generalized-async-return-types)<br><span class="toc-num">4.10</span>&nbsp;[Numeric literal syntax improvements](#numeric-literal-syntax-improvements) |
+| <span class="toc-num">5</span>&nbsp;**[C#7.1](#c71)** | <span class="toc-num">5.1</span>&nbsp;[async Main method](#async-main-method)<br><span class="toc-num">5.2</span>&nbsp;[default literal expressions](#default-literal-expressions)<br><span class="toc-num">5.3</span>&nbsp;[Inferred tuple element names](#inferred-tuple-element-names)<br><span class="toc-num">5.4</span>&nbsp;[Pattern matching on generic type parameters](#pattern-matching-on-generic-type-parameters) |
+| <span class="toc-num">6</span>&nbsp;**[C#7.2](#c72)** | <span class="toc-num">6.1</span>&nbsp;[Techniques for writing safe efficient code](#techniques-for-writing-safe-efficient-code)<br><span class="toc-num">6.2</span>&nbsp;[Non-trailing named arguments](#non-trailing-named-arguments)<br><span class="toc-num">6.3</span>&nbsp;[Leading underscores in numeric literals](#leading-underscores-in-numeric-literals)<br><span class="toc-num">6.4</span>&nbsp;[private protected access modifier](#private-protected-access-modifier)<br><span class="toc-num">6.5</span>&nbsp;[Conditional ref expressions](#conditional-ref-expressions) |
+| <span class="toc-num">7</span>&nbsp;**[C#7.3](#c73)** | <span class="toc-num">7.1</span>&nbsp;[Indexing fixed fields without pinning](#indexing-fixed-fields-without-pinning)<br><span class="toc-num">7.2</span>&nbsp;[Reassigning ref local variables](#reassigning-ref-local-variables)<br><span class="toc-num">7.3</span>&nbsp;[stackalloc array initializers](#stackalloc-array-initializers)<br><span class="toc-num">7.4</span>&nbsp;[More types support the fixed statement](#more-types-support-the-fixed-statement)<br><span class="toc-num">7.5</span>&nbsp;[Enhanced generic constraints](#enhanced-generic-constraints)<br><span class="toc-num">7.6</span>&nbsp;[Tuple equality](#tuple-equality)<br><span class="toc-num">7.7</span>&nbsp;[Attributes on backing fields of auto-properties](#attributes-on-backing-fields-of-auto-properties)<br><span class="toc-num">7.8</span>&nbsp;[Expression variables in initializers](#expression-variables-in-initializers)<br><span class="toc-num">7.9</span>&nbsp;[Improved overload candidates](#improved-overload-candidates)<br><span class="toc-num">7.10</span>&nbsp;[in method overload tiebreaker](#in-method-overload-tiebreaker) |
+{: .toc-table}
 
 ---
 # C#4
@@ -88,11 +47,16 @@ Debug.Log(value.Length); // 런타임에 string.Length 로 결정, 없는 멤버
 `dynamic`은 내부적으로 런타임 코드 생성(Reflection.Emit)을 사용하기 때문에, IL2CPP 같은 AOT 플랫폼(iOS, 콘솔, WebGL 등)에서는 사용할 수 없습니다.
 
 ## Named/optional arguments
-Parameters의 포지션이 아닌 Parameters의 이름을 명시해 arguments를 넘길 수 있게 해줍니다.
+파라미터의 순서가 아닌 이름을 명시해 인자를 넘길 수 있고(named), 파라미터에 기본값을 주어 호출할 때 생략할 수 있습니다(optional).
 
 {% highlight c# %}
 
 void UpdateProfile(string name, int age, string job)
+{
+    // do
+}
+
+void Spawn(string name, int count = 1, float delay = 0f)
 {
     // do
 }
@@ -102,14 +66,18 @@ void Start()
     // 평범하게 호출하기
     UpdateProfile("Kim", 32, "Programmer");
 
-    // 순서와 성관없이 호출 가능
+    // 순서와 상관없이 호출 가능
     UpdateProfile(age: 32, job: "Programmer", name: "Kim");
     UpdateProfile(job: "Programmer", name: "Kim", age: 32);
 
     // 혼용해 사용시 컴파일 에러가 발생합니다.
     // UpdateProfile(job: "Programmer", 32, "Kim");
     // UpdateProfile(32, name: "Kim", "Programmer");
-    // UpdateProfile(32, "Programmer", name: "Kim");
+
+    // 기본값이 있는 파라미터는 생략 가능
+    Spawn("Slime");            // count = 1, delay = 0
+    Spawn("Slime", 3);         // delay = 0
+    Spawn("Slime", delay: 2f); // 이름을 지정해 중간 파라미터 건너뛰기
 }
 
 {% endhighlight %}
@@ -140,7 +108,7 @@ public interface ISpawner<out T> where T : Component
 `out`은 리턴 타입에만, `in`은 파라미터 타입에만 쓸 수 있습니다. 또 클래스가 아닌 인터페이스와 델리게이트에만 적용되고, `int` 같은 밸류 타입에는 동작하지 않습니다.
 
 ## Embedded interop types
-COM interop 어셈블리(PIA)의 타입 정보를 호출하는 어셈블리에 직접 포함시켜, 배포 시 별도의 interop 어셈블리가 없어도 되게 해줍니다. 주로 Office 자동화 같은 Windows COM 작업에 사용되며, 유니티 게임 개발에서 쓸 일은 거의 없습니다.
+COM interop 어셈블리(PIA)의 타입 정보를 호출하는 어셈블리에 직접 포함시켜, 배포 시 별도의 interop 어셈블리가 없어도 되게 해줍니다. 주로 Office 자동화 같은 Windows COM 작업에 사용되며, 유니티 게임 개발에서 쓸 일은 거의 없어 예제는 생략합니다.
 
 ---
 # C#5
@@ -150,6 +118,7 @@ COM interop 어셈블리(PIA)의 타입 정보를 호출하는 어셈블리에 �
 {% highlight c# %}
 
 // Unity Coroutine
+using System.Collections;
 using UnityEngine;
 public class UnityCoroutineExample : MonoBehaviour
 {
@@ -171,8 +140,9 @@ public class UnityCoroutineExample : MonoBehaviour
 {% highlight c# %}
 
 // .NET 4.x async-await
-using UnityEngine;
+using System;
 using System.Threading.Tasks;
+using UnityEngine;
 public class AsyncAwaitExample : MonoBehaviour
 {
     async void Start()
@@ -181,6 +151,7 @@ public class AsyncAwaitExample : MonoBehaviour
         await WaitAndPrint(1.5f);
         Debug.Log("Print when WaitAndPrint has completed");
     }
+
     async Task WaitAndPrint(float time)
     {
         await Task.Delay(TimeSpan.FromSeconds(time));
@@ -206,7 +177,7 @@ public class AsyncAwaitExample : MonoBehaviour
 * async-await 가 유니티 coroutine을 완전히 대체하라고 권하지 않습니다. 프로파일링을 통해 결과를 확인하고 접근하세요.
 
 ## Caller info attributes
-리플렉션 코드 없이 많은 컨텍스트 정보를 쉽게 가져 오게끔 해줍니다.
+리플렉션 코드 없이 호출한 메서드 이름, 파일 경로, 줄 번호를 쉽게 가져 올 수 있습니다. 로그 함수를 만들 때 유용합니다.
 
 {% highlight c# %}
 
@@ -225,7 +196,7 @@ void ShowCallerInfo(string message,
     Debug.Log("source line number: " + sourceLineNumber);
 }
 // Output:
-// Something happened
+// message: Something happened.
 // member name: Start
 // source file path: D:\Documents\unity-scripting-upgrade\Unity Project\Assets\CallerInfoTest.cs
 // source line number: 10
@@ -251,7 +222,7 @@ public class NPC
 
 {% endhighlight %}
 
-생성자가 아닌 곳에서 접근 시 에러를 생성합니다.
+생성자가 아닌 곳에서 값을 할당하면 컴파일 에러가 발생합니다.
 {% highlight c# %}
 
 public class NPC
@@ -269,7 +240,7 @@ public class NPC
 
 
 ## Auto-property initializers
-자동 property 생성자는 property 선언시 값을 초기화 할 수 있게 해줍니다.
+자동 구현 property를 선언하면서 바로 초기값을 줄 수 있습니다.
 
 {% highlight c# %}
 
@@ -280,6 +251,8 @@ public int Health { get; set; } = 100;
 {% endhighlight %}
 
 ## Index initializers
+인덱서 `[]` 를 이용해 컬렉션을 초기화 할 수 있습니다. 키와 값의 관계가 한눈에 보입니다.
+
 {% highlight c# %}
 
 // .NET 3.5
@@ -302,6 +275,8 @@ private Dictionary<int, string> webErrors = new Dictionary<int, string>
 
 
 ## String interpolation
+문자열 앞에 `$` 를 붙이면 `{}` 안에 변수나 식을 바로 넣을 수 있습니다. `String.Format` 처럼 `{0}`, `{1}` 순서를 맞출 필요가 없습니다.
+
 {% highlight c# %}
 
 // .NET 3.5
@@ -309,21 +284,31 @@ Debug.Log(String.Format("{0} health: {1}", playerName, health));
 
 // .NET 4.x
 Debug.Log($"{playerName} health: {health}");
+Debug.Log($"HP: {health / (float)maxHealth:P0}"); // 서식 지정도 가능 (예 : HP: 75%)
 
 {% endhighlight %}
 
 
 ## Expression-bodied function members
+본문이 한 줄인 메서드와 읽기 전용 property 를 `=>` 로 짧게 쓸 수 있습니다.
+
 {% highlight c# %}
 
+// .NET 3.5
+public override string ToString()
+{
+    return $"{name} : {health * 0.5}";
+}
+
+// .NET 4.x
 public override string ToString() => $"{name} : {health * 0.5}";
-public string GetInfo => $"{name} : {(hpRatio < 0.1 ? "Dead" : "Live")}";
+public string Info => $"{name} : {(hpRatio < 0.1 ? "Dead" : "Live")}";
 
 {% endhighlight %}
 
 
 ## using static
-한 클래스의 스태틱 메소드를 가져오는 것이 향상되었습니다.
+`using static` 으로 클래스를 지정하면, 그 클래스의 static 멤버를 클래스 이름 없이 쓸 수 있습니다.
 {% highlight c# %}
 
 // .NET 3.5
@@ -355,7 +340,7 @@ public class UsingStaticExample: MonoBehaviour
 
 
 ## Null-conditional operators
-널 상태 오퍼레이터는 Null 체크를 쉽고 부드럽게 만들어줍니다. 단순히 멤버 접근을 `.`에서 `?.` 로 바꾸세요.
+널 조건 연산자는 Null 체크를 쉽고 부드럽게 만들어줍니다. 단순히 멤버 접근을 `.`에서 `?.` 로 바꾸세요.
 
 {% highlight c# %}
 
@@ -363,8 +348,7 @@ var first = person?.FirstName;
 
 {% endhighlight %}
 
-person 객체가 null 이면 first 변수에 null 이 할당됩니다. person 객체가 null 이 아니라면 FirstName 이 할당됩니다.
-person 변수가 null 일 경우에 `NullRefferenceException` 을 생성하지 않고 null 을 반환합니다. 또 배열 혹은 인덱스에 접근할때 `[]` 를 `?[]`로 바꾸는걸로 사용가능합니다.
+person 객체가 null 이면 `NullReferenceException` 대신 first 변수에 null 이 할당되고, null 이 아니라면 FirstName 이 할당됩니다. 배열이나 인덱서에 접근할 때는 `[]` 를 `?[]`로 바꾸면 됩니다.
 
 {% highlight c# %}
 
@@ -372,7 +356,7 @@ first = person?.FirstName ?? "Unspecified";
 
 {% endhighlight %}
 
-`??` 오퍼레이터와 함꼐 해서 Default 값을 셋팅 할 수도 있습니다.
+`??` 연산자와 함께 써서 기본값을 지정 할 수도 있습니다.
 
 {% highlight c# %}
 
@@ -381,27 +365,93 @@ A?.B?[C];
 
 {% endhighlight %}
 
-앞의 오퍼레이터가 널을 리턴한다면 뒤의 나머지 체인들을 실행되지 않습니다. 위 예제에서는 만약 A나 B가 널이라면 C를 실행 하지 않습니다.
+앞의 연산자가 null 을 리턴하면 뒤의 나머지 체인은 실행되지 않습니다. 위 예제에서는 A나 B가 null 이면 C를 실행 하지 않습니다.
+
+**유니티 주의사항** : `GameObject`, `Component` 같은 `UnityEngine.Object` 는 `==` 연산자를 재정의해서, `Destroy` 된 오브젝트도 `== null` 이 `true` 가 됩니다. 하지만 `?.` 와 `??` 는 이 재정의를 거치지 않기 때문에 파괴된 오브젝트를 null 로 보지 않습니다. 유니티 오브젝트에는 `?.` 대신 `if (target != null)` 을 쓰세요.
+
+{% highlight c# %}
+
+Destroy(enemy.gameObject);
+// 다음 프레임 이후
+Debug.Log(enemy == null);  // true
+enemy?.TakeDamage(10);     // 걸러지지 않고 호출됨, 안에서 transform 등에 접근하면 MissingReferenceException
+
+{% endhighlight %}
+
+## nameof expressions
+`nameof` 는 변수, 타입, 멤버의 이름을 문자열로 돌려줍니다. 문자열을 직접 쓰는 것과 달리 이름을 바꾸면 컴파일러가 함께 체크해 줍니다.
+
+{% highlight c# %}
+
+Debug.Log(nameof(health)); // "health"
+
+if (target == null)
+    throw new ArgumentNullException(nameof(target));
+
+// Invoke("Respawn", 3f) 대신, 메서드 이름을 바꿔도 안전합니다.
+Invoke(nameof(Respawn), 3f);
+
+{% endhighlight %}
+
+## Exception filters
+`catch` 뒤에 `when` 조건을 붙여 조건이 맞을 때만 예외를 잡을 수 있습니다. 조건이 `false` 면 catch 에 들어가지 않고 예외가 그대로 위로 전달되므로, 다시 던질 때 스택 정보가 사라지는 문제가 없습니다.
+
+{% highlight c# %}
+
+try
+{
+    LoadSaveFile(path);
+}
+catch (IOException e) when (retryCount < 3)
+{
+    retryCount++;
+    Debug.LogWarning($"Retry {retryCount} : {e.Message}");
+}
+
+{% endhighlight %}
+
+## Await in catch and finally blocks
+C#5 에서는 `catch` 와 `finally` 블록 안에서 `await` 를 쓸 수 없었지만, C#6 부터 가능합니다.
+
+{% highlight c# %}
+
+async Task SaveAsync()
+{
+    try
+    {
+        await WriteFileAsync();
+    }
+    catch (Exception e)
+    {
+        await SendErrorLogAsync(e);
+    }
+    finally
+    {
+        await CloseConnectionAsync();
+    }
+}
+
+{% endhighlight %}
 
 ## Extension Add methods in collection initializers
-콜렉션 이니셜라이저에 Add 메소드 익스텐션이 적용됩니다.
+컬렉션 이니셜라이저에서 확장 메서드로 만든 `Add` 도 사용 할 수 있습니다.
 {% highlight c# %}
 
 var dict = new Dictionary<int, string> { 1, 2, 4 };
 
-foreach (var a in dict)
-	Console.WriteLine($"[{a.Key}] : {a.Value}");
-    // [1] : 1
-    // [2] : 2
-    // [4] : 4
+foreach (var pair in dict)
+    Debug.Log($"[{pair.Key}] : {pair.Value}");
+// [1] : 1
+// [2] : 2
+// [4] : 4
 
 
 public static class DictionaryExtension
 {
-	public static void Add(this Dictionary<int, string> dict, int index)
-	{
-		dict.Add(index, index.ToString());
-	}
+    public static void Add(this Dictionary<int, string> dict, int index)
+    {
+        dict.Add(index, index.ToString());
+    }
 }
 
 {% endhighlight %}
@@ -424,17 +474,25 @@ string text = StringTable.GetString("SOME_TEXT", out var error);
 
 
 ## Tuples
-이제 가볍고 여러 공개 필드를 가지는 명시되지 않는 타입을 만들 수 있습니다. 컴파일러나 IDE는 이러한 타입의 시맨틱을 이해합니다.
-튜플은 C#7.0 이전에도 사용 가능했으나, 효과적이지 않고 언어적 도움도 없었습니다.
+클래스나 구조체를 따로 만들지 않고 여러 값을 하나로 묶어 다룰 수 있습니다. 메서드에서 값을 여러 개 리턴할 때 특히 유용합니다.
+튜플은 C#7.0 이전에도 `System.Tuple` 로 사용 가능했으나, 요소 이름이 `Item1`, `Item2` 로 고정되고 언어 차원의 지원도 없었습니다.
 
 {% highlight c# %}
 
+// 요소 이름 지정
 (string Alpha, string Beta) letter = ("a", "b");
 Debug.Log($"{letter.Alpha}, {letter.Beta}");
 
-var letter = (Alpha: "a", Beta: "b");
-Debug.Log($"{letter.Alpha}, {letter.Beta}");
+var letter2 = (Alpha: "a", Beta: "b");
+Debug.Log($"{letter2.Alpha}, {letter2.Beta}");
 
+// 여러 값 리턴
+(int min, int max) GetRange(int[] values) => (values.Min(), values.Max());
+
+var (min, max) = GetRange(new[] { 3, 1, 5 });
+Debug.Log($"{min} ~ {max}"); // 1 ~ 5
+
+// Deconstruct 메서드를 만들면 클래스도 튜플처럼 분해 할 수 있습니다.
 public class Point
 {
     public Point(double x, double y)
@@ -448,75 +506,77 @@ public class Point
 }
 
 var p = new Point(3.14, 2.71);
-(double X, double Y) = p;
+var (x, y) = p;
 
 {% endhighlight %}
 
 
 
 ## Discards
-Discard는 `_` 키워드로 사용하는 쓰기 전용 변수입니다. 단순히 버리기를 의도하는 하나의 변수나 모든 변수에 할당 할 수 있습니다.
+Discard는 `_` 로 쓰는 쓰기 전용 변수입니다. 값을 받긴 해야 하지만 쓰지 않을 때, 버린다는 의도를 명확히 보여줍니다.
 
-Discard는 할당되지 않은 변수와 같습니다.
+Discard는 다음의 경우에 사용합니다.
 
-Discard는 다음의 경우에 도움을 줍니다.
-
-* 튜플이나 유저정의 형식을 해체할때.
-* `out` arguments 없이 함수가 호출될때.
-* `is`나 `switch` 구문이 사용되는 패턴 매칭 연산때.
-* 명백히 버리기 위해 할당한 단독 형식일 경우에.
+* 튜플이나 사용자 정의 타입을 분해할 때
+* 필요 없는 `out` 인자를 받을 때
+* `is` 나 `switch` 패턴 매칭에서 값이 필요 없을 때
+* 쓰지 않는 리턴값을 일부러 버릴 때 (예 : `_ = Task.Run(Work);`)
 
 {% highlight c# %}
 
-
+// 튜플 분해 : 필요한 값만 받기
 var (_, _, _, pop1, _, pop2) = QueryCityDataForYears("New York City", 1960, 2010);
-
 Debug.Log($"Population change, 1960 to 2010: {pop2 - pop1:N0}");
 
+// out 인자 : 파싱 성공 여부만 확인
+if (int.TryParse(input, out _))
+    Debug.Log("숫자입니다");
 
 private (string, double, int, int, int, int) QueryCityDataForYears(string name, int year1, int year2)
 {
-  int population1 = 0, population2 = 0;
-  double area = 0;
+    int population1 = 0, population2 = 0;
+    double area = 0;
 
-  if (name == "New York City") {
-     area = 468.48;
-     if (year1 == 1960) {
-        population1 = 7781984;
-     }
-     if (year2 == 2010) {
-        population2 = 8175133;
-     }
-  return (name, area, year1, population1, year2, population2);
-  }
+    if (name == "New York City")
+    {
+        area = 468.48;
+        if (year1 == 1960)
+            population1 = 7781984;
+        if (year2 == 2010)
+            population2 = 8175133;
+        return (name, area, year1, population1, year2, population2);
+    }
 
-  return ("", 0, 0, 0, 0, 0);
+    return ("", 0, 0, 0, 0, 0);
 }
 
 {% endhighlight %}
 
 
 ## Pattern Matching
-패턴 매칭은 객체 뿐만 아니라 property에 대해 메서드 디스패치를 구현 할 수 있게 해주는 기능입니다.
-패턴 매칭은 `switch`와 `is` 구문을 지원합니다. 패턴에 대해 추가적인 특별한 룰을 지정하기 위해 `when` 키워드를 씁니다.
-2가지 사용 방법을 소개하겠습니다.
+패턴 매칭은 값의 타입이나 조건을 검사하고, 맞으면 바로 변수로 꺼내 쓸 수 있게 해주는 기능입니다. `is` 식과 `switch` 문에서 사용할 수 있고, `when` 으로 추가 조건을 붙일 수 있습니다.
 
-1. `is` 패턴 표현식은 익숙한 `is` 연산자를 사용하여 해당 타입에 대한 객체를 질의하고 결과를 할당하는것을 하나의 명령어로 처리합니다.
+1. `is` 식은 타입 검사와 형변환, 변수 할당을 한 번에 처리합니다.
 
 {% highlight c# %}
 
+// .NET 3.5
+if (input is int)
+    sum += (int)input;
+
+// C#7.0
 if (input is int count)
     sum += count;
 
 {% endhighlight %}
 
 
-2. 기존 스위치 문에 몇가지가 추가되었습니다.
+2. `switch` 문에 몇가지가 추가되었습니다.
 
-* 모든 타입이 다 사용가능합니다.
-* 각각의 라벨에서 스위치 표현식을 체크 할 수 있습니다. `is` 표현식과 마찬가지로 새 변수를 할당 할 수 있습니다.
-* 해당 변수에 대한 추가 체크 조건을 위해 `when` 절을 추가 할 수 있습니다.
-* `case` 라벨 순서는 이제 중요합니다. 첫번째 일치하는 매칭 구문이 실행되고 나머진 지나갑니다.
+* 모든 타입을 switch 할 수 있습니다.
+* `case` 에서 타입을 검사하고, `is` 식과 마찬가지로 새 변수에 할당 할 수 있습니다.
+* `when` 절로 추가 조건을 붙일 수 있습니다.
+* 이제 `case` 순서가 중요합니다. 처음으로 일치하는 case 가 실행됩니다.
 
 {% highlight c# %}
 
@@ -555,19 +615,18 @@ public static int SumPositiveNumbers(IEnumerable<object> sequence)
 
 
 ## ref locals and returns
-밸류 타입에 대한 Refference를 다룰 수 있습니다.
+밸류 타입을 복사하지 않고 참조(reference)로 다룰 수 있습니다. 큰 배열이나 구조체의 요소를 직접 수정할 때 유용합니다.
 
 {% highlight c# %}
 
 int number = 0;
-
 ref int copyNumber = ref number;
-
 copyNumber = 1;
 
 Debug.Log($"number : {number}"); // 1
 Debug.Log($"copyNumber : {copyNumber}"); // 1
 
+// 배열 요소를 참조로 리턴
 public static ref int Find(int[,] matrix, Func<int, bool> predicate)
 {
     for (int i = 0; i < matrix.GetLength(0); i++)
@@ -577,48 +636,52 @@ public static ref int Find(int[,] matrix, Func<int, bool> predicate)
     throw new InvalidOperationException("Not found");
 }
 
-ref var item = ref MatrixSearch.Find(matrix, (val) => val == 42);
-Debug.Log(item);
+int[,] matrix = new int[5, 5];
+matrix[4, 2] = 42;
+
+ref var item = ref Find(matrix, val => val == 42);
 item = 24;
-Debug.Log(matrix[4, 2]);
+Debug.Log(matrix[4, 2]); // 24
 
 {% endhighlight %}
 
-C#언어에서는 ref local과 return을 잘못 사용하는것을 막아 줄 몇 가지 규칙들이 있습니다.
+ref local 과 return 을 쓸 때의 규칙입니다.
 
-* 모든 메소드의 호출과 리턴 구문에는 반드시 `ref` 키워드를 넣어야 합니다.
-* ref 리턴은 밸류 변수나 ref 변수에 할당됩니다.
-* 일반 메소드 리턴 값을 ref 로컬 변수에 할당 할 수 없습니다.
-* 비슷한 스코프 혹은 로컬 변수에 레퍼런스를 리턴 할 수 없습니다.
-* ref local 과 return 은 비동기 메소드와 함께 사용 할 수 없습니다.
+* 메서드 선언, `return` 문, 받는 변수 모두에 `ref` 를 붙여야 합니다.
+* ref 리턴을 `ref` 없이 일반 변수로 받으면 값이 복사됩니다.
+* 메서드 안의 지역 변수는 메서드가 끝나면 사라지기 때문에 ref 로 리턴 할 수 없습니다.
+* async 메서드에서는 ref local 을 사용 할 수 없습니다.
 
 ## Local Functions
-스코프와 가시성이 허락하는 아래에서 다른 함수 내에 함수를 끼워 넣을 수 있습니다.
+메서드 안에 다른 메서드를 선언 할 수 있습니다. 그 메서드에서만 쓰는 헬퍼 함수를 클래스에 노출하지 않아도 되고, 람다와 달리 델리게이트 할당이 없습니다.
 
 {% highlight c# %}
 
-public string GetA()
+public int Fibonacci(int n)
 {
-    return PrintA();
+    if (n < 0)
+        throw new ArgumentException("음수는 안됩니다", nameof(n));
 
-    string PrintA()
-    {
-        return "a";
-    }
+    return Fib(n);
+
+    // Fibonacci 안에서만 사용하는 로컬 함수
+    int Fib(int x) => x < 2 ? x : Fib(x - 1) + Fib(x - 2);
 }
 
 {% endhighlight %}
 
-https://docs.microsoft.com/en-us/dotnet/csharp/local-functions-vs-lambdas
+람다와의 차이는 [Local functions vs. lambda expressions](https://docs.microsoft.com/en-us/dotnet/csharp/local-functions-vs-lambdas) 에서 확인 할 수 있습니다.
 
 ## More expression-bodied members
+C#6 의 식 본문 멤버를 생성자, 소멸자, getter/setter 에도 쓸 수 있습니다.
+
 {% highlight c# %}
 
 // 생성자
 public ExpressionMembersExample(string label) => this.Label = label;
 
 // 소멸자
-~ExpressionMembersExample() => Console.Error.WriteLine("Finalized!");
+~ExpressionMembersExample() => Debug.Log("Finalized!");
 
 private string label;
 
@@ -628,18 +691,6 @@ public string Label
     get => label;
     set => this.label = value ?? "Default label";
 }
-
-// .NET 3.5
-private int TakeDamage(int amount)
-{
-    return Health -= amount;
-}
-// .NET 4.x
-private int TakeDamage(int amount) => Health -= amount;
-
-// .NET 4.x
-public string PlayerHealthUiText => $"Player health: {Health}";
-
 
 {% endhighlight %}
 
@@ -692,7 +743,7 @@ public async ValueTask<Texture2D> LoadTextureAsync(string key)
 유니티 2018.3 기본 환경에는 `ValueTask`가 포함되어 있지 않아 `System.Threading.Tasks.Extensions` 어셈블리를 따로 추가해야 합니다. 유니티에 최적화된 할당 없는 async 라이브러리인 [UniTask](https://github.com/Cysharp/UniTask)도 이 기능을 기반으로 만들어졌습니다.
 
 ## Numeric literal syntax improvements
-새 토큰들로 상수를 읽는 가독성을 좋아집니다.
+숫자 상수에 `0b` 바이너리 리터럴과 `_` 자릿수 구분자를 쓸 수 있어 가독성이 좋아집니다.
 
 {% highlight c# %}
 
@@ -703,7 +754,7 @@ public const int OneHundredTwentyEight = 0b1000_0000;
 
 {% endhighlight %}
 
-상수의 시작부분에 있는 `0b`는 바이너리 넘버로 쓰여졌음을 나타냅니다. 바이너리 넘버는 더 길어질 수 있기때문에 digit seperator `_`를 통해 비트 패턴을 더 쉽게 확인 할수 있습니다. digit seperator는 상수 어디에나 나타날 수 있습니다.  기본적인 10진수의 경우 일반적으로 천 단위 구분자로 사용됩니다.
+상수의 시작부분에 있는 `0b`는 바이너리 넘버로 쓰여졌음을 나타냅니다. 바이너리 넘버는 길어지기 쉽기 때문에 digit separator `_`를 통해 비트 패턴을 더 쉽게 확인 할 수 있습니다. digit separator는 상수 어디에나 넣을 수 있고, 10진수에서는 보통 천 단위 구분자로 사용합니다.
 
 {% highlight c# %}
 
@@ -711,7 +762,7 @@ public const long BillionsAndBillions = 100_000_000_000;
 
 {% endhighlight %}
 
-digit seperator 는 `decimal`, `float`, 그리고 `double` 타입에서도 사용 할 수 있습니다.
+digit separator 는 `decimal`, `float`, 그리고 `double` 타입에서도 사용 할 수 있습니다.
 
 {% highlight c# %}
 
@@ -719,8 +770,6 @@ public const double AvogadroConstant = 6.022_140_857_747_474e23;
 public const decimal GoldenRatio = 1.618_033_988_749_894_848_204_586_834_365_638_117_720_309_179M;
 
 {% endhighlight %}
-
-숫자 상수를 더욱 가독성 좋게 선언 할 수 있습니다.
 
 ---
 # C#7.1
@@ -746,7 +795,7 @@ static async Task<int> Main()
 유니티 스크립트에는 `Main` 메서드가 없으므로 직접 쓸 일은 없지만, 에셋 변환이나 빌드 자동화처럼 유니티와 별도로 동작하는 콘솔 툴을 만들 때 유용합니다.
 
 ## default literal expressions
-대상의 타입이 유추 가능한 경우 `default` 값 식에서 [리터럴](https://ko.wikipedia.org/wiki/%EB%A6%AC%ED%84%B0%EB%9F%B4) 식을 사용 할 수 있습니다.
+대상의 타입을 유추 할 수 있으면 `default(T)` 대신 `default` 만 써도 됩니다.
 
 {% highlight c# %}
 
@@ -760,7 +809,7 @@ Func<string, bool> whereClause = default;
 
 
 ## Inferred tuple element names
-튜플 엘레멘츠의 이름은 대부분 초기화 할때 유추 가능합니다.
+튜플을 만들 때 변수 이름이 그대로 요소 이름이 됩니다.
 {% highlight c# %}
 
 // C#7.0
@@ -802,13 +851,55 @@ public void Apply<T>(T value)
 ---
 # C#7.2
 ## Techniques for writing safe efficient code
-* `in`  Parameters에서 레퍼런스로 전달되지만 불린 함수에서 수정되지 않게 해줍니다.
-* `ref readonly` 한정자는 레퍼런스 값을 반환하지만 해당 오브젝트에 값을 쓰는걸 허용하지 않는걸 나타냅니다. `ref readonly` 한정자를 추가하는것은 호환 가능한 변경이나, 이미 존재하는 `ref` 반환에 `readonly`를 추가하는 것은 호환 가능하지 않는 변경입니다. 호출자가 `ref` 지역 변수를 `readonly` 한정자가 포함되도록 선언을 변경해야 합니다.
-* `readyonly struct` 선언은 구조체가 이뮤터블하고 멤버 변수로 `in` Parameters로서 넘겨져야 합니다. 기존의 구조체 선언에 `readonly` 한정자를 추가하는것은 [이진 호환 가능 변경](https://docs.microsoft.com/ko-kr/dotnet/csharp/whats-new/version-update-considerations#binary-compatible-changes) 입니다.
-* `ref struct` 선언은 구조체 타입이 직접 매니지드 메모리에 접근 할 수 있고 언제나 스택에 할당 됨을 나타냅니다. 기존의 `stuct` 선언에 `ref` 한정자를 추가하는 것은 호환 가능하지 않는 변경입니다. `ref struct`는 구조체의 멤버가 될 수 없거나 힙에 할당되지 않는 다른 영역에서 사용이 불가능합니다.
+밸류 타입을 복사하지 않고 참조로 다루면서도, 값이 바뀌지 않도록 보장하는 문법들입니다. 큰 구조체를 자주 넘기는 코드에서 복사 비용을 줄여 줍니다.
+
+* `in` 파라미터 : 참조로 넘기지만 메서드 안에서 수정 할 수 없습니다.
+* `ref readonly` 리턴 : 참조로 리턴하지만 받는 쪽에서 수정 할 수 없습니다.
+* `readonly struct` : 모든 필드가 읽기 전용인 불변 구조체입니다. `in` 으로 넘길 때 컴파일러가 방어적 복사를 하지 않아도 됩니다.
+* `ref struct` : 항상 스택에만 할당되는 구조체입니다. 클래스의 필드나 박싱처럼 힙에 올라가는 곳에는 쓸 수 없습니다.
+
+{% highlight c# %}
+
+// readonly struct : 불변 구조체
+public readonly struct Damage
+{
+    public readonly int Amount;
+    public readonly float Critical;
+
+    public Damage(int amount, float critical)
+    {
+        Amount = amount;
+        Critical = critical;
+    }
+}
+
+public class Unit
+{
+    private int health = 100;
+    private Damage lastDamage;
+
+    // in : 복사 없이 참조로 받지만 수정 불가
+    public void Apply(in Damage damage)
+    {
+        // damage = default; // 컴파일 에러
+        health -= damage.Amount;
+        lastDamage = damage;
+    }
+
+    // ref readonly : 참조로 리턴하지만 수정 불가
+    public ref readonly Damage LastDamage => ref lastDamage;
+}
+
+// ref struct : 스택에만 할당
+public ref struct StackOnlyCounter
+{
+    public int Count;
+}
+
+{% endhighlight %}
 
 ## Non-trailing named arguments
-명명된 아규먼트가 올바른 위치에 있을 시 위치 아규먼트 앞에 명명된 아규먼트를 사용 할 수 있습니다.
+이름을 지정한 인자가 원래 위치에 있다면, 그 뒤에 위치 인자를 이어서 쓸 수 있습니다.
 
 {% highlight c# %}
 
@@ -819,7 +910,7 @@ UpdateProfile("Kim", age: 32, "Programmer");
 
 
 ## Leading underscores in numeric literals
-digit이 나오기전에 `_` digit seperator 를 사용 할 수 있습니다.
+`0b`, `0x` 바로 뒤, 첫 숫자 앞에도 `_` 구분자를 쓸 수 있습니다.
 {% highlight c# %}
 
 int binaryValue = 0b_0101_0101;
@@ -828,10 +919,31 @@ int binaryValue = 0b_0101_0101;
 
 
 ## private protected access modifier
-`private protected` 한정자는 같은 어셈블리 내에 선언된 상속된 클래스들에서 접근 가능합니다. 구조체는 상속 받을 수 없기 떄문에 선언 할 수 없습니다.
+`private protected` 멤버는 **같은 어셈블리 안의 상속 클래스**에서만 접근 할 수 있습니다. 유니티에서는 Assembly Definition(asmdef) 으로 어셈블리를 나눌 때 의미가 있습니다. 구조체는 상속이 안 되므로 쓸 수 없습니다.
+
+{% highlight c# %}
+
+// Game.asmdef
+public class Unit
+{
+    private protected int hp;
+}
+
+public class Player : Unit
+{
+    void Heal() => hp += 10;   // 같은 어셈블리 + 상속 : 가능
+}
+
+// Mod.asmdef (다른 어셈블리)
+public class Boss : Unit
+{
+    void Heal() => hp += 10;   // 컴파일 에러
+}
+
+{% endhighlight %}
 
 ## Conditional ref expressions
-삼항 연산자(?:) 의 결과는 레퍼런스가 될 수 있습니다.
+삼항 연산자 `?:` 의 결과로 값 대신 참조를 받을 수 있습니다.
 {% highlight c# %}
 
 ref var r = ref (arr != null ? ref arr[0] : ref otherArr[0]);
@@ -1018,11 +1130,7 @@ public class Derived : Base
 {% endhighlight %}
 
 ## Improved overload candidates
-오버로드된 메서드 중 호출할 메서드를 고를 때, 명백히 맞지 않는 후보를 먼저 제외해서 불필요한 모호성(ambiguous) 컴파일 에러가 줄었습니다.
-
-* 타입 인자가 제네릭 제약 조건을 만족하지 않는 후보는 제외됩니다.
-* 인스턴스 없이 호출할 때 인스턴스 멤버는, 인스턴스로 호출할 때 static 멤버는 제외됩니다.
-* 메서드 그룹을 넘길 때 리턴 타입이 델리게이트와 맞지 않는 후보는 제외됩니다.
+오버로드된 메서드 중 하나를 고를 때, 컴파일러가 제네릭 제약 조건이 맞지 않거나 static/인스턴스 호출이 맞지 않는 후보를 먼저 제외합니다. 덕분에 불필요한 "호출이 모호합니다" 컴파일 에러가 줄었습니다. 코드를 다르게 쓸 필요는 없어 예제는 생략합니다.
 
 ## in method overload tiebreaker
 값으로 넘기는 파라미터와 `in` 파라미터만 다른 오버로드가 있으면, C#7.2 에서는 호출이 모호하다는 에러가 났습니다. C#7.3 부터는 호출하는 쪽에서 `in` 을 쓰지 않으면 값 버전이 선택됩니다.
