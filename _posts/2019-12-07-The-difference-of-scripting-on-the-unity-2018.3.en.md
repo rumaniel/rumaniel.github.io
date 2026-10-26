@@ -41,7 +41,7 @@ Using the latest C# language features in Unity was previously limited. Here's a 
 dynamic value = 10;
 value = value + 5;       // resolved as int addition at runtime
 value = "Hello";
-Debug.Log(value.Length); // resolved as string.Length at runtime; a missing member is a runtime error
+Debug.Log(value.Length); // resolved at runtime; missing member = runtime error
 ```
 
 `dynamic` relies on runtime code generation (Reflection.Emit), so it does not work on AOT platforms such as IL2CPP (iOS, consoles, WebGL, ...).
@@ -69,11 +69,11 @@ void Start()
     UpdateProfile(age: 32, job: "Programmer", name: "Kim");
     UpdateProfile(job: "Programmer", name: "Kim", age: 32);
 
-    // Mixing them like this is a compile error
+    // Mixed: compile error
     // UpdateProfile(job: "Programmer", 32, "Kim");
     // UpdateProfile(32, name: "Kim", "Programmer");
 
-    // Parameters with default values can be omitted
+    // Default parameters can be omitted
     Spawn("Slime");            // count = 1, delay = 0
     Spawn("Slime", 3);         // delay = 0
     Spawn("Slime", delay: 2f); // skip a middle parameter by name
@@ -84,13 +84,13 @@ void Start()
 Adding `out` (covariance) or `in` (contravariance) to the type parameters of generic interfaces and delegates allows more flexible conversions.
 
 ```csharp
-// Covariance (out): more specific type -> more general type
-// IEnumerable is declared as IEnumerable<out T>
+// Covariance (out): specific -> general
+// IEnumerable<out T>
 IEnumerable<string> strings = new List<string> { "a", "b" };
 IEnumerable<object> objects = strings;
 
-// Contravariance (in): more general type -> more specific type
-// Action is declared as Action<in T>
+// Contravariance (in): general -> specific
+// Action<in T>
 Action<Component> logName = component => Debug.Log(component.name);
 Action<Transform> logTransform = logName;
 
@@ -266,7 +266,7 @@ Debug.Log(String.Format("{0} health: {1}", playerName, health));
 
 // .NET 4.x
 Debug.Log($"{playerName} health: {health}");
-Debug.Log($"HP: {health / (float)maxHealth:P0}"); // format specifiers work too (e.g. HP: 75%)
+Debug.Log($"HP: {health / (float)maxHealth:P0}"); // format specifier (e.g. HP: 75%)
 ```
 
 ## Expression-bodied function members
@@ -340,7 +340,7 @@ If an earlier operator returns null, the rest of the chain is skipped. In the ex
 Destroy(enemy.gameObject);
 // a frame later
 Debug.Log(enemy == null);  // true
-enemy?.TakeDamage(10);     // not filtered out; touching transform etc. inside throws MissingReferenceException
+enemy?.TakeDamage(10);     // still called: MissingReferenceException inside
 ```
 
 ## nameof expressions
@@ -352,7 +352,7 @@ Debug.Log(nameof(health)); // "health"
 if (target == null)
     throw new ArgumentNullException(nameof(target));
 
-// Instead of Invoke("Respawn", 3f), safe to rename
+// safe to rename
 Invoke(nameof(Respawn), 3f);
 ```
 
@@ -447,7 +447,7 @@ Debug.Log($"{letter2.Alpha}, {letter2.Beta}");
 var (min, max) = GetRange(new[] { 3, 1, 5 });
 Debug.Log($"{min} ~ {max}"); // 1 ~ 5
 
-// A Deconstruct method lets a class be deconstructed like a tuple
+// Deconstruct: class splits like a tuple
 public class Point
 {
     public Point(double x, double y)
@@ -475,11 +475,11 @@ Use discards when:
 - Intentionally ignoring a return value (e.g. `_ = Task.Run(Work);`)
 
 ```csharp
-// Deconstruct a tuple, keeping only what you need
+// Tuple: keep only what you need
 var (_, _, _, pop1, _, pop2) = QueryCityDataForYears("New York City", 1960, 2010);
 Debug.Log($"Population change, 1960 to 2010: {pop2 - pop1:N0}");
 
-// out argument: only check whether parsing succeeded
+// out: only check success
 if (int.TryParse(input, out _))
     Debug.Log("It's a number");
 
@@ -604,7 +604,7 @@ public int Fibonacci(int n)
 
     return Fib(n);
 
-    // local function used only inside Fibonacci
+    // local to Fibonacci
     int Fib(int x) => x < 2 ? x : Fib(x - 1) + Fib(x - 2);
 }
 ```
@@ -662,7 +662,7 @@ private readonly Dictionary<string, Texture2D> cache = new Dictionary<string, Te
 
 public async ValueTask<Texture2D> LoadTextureAsync(string key)
 {
-    // return immediately from cache, no allocation
+    // cache hit: no allocation
     if (cache.TryGetValue(key, out var texture))
         return texture;
 
@@ -798,7 +798,7 @@ public class Unit
     private int health = 100;
     private Damage lastDamage;
 
-    // in: received by reference without copying, cannot be modified
+    // in: by reference, read-only
     public void Apply(in Damage damage)
     {
         // damage = default; // compile error
@@ -806,7 +806,7 @@ public class Unit
         lastDamage = damage;
     }
 
-    // ref readonly: returned by reference, cannot be modified
+    // ref readonly: returned by reference, read-only
     public ref readonly Damage LastDamage => ref lastDamage;
 }
 

@@ -40,7 +40,7 @@ permalink: /the-difference-of-scripting-on-the-unity-2018-3/
 dynamic value = 10;
 value = value + 5;      // 런타임에 int 연산으로 결정
 value = "Hello";
-Debug.Log(value.Length); // 런타임에 string.Length 로 결정, 없는 멤버면 런타임 에러
+Debug.Log(value.Length); // 런타임에 결정, 없는 멤버면 런타임 에러
 
 {% endhighlight %}
 
@@ -70,14 +70,14 @@ void Start()
     UpdateProfile(age: 32, job: "Programmer", name: "Kim");
     UpdateProfile(job: "Programmer", name: "Kim", age: 32);
 
-    // 혼용해 사용시 컴파일 에러가 발생합니다.
+    // 혼용 : 컴파일 에러
     // UpdateProfile(job: "Programmer", 32, "Kim");
     // UpdateProfile(32, name: "Kim", "Programmer");
 
-    // 기본값이 있는 파라미터는 생략 가능
+    // 기본값 파라미터 생략
     Spawn("Slime");            // count = 1, delay = 0
     Spawn("Slime", 3);         // delay = 0
-    Spawn("Slime", delay: 2f); // 이름을 지정해 중간 파라미터 건너뛰기
+    Spawn("Slime", delay: 2f); // 이름으로 중간 건너뛰기
 }
 
 {% endhighlight %}
@@ -87,13 +87,13 @@ void Start()
 
 {% highlight c# %}
 
-// 공변성(out) : 더 구체적인 타입 -> 더 일반적인 타입
-// IEnumerable<out T> 로 선언되어 있습니다.
+// 공변성(out) : 구체 -> 일반
+// IEnumerable<out T>
 IEnumerable<string> strings = new List<string> { "a", "b" };
 IEnumerable<object> objects = strings;
 
-// 반공변성(in) : 더 일반적인 타입 -> 더 구체적인 타입
-// Action<in T> 로 선언되어 있습니다.
+// 반공변성(in) : 일반 -> 구체
+// Action<in T>
 Action<Component> logName = component => Debug.Log(component.name);
 Action<Transform> logTransform = logName;
 
@@ -284,7 +284,7 @@ Debug.Log(String.Format("{0} health: {1}", playerName, health));
 
 // .NET 4.x
 Debug.Log($"{playerName} health: {health}");
-Debug.Log($"HP: {health / (float)maxHealth:P0}"); // 서식 지정도 가능 (예 : HP: 75%)
+Debug.Log($"HP: {health / (float)maxHealth:P0}"); // 서식 지정 (예 : HP: 75%)
 
 {% endhighlight %}
 
@@ -374,7 +374,7 @@ A?.B?[C];
 Destroy(enemy.gameObject);
 // 다음 프레임 이후
 Debug.Log(enemy == null);  // true
-enemy?.TakeDamage(10);     // 걸러지지 않고 호출됨, 안에서 transform 등에 접근하면 MissingReferenceException
+enemy?.TakeDamage(10);     // 호출됨 : 내부 접근 시 MissingReferenceException
 
 {% endhighlight %}
 
@@ -388,7 +388,7 @@ Debug.Log(nameof(health)); // "health"
 if (target == null)
     throw new ArgumentNullException(nameof(target));
 
-// Invoke("Respawn", 3f) 대신, 메서드 이름을 바꿔도 안전합니다.
+// 문자열 대신 : 이름 변경에 안전
 Invoke(nameof(Respawn), 3f);
 
 {% endhighlight %}
@@ -492,7 +492,7 @@ Debug.Log($"{letter2.Alpha}, {letter2.Beta}");
 var (min, max) = GetRange(new[] { 3, 1, 5 });
 Debug.Log($"{min} ~ {max}"); // 1 ~ 5
 
-// Deconstruct 메서드를 만들면 클래스도 튜플처럼 분해 할 수 있습니다.
+// Deconstruct : 클래스도 튜플처럼 분해
 public class Point
 {
     public Point(double x, double y)
@@ -528,7 +528,7 @@ Discard는 다음의 경우에 사용합니다.
 var (_, _, _, pop1, _, pop2) = QueryCityDataForYears("New York City", 1960, 2010);
 Debug.Log($"Population change, 1960 to 2010: {pop2 - pop1:N0}");
 
-// out 인자 : 파싱 성공 여부만 확인
+// out : 성공 여부만 확인
 if (int.TryParse(input, out _))
     Debug.Log("숫자입니다");
 
@@ -597,7 +597,7 @@ public static int SumPositiveNumbers(IEnumerable<object> sequence)
                     sum += (item > 0) ? item : 0;
                 break;
             }
-            // 추가적인 when 절을 이용한 패턴
+            // when 절 패턴
             case int n when n > 0:
                 sum += n;
                 break;
@@ -664,7 +664,7 @@ public int Fibonacci(int n)
 
     return Fib(n);
 
-    // Fibonacci 안에서만 사용하는 로컬 함수
+    // Fibonacci 전용 로컬 함수
     int Fib(int x) => x < 2 ? x : Fib(x - 1) + Fib(x - 2);
 }
 
@@ -729,7 +729,7 @@ private readonly Dictionary<string, Texture2D> cache = new Dictionary<string, Te
 
 public async ValueTask<Texture2D> LoadTextureAsync(string key)
 {
-    // 캐시에 있으면 할당 없이 바로 반환
+    // 캐시 히트 : 할당 없음
     if (cache.TryGetValue(key, out var texture))
         return texture;
 
@@ -878,7 +878,7 @@ public class Unit
     private int health = 100;
     private Damage lastDamage;
 
-    // in : 복사 없이 참조로 받지만 수정 불가
+    // in : 참조 전달, 수정 불가
     public void Apply(in Damage damage)
     {
         // damage = default; // 컴파일 에러
@@ -886,7 +886,7 @@ public class Unit
         lastDamage = damage;
     }
 
-    // ref readonly : 참조로 리턴하지만 수정 불가
+    // ref readonly : 참조 리턴, 수정 불가
     public ref readonly Damage LastDamage => ref lastDamage;
 }
 
@@ -1079,7 +1079,7 @@ var left = (a: 5, b: 10);
 var right = (a: 5, b: 10);
 Debug.Log(left == right); // true
 
-// C#7.2 까지는 이렇게 비교해야 했습니다.
+// C#7.2 까지
 Debug.Log(left.a == right.a && left.b == right.b);
 
 // 이름이 달라도 값이 같으면 true
@@ -1120,7 +1120,7 @@ public class Base
 
 public class Derived : Base
 {
-    // 생성자 이니셜라이저에서 out var 사용
+    // 생성자 이니셜라이저의 out var
     public Derived(int i) : base(i, out var j)
     {
         Debug.Log($"The value of 'j' is {j}");
