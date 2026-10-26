@@ -30,3 +30,7 @@ layout: default
 
   {%- include disqus_comments.html -%}
 </article>
+
+{% if content contains "toc-table" %}
+<script src="{{ "/assets/js/toc-backlinks.js" | relative_url }}" defer></script>
+{% endif %}

@@ -483,9 +483,18 @@ html[data-theme="dark"] .post-readmore:hover {
 }
 
 .post-content table.toc-table .toc-num {
-	color: var(--muted);
 	font-variant-numeric: tabular-nums;
 	margin-right: 0.15em;
+}
+
+/* Section number added by toc-backlinks.js; links back to the TOC table */
+.post-content .heading-num {
+	text-decoration: none;
+	font-variant-numeric: tabular-nums;
+}
+
+.post-content .heading-num:hover {
+	text-decoration: underline;
 }
 
 html[data-theme="dark"] .post-content .highlight,
